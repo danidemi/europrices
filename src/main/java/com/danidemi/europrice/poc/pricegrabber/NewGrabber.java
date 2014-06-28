@@ -1,8 +1,10 @@
 package com.danidemi.europrice.poc.pricegrabber;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 /**
@@ -10,31 +12,76 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
  * @author danidemi
  */
 public class NewGrabber {
+    
+    private HtmlUnitDriver driver;
 
     public static void main(String[] args) {
         new NewGrabber().run();
+        
     }
 
+    public NewGrabber() {
+        driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_24);
+        driver.setJavascriptEnabled(true);
+    }
+    
     private void run() {
         //WebDriver driver = new HtmlUnitDriver( true );
         
-        WebDriver driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_24);
-        ((HtmlUnitDriver) driver).setJavascriptEnabled(true);
+    
+    
         
         driver.get( "http://www.oselection.es/" );
         
         // clear and fill the search form
         driver.findElement(By.name("populate")).click();
         driver.findElement(By.name("populate")).clear();
-        driver.findElement(By.name("populate")).sendKeys("Sony Xperia Z2");        
+        //driver.findElement(By.name("populate")).sendKeys("Sony Xperia Z2");        
+        driver.findElement(By.name("populate")).sendKeys("Sony");        
         
         // click the search form
         driver.findElement(By.name("op")).click();        
         
-        // print price
-        String text = driver.findElement(By.cssSelector("span.discount-price")).getText();        
+        do {
+            
+
         
-        System.out.println( text );
+            // count number of items
+            List<WebElement> findElementsByCssSelector = driver.findElementsByCssSelector("div.article-inner");
+
+            // for each item extract info
+            for (WebElement productBox : findElementsByCssSelector) {
+
+                List<WebElement> findElements = productBox.findElements(By.cssSelector(".discount-price"));
+                String text = findElements.get(0).getText();
+
+                List<WebElement> findElements2 = productBox.findElements(By.cssSelector("header h1 a"));
+                String text2 = findElements2.get(0).getText();
+
+                System.out.println("====================================");
+                System.out.println("Price:" + text);
+                System.out.println("Product:" + text2);
+                System.out.println("====================================");
+            }
+
+        
+        }while(goToNextPageIfPossible());
+
+        
+        driver.close();
+        driver.quit();
+        
+        
+    }
+
+    private boolean goToNextPageIfPossible() {
+        WebElement findElementByCssSelector = driver.findElementByCssSelector(".pager-next");
+        if(findElementByCssSelector!=null){
+            findElementByCssSelector.click();
+            return true;
+        }else{
+            return false;
+        }
     }
     
 }
