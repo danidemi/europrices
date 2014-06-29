@@ -1,7 +1,11 @@
 package com.danidemi.europrice.poc.pricegrabber;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,7 +18,9 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 public class NewGrabber {
     
     private HtmlUnitDriver driver;
-
+    private PriceParser priceParser;
+    private Callback callback;
+    
     public static void main(String[] args) {
         new NewGrabber().run();
         
@@ -23,6 +29,9 @@ public class NewGrabber {
     public NewGrabber() {
         driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_24);
         driver.setJavascriptEnabled(true);
+        priceParser = new PriceParser();
+        callback = new SysoutCallback();
+        
     }
     
     private void run() {
@@ -54,14 +63,33 @@ public class NewGrabber {
 
                 List<WebElement> findElements = productBox.findElements(By.cssSelector(".discount-price"));
                 String text = findElements.get(0).getText();
+                Long priceInCent = null;
+                try {
+                    priceInCent = priceParser.parse( text );
+                } catch (ParserException ex) {
+                    Logger.getLogger(NewGrabber.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
                 List<WebElement> findElements2 = productBox.findElements(By.cssSelector("header h1 a"));
-                String text2 = findElements2.get(0).getText();
+                final WebElement desc = findElements2.get(0);
+                String text2 = desc.getText();
+                URL href = null;
+                try {
+                    href = new URL( desc.getAttribute("href") );
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(NewGrabber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                
+                
+                Item item = new Item();
+                item.setDescription(text2);
+                item.setPriceInCent(priceInCent);
+                item.setUrlDetail(href);
+                
+                callback.onNewItem(item);
 
-                System.out.println("====================================");
-                System.out.println("Price:" + text);
-                System.out.println("Product:" + text2);
-                System.out.println("====================================");
+
             }
 
         
@@ -75,8 +103,10 @@ public class NewGrabber {
     }
 
     private boolean goToNextPageIfPossible() {
-        WebElement findElementByCssSelector = driver.findElementByCssSelector(".pager-next");
-        if(findElementByCssSelector!=null){
+        List<WebElement> findElements = driver.findElements(By.cssSelector("li.pager-next a"));
+        WebElement findElementByCssSelector;
+        if(!findElements.isEmpty()){ 
+            findElementByCssSelector=findElements.get(0);
             findElementByCssSelector.click();
             return true;
         }else{
