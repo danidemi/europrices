@@ -39,7 +39,7 @@ public class NewGrabber {
         
     
     
-        
+        //http://www.smartphonehoesjes.nl/
         driver.get( "http://www.oselection.es/" );
         
         // clear and fill the search form
