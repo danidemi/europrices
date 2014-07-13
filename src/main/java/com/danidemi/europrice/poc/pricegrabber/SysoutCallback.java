@@ -13,7 +13,7 @@ import java.util.Locale;
  *
  * @author danidemi
  */
-class SysoutCallback implements Callback {
+public class SysoutCallback implements Callback {
 
     public SysoutCallback() {
     }

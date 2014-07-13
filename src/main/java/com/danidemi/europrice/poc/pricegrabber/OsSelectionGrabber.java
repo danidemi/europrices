@@ -15,30 +15,23 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
  *
  * @author danidemi
  */
-public class NewGrabber {
+public class OsSelectionGrabber implements Grabber {
     
     private HtmlUnitDriver driver;
     private PriceParser priceParser;
-    private Callback callback;
     
-    public static void main(String[] args) {
-        new NewGrabber().run();
-        
-    }
-
-    public NewGrabber() {
+    public OsSelectionGrabber() {
         driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_24);
         driver.setJavascriptEnabled(true);
         priceParser = new PriceParser();
-        callback = new SysoutCallback();
         
     }
     
-    private void run() {
-        //WebDriver driver = new HtmlUnitDriver( true );
+    @Override
+    public void run(Request request, Callback callback) {
         
-    
-    
+        callback.onStart();
+        
         //http://www.smartphonehoesjes.nl/
         driver.get( "http://www.oselection.es/" );
         
@@ -46,15 +39,13 @@ public class NewGrabber {
         driver.findElement(By.name("populate")).click();
         driver.findElement(By.name("populate")).clear();
         //driver.findElement(By.name("populate")).sendKeys("Sony Xperia Z2");        
-        driver.findElement(By.name("populate")).sendKeys("Sony");        
+        driver.findElement(By.name("populate")).sendKeys( request.getSearchTerm() );        
         
         // click the search form
         driver.findElement(By.name("op")).click();        
         
         do {
             
-
-        
             // count number of items
             List<WebElement> findElementsByCssSelector = driver.findElementsByCssSelector("div.article-inner");
 
@@ -67,7 +58,7 @@ public class NewGrabber {
                 try {
                     priceInCent = priceParser.parse( text );
                 } catch (ParserException ex) {
-                    Logger.getLogger(NewGrabber.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(OsSelectionGrabber.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 List<WebElement> findElements2 = productBox.findElements(By.cssSelector("header h1 a"));
@@ -77,7 +68,7 @@ public class NewGrabber {
                 try {
                     href = new URL( desc.getAttribute("href") );
                 } catch (MalformedURLException ex) {
-                    Logger.getLogger(NewGrabber.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(OsSelectionGrabber.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
                 
@@ -98,6 +89,8 @@ public class NewGrabber {
         
         driver.close();
         driver.quit();
+        
+        callback.onEnd();
         
         
     }
