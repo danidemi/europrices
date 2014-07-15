@@ -10,7 +10,7 @@ package com.danidemi.europrice.poc.pricegrabber;
  *
  * @author danidemi
  */
-class Request {
+public class Request {
 
     private String searchTerm;
 

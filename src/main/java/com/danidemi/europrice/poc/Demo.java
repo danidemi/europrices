@@ -7,7 +7,9 @@
 package com.danidemi.europrice.poc;
 
 import com.danidemi.europrice.poc.pricegrabber.Callback;
+import com.danidemi.europrice.poc.pricegrabber.EPriceItGrabber;
 import com.danidemi.europrice.poc.pricegrabber.OsSelectionGrabber;
+import com.danidemi.europrice.poc.pricegrabber.Request;
 import com.danidemi.europrice.poc.pricegrabber.StockistiGrabber;
 import com.danidemi.europrice.poc.pricegrabber.SysoutCallback;
 
@@ -17,12 +19,18 @@ import com.danidemi.europrice.poc.pricegrabber.SysoutCallback;
  */
 public class Demo {
     
+    
     public static void main(String[] args){
+        
+        Request r = new Request("sony");
         
         Callback callback = new SysoutCallback();
         
         new OsSelectionGrabber();
         new StockistiGrabber();
+        new EPriceItGrabber().run(r, callback);
+        
+        
     }
     
 }

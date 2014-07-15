@@ -47,7 +47,9 @@ public class StockistiGrabber implements Grabber {
         // count number of items
         List<WebElement> items = driver.findElementsByCssSelector(".prodotto-griglia");
         
-        for (WebElement items : item) {
+        for (WebElement item : items) {
+            
+            
             
         }
         
