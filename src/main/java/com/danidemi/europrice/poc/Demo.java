@@ -12,6 +12,7 @@ import com.danidemi.europrice.poc.pricegrabber.OsSelectionGrabber;
 import com.danidemi.europrice.poc.pricegrabber.Request;
 import com.danidemi.europrice.poc.pricegrabber.StockistiGrabber;
 import com.danidemi.europrice.poc.pricegrabber.SysoutCallback;
+import com.danidemi.europrice.poc.pricegrabber.UtuizamobiSiGrabber;
 
 /**
  *
@@ -28,8 +29,8 @@ public class Demo {
         
         new OsSelectionGrabber();
         new StockistiGrabber();
-        new EPriceItGrabber().run(r, callback);
-        
+        new EPriceItGrabber();
+        new UtuizamobiSiGrabber().run(r, callback);
         
     }
     

@@ -12,8 +12,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  *
@@ -21,13 +24,24 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
  */
 public class EPriceItGrabber implements Grabber {
 
-    private final HtmlUnitDriver driver;
+    //private final HtmlUnitDriver driver;
+    private final PhantomJSDriver driver;
     private final PriceParser priceParser;
 
     public EPriceItGrabber() {
-        driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_24);
-        driver.setJavascriptEnabled(true);
+        
+        //driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_24);
+        //driver.setJavascriptEnabled(true);
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("phantomjs.binary.path", "/tmp/phantomjs-1.9.7-linux-i686/bin/phantomjs");
+        System.out.println( capabilities.asMap() );
+        driver = new PhantomJSDriver(capabilities);
+        
+        
+        
+
         priceParser = new PriceParser();
+        
     }
 
     @Override

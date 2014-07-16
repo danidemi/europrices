@@ -34,7 +34,7 @@ public class PriceParserSuccessTest {
     }
     
     @Test
-    public void shouldParsePriceAsExpected() {
+    public void shouldParsePriceAsExpected() throws ParserException {
         assertThat( new PriceParser().parse( asRetrievedFromHtml ), is( asExpected ));
     }
     

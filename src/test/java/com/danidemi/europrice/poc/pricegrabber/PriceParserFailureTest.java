@@ -16,7 +16,7 @@ import org.junit.runners.Parameterized.Parameters;
 public class PriceParserFailureTest {
         
     @Test(expected = ParserException.class)
-    public void shouldParsePriceAsExpected() {
+    public void shouldParsePriceAsExpected() throws ParserException {
         new PriceParser().parse( " -- not a price -- " );
     }
     
