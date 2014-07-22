@@ -8,26 +8,39 @@ package com.danidemi.europrice.screenscraping;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
- *
+ * Click on the given item.
  * @author daniele
  */
-public class Click implements ScrapeAction {
+public class ItemClick implements ScrapeAction {
 
     private By item;    
     
     @Override
     public void scrape(ScrapeContext ctx) {
         
+    	WebElement findElement = ctx.findElement(item);
+    	if(findElement==null){
+    		throw new ScrapeException("I was supposed to click on item identified by " + item + " but I was not able to find such item.");
+    	}
         ctx.info("Clicking on {}", item);
         
-        ctx.findElement(item).click();
+		findElement.click();
     }
 
-    public void setItem(By item) {
+    public void setItemToClick(By item) {
         this.item = item;
     }
+
+	@Override
+	public void onStartScraping() {		
+	}
+
+	@Override
+	public void onEndScraping() {		
+	}
     
     
 

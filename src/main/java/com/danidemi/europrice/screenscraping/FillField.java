@@ -19,14 +19,29 @@ public class FillField implements ScrapeAction {
     private By fieldSelector;
     private String text;
     
+	@Override
+	public void onStartScraping() {
+	
+	}
+
+	@Override
+	public void onEndScraping() {
+	
+	}
+    
     @Override
     public void scrape(ScrapeContext ctx) {
        
-        ctx.info("Typing '{}' in field identified by '{}'", text, fieldSelector);
-        final WebElement field = ctx.findElement(fieldSelector);
+        ctx.info("Selecting search field '{}'", fieldSelector);
+        final WebElement field = ctx.findUniqueElement(fieldSelector);
         
+        ctx.info("Clicking search field '{}'", fieldSelector);
         field.click();
+        
+        ctx.info("Clearing search field '{}'", fieldSelector);
         field.clear();
+        
+        ctx.info("Typing '{}' in search field '{}'", text, fieldSelector);
         field.sendKeys( text ); 
         
     }

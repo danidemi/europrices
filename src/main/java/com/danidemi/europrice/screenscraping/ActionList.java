@@ -16,6 +16,11 @@ import java.util.List;
 public class ActionList implements ScrapeAction {
 
     private List<ScrapeAction> actions = new ArrayList<>();
+ 
+    @Override
+	public void onStartScraping() {
+	
+	}
     
     @Override
     public void scrape(ScrapeContext ctx) {
@@ -23,11 +28,14 @@ public class ActionList implements ScrapeAction {
             scrapeAction.scrape(ctx);
         }
     }
+    
+    @Override
+	public void onEndScraping() {
+	
+	}
 
     void add(ScrapeAction action) {
         actions.add( action );
     }
-    
-    
     
 }

@@ -36,5 +36,13 @@ public class GoToUrl implements ScrapeAction {
         
         ctx.info("Went to {}", url.toString());
     }
+
+	@Override
+	public void onStartScraping() {
+	}
+
+	@Override
+	public void onEndScraping() {		
+	}
     
 }

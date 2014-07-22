@@ -6,6 +6,7 @@
 package com.danidemi.europrice.screenscraping;
 
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,27 +21,47 @@ class ForEachPage implements ScrapeAction {
 
     private ScrapeAction action;
     private By nextSelector;
+    private int pageNumber;
 
     public ForEachPage() {
     }
+    
+	@Override
+	public void onStartScraping() {
+		pageNumber = 1;
+		action.onStartScraping();
+	}
+
+	@Override
+	public void onEndScraping() {
+		action.onEndScraping();
+	}
 
     public void scrape(ScrapeContext ctx) {
         boolean goOn;
         do {
 
+        	ctx.info("Invoking action {} on page {}", action, pageNumber);
+        	
             action.scrape(ctx);
 
-            List<WebElement> findElements = ctx.findElements(nextSelector);
-            WebElement findElementByCssSelector;
-            if (!findElements.isEmpty()) {
-                findElementByCssSelector = findElements.get(0);
-                findElementByCssSelector.click();
+            List<WebElement> nextItems = ctx.findElementsFromRoot(nextSelector);
+            WebElement nextItem;
+            if (!nextItems.isEmpty()) {
+                nextItem = nextItems.get(0);
+                nextItem.click();
                 goOn = true;
+                pageNumber ++;
             } else {
                 goOn = false;
             }
             
-            ctx.info("Going to next page clicking on {} ? {}", nextSelector, goOn);
+            if(goOn){
+            	ctx.info("Going to page {} clicking on {}", pageNumber, nextSelector);            	
+            }else{
+            	ctx.info("Next page item not found, all pages have been browsed.");
+            }
+            
 
         } while (goOn);
     }

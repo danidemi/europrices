@@ -15,14 +15,24 @@ class Search implements ScrapeAction {
 
     private ActionList actionList;
     private final FillField fillField;
-    private final Click click;
+    private final ItemClick click;
 
     public Search() {
         actionList = new ActionList();
         fillField = new FillField();
         actionList.add(fillField);
-        click = new Click();
+        click = new ItemClick();
         actionList.add(click);
+    }
+    
+    @Override
+    public void onStartScraping() {
+    	actionList.onStartScraping();
+    }
+    
+    @Override
+    public void onEndScraping() {
+    	actionList.onEndScraping();
     }
 
     @Override
@@ -39,7 +49,7 @@ class Search implements ScrapeAction {
     }
 
     public void setStartSearchButton(By item) {
-        click.setItem(item);
+        click.setItemToClick(item);
     }
     
     

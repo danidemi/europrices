@@ -7,8 +7,13 @@
 package com.danidemi.europrice.screenscraping;
 
 import com.danidemi.europrice.poc.pricegrabber.PriceParser;
+
 import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -27,10 +32,26 @@ public class ScrapeContext {
     private WebElement sub;
     
     ScrapeContext(){
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("phantomjs.binary.path", "/opt/phantomjs/phantomjs-1.9.7-linux-x86_64/bin/phantomjs");
+    	
+    	
+        DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
+        capabilities.setCapability("phantomjs.binary.path", "/opt/phantomjs/phantomjs/bin/phantomjs");
+        Proxy proxy = new Proxy();
+        proxy.setHttpProxy("10.1.51.10:80");
+        capabilities.setCapability("proxy", proxy);
+        
+        
+        
         driver = new PhantomJSDriver(capabilities);
         log = LoggerFactory.getLogger("scrape.session");
+        Runtime.getRuntime().addShutdownHook(new Thread(){
+        	@Override
+        	public void run() {
+        		log.info("Quitting PhantomJSDriver");
+        		ScrapeContext.this.driver.quit();
+        		log.info("PhantomJSDriver quitted");
+        	}
+        });
     }
     
     WebDriver getWebDriver() {
@@ -45,24 +66,33 @@ public class ScrapeContext {
         log.info(string, params);
     }
 
+    /**
+     * Expects to find exactly one element.
+     * @throws ElementCardinalityException 
+     * */
+	public WebElement findUniqueElement(By fieldSelector) throws ElementCardinalityException {
+		List<WebElement> foundElements = driver.findElements(fieldSelector);
+		if( CollectionUtils.isEmpty( foundElements ) ) throw new NotSuchElementException( fieldSelector, driver );
+		if( foundElements.size() != 1 ) throw new TooMuchElementsException( fieldSelector, 1 );
+		return foundElements.get(0);
+	}
+
     public WebElement findElement(By fieldSelector) {
         return driver.findElement(fieldSelector);
     }
 
-    public List<WebElement> findElements(By itemSelector) {
+    public List<WebElement> findElementsFromRoot(By itemSelector) {
         return driver.findElements(itemSelector);
     }
     
-    public void setSubcontext(WebElement sub){
+    public void setSubRootElement(WebElement sub){
+    	info("Context set to {}" + sub);
         this.sub = sub;
     }
 
-    public List<WebElement> findElement2(By cssSelector) {
+    public List<WebElement> findElementsFromSubRoot(By cssSelector) {
+    	info("Looking for {} starting from {}", cssSelector, sub);
         return sub.findElements(cssSelector);
-    }
-    
-    
-    
-    
+    }    
     
 }

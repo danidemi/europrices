@@ -7,11 +7,16 @@
 package com.danidemi.europrice.screenscraping;
 
 /**
+ * A generic scrape action.
  *
  * @author daniele
  */
 public interface ScrapeAction {
 
+	void onStartScraping();
+	
     public void scrape(ScrapeContext ctx);
+
+	void onEndScraping();
     
 }

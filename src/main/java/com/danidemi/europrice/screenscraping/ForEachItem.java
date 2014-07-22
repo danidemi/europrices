@@ -7,39 +7,56 @@
 package com.danidemi.europrice.screenscraping;
 
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
- *
+ * 
  * @author daniele
  */
 public class ForEachItem implements ScrapeAction {
 
-    private WebDriver driver;
-    private By itemSelector;
-    private ScrapeAction action;
-    
-    @Override
-    public void scrape(ScrapeContext ctx) {
-        
-            ctx.info("Looking for items {}", itemSelector);
-            List<WebElement> items = ctx.findElements(itemSelector);
+	private By itemSelector;
+	private ScrapeAction action;
 
-            ctx.info("Found {} items", items.size());
-            for (WebElement item : items) {
-                ctx.setSubcontext(item);
-                action.scrape(ctx);
-            }
-    }
+	@Override
+	public void scrape(ScrapeContext ctx) {
+		
+		if(action == null) {
+			throw new IllegalStateException("Please, set an action");
+		}
 
-    public void setItemSelector(By itemSelector) {
-        this.itemSelector = itemSelector;
-    }
+		ctx.info("Looking for items {}", itemSelector);
+		List<WebElement> items = ctx.findElementsFromRoot(itemSelector);
 
-    public void setAction(ScrapeAction action) {
-        this.action = action;
-    }
-    
+		ctx.info("Found {} items", items.size());
+		for(int i=0; i<items.size(); i++){
+			ctx.info("Invoking action {} with item {}", action, i+1);
+			WebElement item = items.get(i);
+			ctx.setSubRootElement(item);
+			action.scrape(ctx);
+		}
+
+	}
+
+	public void setItemSelector(By itemSelector) {
+		this.itemSelector = itemSelector;
+	}
+
+	public void setAction(ScrapeAction action) {
+		this.action = action;
+	}
+
+	@Override
+	public void onStartScraping() {
+		this.action.onStartScraping();
+	}
+
+	@Override
+	public void onEndScraping() {
+		this.action.onEndScraping();
+	}
+
 }
