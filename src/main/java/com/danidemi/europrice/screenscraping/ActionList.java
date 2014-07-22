@@ -14,7 +14,12 @@ import java.util.List;
  * @author daniele
  */
 public class ActionList implements ScrapeAction {
-
+	
+	public final ActionList then(ScrapeAction sa){
+		this.add(sa);
+		return this;
+	}
+	
     private List<ScrapeAction> actions = new ArrayList<>();
  
     @Override

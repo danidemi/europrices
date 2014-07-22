@@ -25,6 +25,18 @@ class Search implements ScrapeAction {
         actionList.add(click);
     }
     
+    Search withSearchField(By fieldSelector, String searchTerm){
+    	this.setSearchField(fieldSelector);
+    	this.setSearchText(searchTerm);
+    	return this;
+    }
+    
+    Search withSearchButton(By button){
+    	this.setStartSearchButton(button);
+    	return this;
+    }
+    
+    
     @Override
     public void onStartScraping() {
     	actionList.onStartScraping();

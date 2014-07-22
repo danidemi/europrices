@@ -20,6 +20,11 @@ public class ForEachItem implements ScrapeAction {
 
 	private By itemSelector;
 	private ScrapeAction action;
+	private int maxItems;
+	
+	public ForEachItem() {
+		setMaxItems(10);
+	}
 
 	@Override
 	public void scrape(ScrapeContext ctx) {
@@ -31,14 +36,20 @@ public class ForEachItem implements ScrapeAction {
 		ctx.info("Looking for items {}", itemSelector);
 		List<WebElement> items = ctx.findElementsFromRoot(itemSelector);
 
-		ctx.info("Found {} items", items.size());
-		for(int i=0; i<items.size(); i++){
+		int actualSize = Math.min(items.size(), maxItems);
+		
+		ctx.info("Found {} items, anyhow limited to {}.", items.size(), maxItems);
+		for(int i=0; i<actualSize; i++){
 			ctx.info("Invoking action {} with item {}", action, i+1);
 			WebElement item = items.get(i);
 			ctx.setSubRootElement(item);
 			action.scrape(ctx);
 		}
 
+	}
+	
+	public void setMaxItems(int maxItems) {
+		this.maxItems = Math.abs( maxItems );
 	}
 
 	public void setItemSelector(By itemSelector) {
@@ -57,6 +68,13 @@ public class ForEachItem implements ScrapeAction {
 	@Override
 	public void onEndScraping() {
 		this.action.onEndScraping();
+	}
+	
+	public static ForEachItem forEachItem(By theItemSelector, ScrapeAction theAction){
+		ForEachItem forEachItem = new ForEachItem();
+		forEachItem.setItemSelector(theItemSelector);
+		forEachItem.setAction(theAction);
+		return forEachItem;
 	}
 
 }

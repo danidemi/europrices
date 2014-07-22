@@ -22,9 +22,15 @@ class ForEachPage implements ScrapeAction {
     private ScrapeAction action;
     private By nextSelector;
     private int pageNumber;
+    private int maxPages;
 
     public ForEachPage() {
+    	setMaxPages(3);
     }
+    
+    public void setMaxPages(int maxPages) {
+		this.maxPages = Math.abs( maxPages );
+	}
     
 	@Override
 	public void onStartScraping() {
@@ -47,7 +53,7 @@ class ForEachPage implements ScrapeAction {
 
             List<WebElement> nextItems = ctx.findElementsFromRoot(nextSelector);
             WebElement nextItem;
-            if (!nextItems.isEmpty()) {
+            if (!nextItems.isEmpty() && pageNumber<maxPages) {
                 nextItem = nextItems.get(0);
                 nextItem.click();
                 goOn = true;
@@ -59,7 +65,7 @@ class ForEachPage implements ScrapeAction {
             if(goOn){
             	ctx.info("Going to page {} clicking on {}", pageNumber, nextSelector);            	
             }else{
-            	ctx.info("Next page item not found, all pages have been browsed.");
+            	ctx.info("Next page item not found, or limit reached. No more page to browse.");
             }
             
 
@@ -73,6 +79,13 @@ class ForEachPage implements ScrapeAction {
     public void setNextSelector(By nextSelector) {
         this.nextSelector = nextSelector;
     }
+
+	public static ScrapeAction forEachPageWithNextLinkDo(By theNextSelector, ScrapeAction theAction) {
+		ForEachPage forEachPage = new ForEachPage();
+		forEachPage.setNextSelector(theNextSelector);
+		forEachPage.setAction(theAction);
+		return forEachPage;
+	}
     
     
 

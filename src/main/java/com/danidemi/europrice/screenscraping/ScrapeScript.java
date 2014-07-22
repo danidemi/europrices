@@ -37,21 +37,8 @@ public class ScrapeScript {
             System.exit(-1);
         }
     }
-    
-    private void scrape2() throws IOException {
-    	Proxy proxy = new Proxy();
-    	proxy.setHttpProxy("10.1.51.10:80");
-    	
-    	DesiredCapabilities phantomjs = DesiredCapabilities.phantomjs();
-    	phantomjs.setCapability("phantomjs.binary.path", "/opt/phantomjs/phantomjs/bin/phantomjs");
-    	phantomjs.setCapability("proxy", proxy);
-    	
-    	PhantomJSDriver phantomJSDriver = new PhantomJSDriver(phantomjs);
-    	phantomJSDriver.quit();
-    	
-    }
-
-    private void scrape() throws MalformedURLException {
+        
+    private void scrape2() throws MalformedURLException {
         
         ActionList list = new ActionList();
         
@@ -86,6 +73,43 @@ public class ScrapeScript {
                 
         list.onStartScraping();
         list.scrape(new ScrapeContext());
+        
+    }
+
+    private void scrape() throws MalformedURLException {
+    	
+        MyAction action = new MyAction(new SysoutCallback());
+        action.setDescriptionSelector(By.cssSelector("H1"));
+        action.setDescriptionScraper(Scrapers.text());
+        
+        action.setDetailUrlSelector(By.cssSelector("H1 A"));
+        action.setDetailUrlScraper(Scrapers.attribute("href"));
+        
+        action.setPriceSelector(By.cssSelector(".discount-price"));
+        action.setPriceScraper(Scrapers.text());
+        
+        ActionList list = new ActionList()
+        	.then( new GoToUrl("http://www.oselection.es/") )
+        	.then( 
+        			new Search()
+        			.withSearchField(By.cssSelector("input.buscador-text"), "Samsung")
+        			.withSearchButton(By.cssSelector("input.buscador-submit"))
+        	)
+        	.then( 
+        			ForEachPage.forEachPageWithNextLinkDo(
+        					By.cssSelector("li.pager-next a"),
+        					ForEachItem.forEachItem(
+        							By.cssSelector("div.article-inner"), 
+        							action)
+        					
+        			)
+        	)
+        	;
+        
+
+        list.onStartScraping();
+        list.scrape(new ScrapeContext());
+        list.onEndScraping();
         
     }
     
