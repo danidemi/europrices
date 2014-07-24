@@ -1,15 +1,17 @@
 package com.danidemi.europrice.db;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/** A shop */
 @Entity
-public class Shop {
+public class Shop implements Serializable {
 
-    private Long id;
+	private static final long serialVersionUID = -7648653195433910441L;
+	private Long id;
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId(){

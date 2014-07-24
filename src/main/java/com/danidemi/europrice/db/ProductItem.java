@@ -1,5 +1,6 @@
 package com.danidemi.europrice.db;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -17,8 +18,9 @@ import org.hibernate.annotations.Cascade;
 
 /** A product from an online shop. */
 @Entity
-public class ProductItem {
+public class ProductItem implements Serializable {
 	
+	private static final long serialVersionUID = 4502929914718657671L;
 	private Shop shop;
 	private String detailsUrl;
 	private Long id;

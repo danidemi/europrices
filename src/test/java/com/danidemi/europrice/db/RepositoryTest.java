@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -30,13 +31,16 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 public class RepositoryTest {
 		
 	@Autowired
-	Repository repository;
+	private ProductItemRepository repository;
+	
+	@Autowired
+	private ShopRepository shopRepository;	
 	
 	@Test
 	public void shouldCreateAShop(){
 		
 		Shop shop = new Shop();
-		repository.persist(shop);
+		shopRepository.save(shop);
 		
 	}
 	
@@ -44,7 +48,7 @@ public class RepositoryTest {
 	public void shouldCreateAProductItem() {
 		Shop shop = new Shop();
 		ProductItem pi = shop.newProductItem();
-		repository.persist(pi);
+		repository.save(pi);
 	}
 
 	@Test
@@ -62,7 +66,7 @@ public class RepositoryTest {
 		ProductItem p3 = shop.newProductItem();
 		p3.setKeywordsBundle("NewtWearable omni");
 		
-		repository.persist(p1, p2, p3);
+		repository.save( Arrays.asList( p1, p2, p3 ) );
 		
 		// when
 		List<ProductItem> items = repository.findProductItemsByKeyword("120");
