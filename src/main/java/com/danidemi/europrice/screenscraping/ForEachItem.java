@@ -70,11 +70,6 @@ public class ForEachItem implements ScrapeAction {
 		this.action.onEndScraping();
 	}
 	
-	public static ForEachItem forEachItem(By theItemSelector, ScrapeAction theAction){
-		ForEachItem forEachItem = new ForEachItem();
-		forEachItem.setItemSelector(theItemSelector);
-		forEachItem.setAction(theAction);
-		return forEachItem;
-	}
+
 
 }

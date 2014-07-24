@@ -22,6 +22,8 @@ import com.danidemi.europrice.poc.pricegrabber.Callback;
 import com.danidemi.europrice.poc.pricegrabber.MyAction;
 import com.danidemi.europrice.poc.pricegrabber.SysoutCallback;
 
+import static com.danidemi.europrice.screenscraping.Scrape.*;
+
 /**
  *
  * @author daniele
@@ -88,21 +90,17 @@ public class ScrapeScript {
         action.setPriceSelector(By.cssSelector(".discount-price"));
         action.setPriceScraper(Scrapers.text());
         
-        ActionList list = new ActionList()
-        	.then( new GoToUrl("http://www.oselection.es/") )
-        	.then( 
-        			new Search()
-        			.withSearchField(By.cssSelector("input.buscador-text"), "Samsung")
-        			.withSearchButton(By.cssSelector("input.buscador-submit"))
+        ActionList list = 
+        	inSequence( new GoToUrl("http://www.oselection.es/") )
+        	.then(
+        			search("Samsung", By.cssSelector("input.buscador-text"), By.cssSelector("input.buscador-submit"))
         	)
         	.then( 
-        			ForEachPage.forEachPageWithNextLinkDo(
-        					By.cssSelector("li.pager-next a"),
-        					ForEachItem.forEachItem(
+        			forEachPageWithNextLinkDo(
+        					By.cssSelector("li.pager-next a"), 
+        					forEachItem(
         							By.cssSelector("div.article-inner"), 
-        							action)
-        					
-        			)
+        							action))
         	)
         	;
         

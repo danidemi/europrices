@@ -80,12 +80,7 @@ class ForEachPage implements ScrapeAction {
         this.nextSelector = nextSelector;
     }
 
-	public static ScrapeAction forEachPageWithNextLinkDo(By theNextSelector, ScrapeAction theAction) {
-		ForEachPage forEachPage = new ForEachPage();
-		forEachPage.setNextSelector(theNextSelector);
-		forEachPage.setAction(theAction);
-		return forEachPage;
-	}
+
     
     
 
