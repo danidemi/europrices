@@ -6,6 +6,7 @@ import java.net.URL;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class ProductItem implements Serializable {
 	private String detailsUrl;
 	private Long id;
 	private String keywordsBundle;
+	private Long priceInCent;
 	
     @Id  @GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId(){
@@ -60,7 +62,16 @@ public class ProductItem implements Serializable {
 		this.detailsUrl = shopURLString;
 	}
 	
-	@Basic(optional=true)
+	public void setPriceInCent(Long priceInCent) {
+		this.priceInCent = priceInCent;
+	}
+	
+	@Column(nullable=false, scale=12, precision=0)
+	public Long getPriceInCent() {
+		return priceInCent;
+	}
+	
+	@Column(nullable=false, length=1024)
 	public String getKeywordsBundle() {
 		return keywordsBundle;
 	}
@@ -91,6 +102,5 @@ public class ProductItem implements Serializable {
 		}
 		return url;
 	}
-
 
 }

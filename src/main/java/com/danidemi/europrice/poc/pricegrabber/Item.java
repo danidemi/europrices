@@ -6,7 +6,7 @@ import java.net.URL;
  *
  * @author danidemi
  */
-class Item {
+public class Item {
 
     private Long priceInCent;
     private String description;
