@@ -16,8 +16,7 @@
 
 	<jdbc:embedded-database id="dataSource" />
 
-	<bean id="myEmf"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	<bean id="myEmf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.danidemi.europrice.db" />
 		<property name="jpaVendorAdapter">
@@ -35,9 +34,15 @@
 		<property name="entityManagerFactory" ref="myEmf" />
 	</bean>
 	<tx:annotation-driven />
+	
+	<context:annotation-config/>
 
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+		
+	<bean id="repo"
+		class="com.danidemi.europrice.db.Repository" >
+	</bean>
 
 
 </beans>

@@ -9,6 +9,7 @@
     
     <properties>
     	<spring.version>4.0.6.RELEASE</spring.version>
+    	<spring-data-jpa.version>1.6.1.RELEASE</spring-data-jpa.version>
     	<hibernate.version>4.3.6.Final</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -68,6 +69,11 @@
 		    <artifactId>xml-apis</artifactId>
 		    <version>1.4.01</version>
 		</dependency>
+	    <dependency>
+	        <groupId>org.springframework.data</groupId>
+	        <artifactId>spring-data-jpa</artifactId>
+	        <version>${spring-data-jpa.version}</version>
+	    </dependency>
     	<!-- ======================================== -->
     	<!-- Spring Framework                         -->
     	<!-- ======================================== -->
@@ -137,6 +143,12 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
             <version>1.3</version>
             <scope>test</scope>
         </dependency>

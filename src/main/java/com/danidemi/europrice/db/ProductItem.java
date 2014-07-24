@@ -4,13 +4,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Cascade;
 
 /** A product from an online shop. */
 @Entity
@@ -21,7 +24,7 @@ public class ProductItem {
 	private Long id;
 	private String keywordsBundle;
 	
-    @Id @GeneratedValue
+    @Id  @GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId(){
 		return id;
 	}
@@ -30,7 +33,7 @@ public class ProductItem {
 		this.id = id;
 	}
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false, cascade=CascadeType.PERSIST)
 	public Shop getShop(){
 		return shop;
 	}
@@ -63,7 +66,10 @@ public class ProductItem {
 	public void setKeywordsBundle(String keywordsBundle) {
 		
 		if(keywordsBundle!=null){
-			keywordsBundle = keywordsBundle.trim().toLowerCase();
+			String replaceAll = keywordsBundle.trim().toLowerCase().replaceAll("\\s{2,}", " ");
+			keywordsBundle = replaceAll.replaceAll("\\|", "\\|\\|");
+			
+			
 			String[] split = keywordsBundle.split(" ");
 			keywordsBundle = "|" + StringUtils.join(split, "|") + "|";
 		}
