@@ -39,7 +39,7 @@ public class ActionList implements ScrapeAction {
 	
 	}
 
-    void add(ScrapeAction action) {
+    public void add(ScrapeAction action) {
         actions.add( action );
     }
     

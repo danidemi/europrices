@@ -41,8 +41,18 @@ public class MyAction implements ScrapeAction {
 	private By detailUrlSelector;
 	private Scraper<String> detailUrlSelectorScraper;
 
+	private String shopName;
+
 	public MyAction(Callback callback) {
 		priceParser = new PriceParser();
+		this.callback = callback;
+	}
+	
+	public MyAction() {
+		priceParser = new PriceParser();
+	}
+	
+	public void setCallback(Callback callback) {
 		this.callback = callback;
 	}
 	
@@ -124,7 +134,12 @@ public class MyAction implements ScrapeAction {
 		item.setDescription(descrption);
 		item.setPriceInCent(priceInCent);
 		item.setUrlDetail(href);
+		item.setShopName(shopName);
 
+	}
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
 
 }

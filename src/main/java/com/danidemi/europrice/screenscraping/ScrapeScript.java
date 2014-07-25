@@ -6,23 +6,17 @@
 
 package com.danidemi.europrice.screenscraping;
 
-import java.io.IOException;
+import static com.danidemi.europrice.screenscraping.Scrape.forEachItem;
+import static com.danidemi.europrice.screenscraping.Scrape.forEachPageWithNextLinkDo;
+import static com.danidemi.europrice.screenscraping.Scrape.inSequence;
+import static com.danidemi.europrice.screenscraping.Scrape.search;
+
 import java.net.MalformedURLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.Proxy;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.danidemi.europrice.poc.pricegrabber.Callback;
 import com.danidemi.europrice.poc.pricegrabber.MyAction;
 import com.danidemi.europrice.poc.pricegrabber.SysoutCallback;
-
-import static com.danidemi.europrice.screenscraping.Scrape.*;
 
 /**
  *

@@ -11,7 +11,7 @@ import org.openqa.selenium.By;
  *
  * @author daniele
  */
-class Search implements ScrapeAction {
+public class Search implements ScrapeAction {
 
     private ActionList actionList;
     private final FillField fillField;

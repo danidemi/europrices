@@ -6,13 +6,10 @@
 
 package com.danidemi.europrice.screenscraping;
 
-import com.danidemi.europrice.poc.pricegrabber.PriceParser;
-
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,14 +28,14 @@ public class ScrapeContext {
     private final Logger log;
     private WebElement sub;
     
-    ScrapeContext(){
+    public ScrapeContext(){
     	
     	
         DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
         capabilities.setCapability("phantomjs.binary.path", "/opt/phantomjs/phantomjs/bin/phantomjs");
         Proxy proxy = new Proxy();
         proxy.setHttpProxy("10.1.51.10:80");
-        capabilities.setCapability("proxy", proxy);
+        //capabilities.setCapability("proxy", proxy);
         
         
         
@@ -72,7 +69,7 @@ public class ScrapeContext {
      * */
 	public WebElement findUniqueElement(By fieldSelector) throws ElementCardinalityException {
 		List<WebElement> foundElements = driver.findElements(fieldSelector);
-		if( CollectionUtils.isEmpty( foundElements ) ) throw new NotSuchElementException( fieldSelector, driver );
+		if( foundElements == null || foundElements.size() == 0 ) throw new NotSuchElementException( fieldSelector, driver );
 		if( foundElements.size() != 1 ) throw new TooMuchElementsException( fieldSelector, 1 );
 		return foundElements.get(0);
 	}

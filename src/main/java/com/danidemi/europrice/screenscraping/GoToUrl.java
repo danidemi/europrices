@@ -18,7 +18,7 @@ public class GoToUrl implements ScrapeAction {
     
     private URL url;
 
-    GoToUrl(String url) throws MalformedURLException {
+    public GoToUrl(String url) throws MalformedURLException {
         this( new URL( url) );
     }
     

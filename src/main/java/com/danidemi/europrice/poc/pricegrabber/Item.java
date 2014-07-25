@@ -11,6 +11,7 @@ public class Item {
     private Long priceInCent;
     private String description;
     private URL url;
+	private String shopName;
 
     public Long getPriceInCent() {
         return priceInCent;
@@ -35,6 +36,13 @@ public class Item {
     public URL getUrlDetail() {
         return url;
     }
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
     
+	public String getShopName() {
+		return shopName;
+	}
     
 }

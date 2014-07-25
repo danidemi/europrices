@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author daniele
  */
-class ForEachPage implements ScrapeAction {
+public class ForEachPage implements ScrapeAction {
 
     private ScrapeAction action;
     private By nextSelector;
