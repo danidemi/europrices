@@ -1,6 +1,6 @@
 package com.danidemi.europrice.poc.pricegrabber;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;

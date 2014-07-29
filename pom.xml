@@ -8,137 +8,137 @@
     <packaging>jar</packaging>
     
     <properties>
-    	<spring.version>4.0.6.RELEASE</spring.version>
-    	<spring-data-jpa.version>1.6.1.RELEASE</spring-data-jpa.version>
-    	<hibernate.version>4.3.6.Final</hibernate.version>
+        <spring.version>4.0.6.RELEASE</spring.version>
+        <spring-data-jpa.version>1.6.1.RELEASE</spring-data-jpa.version>
+        <hibernate.version>4.3.6.Final</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
     <dependencies>
 
-    	<!-- ======================================== -->
-    	<!-- Hibernate                                -->
-    	<!-- ======================================== -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-    	<!-- ======================================== -->
-    	<!-- Hibernate                                -->
-    	<!-- ======================================== -->
+        <!-- ======================================== -->
+        <!-- Hibernate                                -->
+        <!-- ======================================== -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <!-- ======================================== -->
+        <!-- Hibernate                                -->
+        <!-- ======================================== -->
 
     
-    	<!-- ======================================== -->
-    	<!-- Spring Framework                         -->
-    	<!-- ======================================== -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- This contains a w3c.dom implementation that suites Spring -->
-		<dependency>
-		    <groupId>xml-apis</groupId>
-		    <artifactId>xml-apis</artifactId>
-		    <version>1.4.01</version>
-		</dependency>
-	    <dependency>
-	        <groupId>org.springframework.data</groupId>
-	        <artifactId>spring-data-jpa</artifactId>
-	        <version>${spring-data-jpa.version}</version>
-	    </dependency>
-    	<!-- ======================================== -->
-    	<!-- Spring Framework                         -->
-    	<!-- ======================================== -->
+        <!-- ======================================== -->
+        <!-- Spring Framework                         -->
+        <!-- ======================================== -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- This contains a w3c.dom implementation that suites Spring -->
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring-data-jpa.version}</version>
+        </dependency>
+        <!-- ======================================== -->
+        <!-- Spring Framework                         -->
+        <!-- ======================================== -->
 
-    	<!-- ======================================== -->
-    	<!-- JLubricant                               -->
-    	<!-- ======================================== -->    
-    	<!--  
-		<dependency>
-		    <groupId>com.danidemi.jlubricant</groupId>
-		    <artifactId>jlubricant-embeddable</artifactId>
-		    <version>0.0.5-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.danidemi.jlubricant</groupId>
-		    <artifactId>jlubricant-hsql</artifactId>
-		    <version>0.0.5-SNAPSHOT</version>
-		</dependency>
-    	-->	
-    	<!-- ======================================== -->
-    	<!-- JLubricant                               -->
-    	<!-- ======================================== -->		
+        <!-- ======================================== -->
+        <!-- JLubricant                               -->
+        <!-- ======================================== -->    
+        <!--  
+                <dependency>
+                    <groupId>com.danidemi.jlubricant</groupId>
+                    <artifactId>jlubricant-embeddable</artifactId>
+                    <version>0.0.5-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.danidemi.jlubricant</groupId>
+                    <artifactId>jlubricant-hsql</artifactId>
+                    <version>0.0.5-SNAPSHOT</version>
+                </dependency>
+        -->	
+        <!-- ======================================== -->
+        <!-- JLubricant                               -->
+        <!-- ======================================== -->		
     
-    	<!--  
-		<dependency>
-		    <groupId>javax</groupId>
-		    <artifactId>javaee-api</artifactId>
-		    <version>6.0</version>
-		</dependency>
-    	-->
+        <!--  
+                <dependency>
+                    <groupId>javax</groupId>
+                    <artifactId>javaee-api</artifactId>
+                    <version>6.0</version>
+                </dependency>
+        -->
 
-    	<!-- ======================================== -->
-    	<!-- Various                                  -->
-    	<!-- ======================================== -->
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
-			<version>1.0.1.Final</version>
-			<scope>provided</scope>
-		</dependency>
-<dependency>
-    <groupId>commons-collections</groupId>
-    <artifactId>commons-collections</artifactId>
-    <version>3.2.1</version>
-</dependency>       
-<dependency>
-    <groupId>commons-lang</groupId>
-    <artifactId>commons-lang</artifactId>
-    <version>2.6</version>
-</dependency>
+        <!-- ======================================== -->
+        <!-- Various                                  -->
+        <!-- ======================================== -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.1.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>       
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
 
-    	<!-- ======================================== -->
-    	<!-- Various                                  -->
-    	<!-- ======================================== -->		
+        <!-- ======================================== -->
+        <!-- Various                                  -->
+        <!-- ======================================== -->		
 
 
-    	<!-- ======================================== -->
-    	<!-- Test                                     -->
-    	<!-- ======================================== -->
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>2.3.2</version>
-			<scope>compile</scope>
-		</dependency>
+        <!-- ======================================== -->
+        <!-- Test                                     -->
+        <!-- ======================================== -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.3.2</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
             <artifactId>htmlunit</artifactId>
@@ -163,13 +163,13 @@
             <version>1.3</version>
             <scope>test</scope>
         </dependency>
-    	<!-- ======================================== -->
-    	<!-- Test                                     -->
-    	<!-- ======================================== -->
+        <!-- ======================================== -->
+        <!-- Test                                     -->
+        <!-- ======================================== -->
 
-    	<!-- ======================================== -->
-    	<!-- Screen Scraping                          -->
-    	<!-- ======================================== -->    	        
+        <!-- ======================================== -->
+        <!-- Screen Scraping                          -->
+        <!-- ======================================== -->    	        
         <dependency>
             <groupId>com.github.detro.ghostdriver</groupId>
             <artifactId>phantomjsdriver</artifactId>
@@ -180,13 +180,13 @@
             <artifactId>selenium-java</artifactId>
             <version>2.41.0</version>
         </dependency>
-    	<!-- ======================================== -->
-    	<!-- Screen Scraping                          -->
-    	<!-- ======================================== -->        
+        <!-- ======================================== -->
+        <!-- Screen Scraping                          -->
+        <!-- ======================================== -->        
 
-    	<!-- ======================================== -->
-    	<!-- Logging                                  -->
-    	<!-- ======================================== -->
+        <!-- ======================================== -->
+        <!-- Logging                                  -->
+        <!-- ======================================== -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -197,9 +197,9 @@
             <artifactId>logback-classic</artifactId>
             <version>1.1.2</version>
         </dependency>
-    	<!-- ======================================== -->
-    	<!-- Logging                                  -->
-    	<!-- ======================================== -->
+        <!-- ======================================== -->
+        <!-- Logging                                  -->
+        <!-- ======================================== -->
     </dependencies>
         
     <build>

@@ -89,6 +89,10 @@ public class ProductItem implements Serializable {
 		
 		this.keywordsBundle = keywordsBundle;
 	}
+        
+        public void setKeywords(String... keywords){
+            this.setKeywordsBundle( StringUtils.join(keywords) );
+        }
 	
 	
 	

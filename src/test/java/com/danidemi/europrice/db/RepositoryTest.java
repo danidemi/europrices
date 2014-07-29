@@ -40,6 +40,7 @@ public class RepositoryTest {
 	public void shouldCreateAShop(){
 		
 		Shop shop = new Shop();
+                shop.setName("the shop");
 		shopRepository.save(shop);
 		
 	}
@@ -47,7 +48,11 @@ public class RepositoryTest {
 	@Test
 	public void shouldCreateAProductItem() {
 		Shop shop = new Shop();
+                shop.setName("the shop");
 		ProductItem pi = shop.newProductItem();
+                pi.setPriceInCent(1000L);
+                pi.setKeywords("good", "excellent");
+                
 		repository.save(pi);
 	}
 
@@ -56,14 +61,18 @@ public class RepositoryTest {
 		
 		// given 
 		Shop shop = new Shop();
+                shop.setName("the shop");
 		
 		ProductItem p1 = shop.newProductItem();
+                p1.setPriceInCent(102L);
 		p1.setKeywordsBundle("gl 120 Luna");
 		
 		ProductItem p2 = shop.newProductItem();
+                p2.setPriceInCent(102L);
 		p2.setKeywordsBundle("ZAMZUNG super plus 334 120Gb ");
 		
 		ProductItem p3 = shop.newProductItem();
+                p3.setPriceInCent(102L);
 		p3.setKeywordsBundle("NewtWearable omni");
 		
 		repository.save( Arrays.asList( p1, p2, p3 ) );
