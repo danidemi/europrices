@@ -3,7 +3,6 @@ package com.danidemi.europrice.db;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,8 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import org.apache.commons.lang.StringUtils;
 
-import org.apache.commons.lang3.StringUtils;
+
 import org.hibernate.annotations.Cascade;
 
 /** A product from an online shop. */
@@ -84,7 +84,7 @@ public class ProductItem implements Serializable {
 			
 			
 			String[] split = keywordsBundle.split(" ");
-			keywordsBundle = "|" + StringUtils.join(split, "|") + "|";
+			keywordsBundle = "|" +  StringUtils.join(split, "|") + "|";
 		}
 		
 		this.keywordsBundle = keywordsBundle;
