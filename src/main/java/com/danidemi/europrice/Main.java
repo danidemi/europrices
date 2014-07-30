@@ -6,6 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext();
+		ctx.getEnvironment().setActiveProfiles("local");
 		ctx.setConfigLocation("ctx.xml");
 		ctx.registerShutdownHook();
 		ctx.refresh();
