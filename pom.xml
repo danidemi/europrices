@@ -12,9 +12,23 @@
         <spring-data-jpa.version>1.6.1.RELEASE</spring-data-jpa.version>
         <hibernate.version>4.3.6.Final</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		  <maven.compiler.source>1.7</maven.compiler.source>
+		  <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
     
     <dependencies>
+    
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>jetty-server</artifactId>
+		    <version>9.2.2.v20140723</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>jetty-servlet</artifactId>
+		    <version>9.2.2.v20140723</version>
+		</dependency>		
     
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -71,6 +85,16 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>      
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
             <scope>test</scope>
@@ -93,18 +117,26 @@
         <!-- ======================================== -->
         <!-- JLubricant                               -->
         <!-- ======================================== -->    
-        <!--  
+        
+        		<!--  
                 <dependency>
                     <groupId>com.danidemi.jlubricant</groupId>
                     <artifactId>jlubricant-embeddable</artifactId>
                     <version>0.0.5-SNAPSHOT</version>
                 </dependency>
+                
                 <dependency>
                     <groupId>com.danidemi.jlubricant</groupId>
                     <artifactId>jlubricant-hsql</artifactId>
                     <version>0.0.5-SNAPSHOT</version>
                 </dependency>
-        -->	
+        		-->
+                <dependency>
+                    <groupId>com.danidemi.jlubricant</groupId>
+                    <artifactId>jlubricant-spring-context</artifactId>
+                    <version>0.0.5-SNAPSHOT</version>
+                </dependency>        		
+        	
         <!-- ======================================== -->
         <!-- JLubricant                               -->
         <!-- ======================================== -->		
@@ -215,6 +247,7 @@
     </dependencies>
         
     <build>
+    	<!--  
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -226,6 +259,7 @@
                 </configuration>
             </plugin>
         </plugins>
+    	-->
     </build>
     
 </project>

@@ -54,6 +54,7 @@
 		class="com.danidemi.europrice.db.Repository" >
 	</bean>
 
+	<!--  
 	<bean id="task" class="com.danidemi.europrice.tasks.ScreenScrapingTask">
 		<property name="productItemRepository" ref="productItemRepository" />
 		<property name="shopRepository" ref="shopRepository" />
@@ -65,8 +66,10 @@
 	</bean>
 	
 	<task:scheduled-tasks scheduler="myScheduler">
-	    <task:scheduled ref="task" method="run" fixed-delay="500000"/>
+	    <task:scheduled ref="task" method="run" trigger="trigger"/>
 	</task:scheduled-tasks>
+	<bean id="trigger" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />		
+	-->
 
 	<task:scheduler id="myScheduler" pool-size="10"/>
 
