@@ -34,34 +34,44 @@ import javax.servlet.ServletRegistration;
 import org.openqa.jetty.servlet.AdminServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
 public class WebAppInitializer extends
-        AbstractAnnotationConfigDispatcherServletInitializer implements
+		//AbstractAnnotationConfigDispatcherServletInitializer
+        AbstractDispatcherServletInitializer
+        implements
         ServletContextListener {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
+	private GenericWebApplicationContext wac;
 
-    /**
-     * See {@link AbstractAnnotationConfigDispatcherServletInitializer}.
-     */
-    @Override
-    protected Class<?>[] getRootConfigClasses() {
-        return null;
-    }
+//    /**
+//     * See {@link AbstractAnnotationConfigDispatcherServletInitializer}.
+//     */
+//    @Override
+//    protected Class<?>[] getRootConfigClasses() {
+//        return null;
+//    }
 
-    /**
-     * Set the application context for the Spring MVC web tier.
-     *
-     * @See {@link AbstractAnnotationConfigDispatcherServletInitializer}
-     */
-    @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[]{MvcConfiguration.class};
-    }
+//    /**
+//     * Set the application context for the Spring MVC web tier.
+//     *
+//     * @See {@link AbstractAnnotationConfigDispatcherServletInitializer}
+//     */
+//    @Override
+//    protected Class<?>[] getServletConfigClasses() {
+//        return new Class<?>[]{MvcConfiguration.class};
+//    }
 
-    /**
+    public WebAppInitializer(GenericWebApplicationContext webApplicationContext) {
+		this.wac = webApplicationContext;
+	}
+
+	/**
      * Map the Spring MVC servlet as the root.
      *
      * @See {@link AbstractAnnotationConfigDispatcherServletInitializer}
@@ -108,5 +118,16 @@ public class WebAppInitializer extends
      */
     @Override
     protected void registerContextLoaderListener(ServletContext servletContext) {
+   
     }
+
+	@Override
+	protected WebApplicationContext createServletApplicationContext() {
+		return this.wac;
+	}
+
+	@Override
+	protected WebApplicationContext createRootApplicationContext() {
+		return null;
+	}
 }

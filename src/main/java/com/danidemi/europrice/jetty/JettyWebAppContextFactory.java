@@ -59,7 +59,7 @@ public class JettyWebAppContextFactory implements FactoryBean<WebAppContext>, Ap
 //        ctx.setAttribute(HealthCheckServlet.HEALTH_CHECK_REGISTRY,
 //                healthCheckRegistry);
 
-        ctx.addEventListener(new WebAppInitializer());
+        ctx.addEventListener(new WebAppInitializer(webApplicationContext));
 
         return ctx;
     }
