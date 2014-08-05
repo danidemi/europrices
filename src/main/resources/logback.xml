@@ -16,7 +16,7 @@
 	
 	<logger name="org.springframework" level="INFO" />
 	<logger name="org.springframework.web.servlet.DispatcherServlet" level="ALL" />
-	<logger name="org.eclipse.jetty" level="INFO" />
+	<logger name="org.eclipse.jetty" level="ALL" />
 	<logger name="org.hibernate" level="INFO" />
 	<logger name="org.flywaydb" level="INFO" />
 	
