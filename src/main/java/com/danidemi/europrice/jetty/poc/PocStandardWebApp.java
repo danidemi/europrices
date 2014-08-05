@@ -37,9 +37,19 @@ public class PocStandardWebApp {
 		}
 	}
 
+	private Server server;
+	
+	public void start() throws Exception {
+		this.run();
+	}
+	
+	public void stop() throws Exception {
+		server.stop();
+	}
+
 	private void run() throws Exception {
 		
-		Server server = new Server();
+		server = new Server();
 		
 		// shared http config
 		HttpConfiguration http_config = new HttpConfiguration();
