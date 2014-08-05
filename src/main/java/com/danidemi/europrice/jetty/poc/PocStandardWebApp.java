@@ -61,6 +61,7 @@ public class PocStandardWebApp {
 		
         
         WebAppContext webapp = new WebAppContext();
+        webapp.setVirtualHosts(new String[]{"localhost"});
         webapp.setContextPath("/oh");
         /* Disable directory listings if no index.html is found. */
         webapp.setWar(new ClassPathResource("webapp").getURI().toString());
