@@ -2,12 +2,16 @@ package com.danidemi.europrice.jetty;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
@@ -70,7 +74,6 @@ public class JettyWebAppContextFactory implements FactoryBean<WebAppContext>, Ap
 		this.appctx = applicationContext;
 		
 	}
-
 
 	
 }

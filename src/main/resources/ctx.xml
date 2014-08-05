@@ -57,6 +57,8 @@
 	<context:annotation-config/>
 	<context:component-scan base-package="com.danidemi.europrice.web.controller"/>
 	<mvc:annotation-driven />
+	
+	
 		
 
 	<bean id="persistenceExceptionTranslationPostProcessor"
@@ -168,21 +170,24 @@
 -->
 
 <!--  
-
 	<bean name="js" class="com.danidemi.europrice.jetty.JettyServer" init-method="start" destroy-method="stop">
 		<property name="jettyPort" value="8080" />
 		<property name="jettyWebAppContext">
 			<bean class="com.danidemi.europrice.jetty.JettyWebAppContextFactory" />
 		</property>
 	</bean>
+-->
 	
+<!--  
 	<bean name="dispatcherServler" class="org.springframework.web.servlet.DispatcherServlet">
 
 	</bean>	
--->
+-->  
 
+  
 	<bean name="js" class="com.danidemi.europrice.jetty.poc.PocStandardWebApp" init-method="start" destroy-method="stop">
 	</bean>
+
 
 	<task:scheduler id="myScheduler" pool-size="10"/>
 	
