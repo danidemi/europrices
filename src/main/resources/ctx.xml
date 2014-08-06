@@ -95,6 +95,11 @@
 	
   
 	<bean name="js" class="com.danidemi.europrice.jetty.poc.PocStandardWebApp" init-method="start" destroy-method="stop">
+		<property name="dirAllowed" value="true" />
+		<property name="dispatcherServletSubPath" value="/app/*" />
+		<property name="httpPort" value="8080" />
+		<property name="virtualHost" value="localhost" />
+		<property name="webappContextPath" value="/" />
 	</bean>
 
 

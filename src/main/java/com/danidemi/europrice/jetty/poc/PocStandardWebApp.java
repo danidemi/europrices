@@ -1,110 +1,147 @@
 package com.danidemi.europrice.jetty.poc;
 
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Arrays;
-import java.util.EventListener;
+import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
+
+import com.danidemi.jlubricant.embeddable.EmbeddableServer;
+import com.danidemi.jlubricant.embeddable.ServerStartException;
+import com.danidemi.jlubricant.embeddable.ServerStopException;
 
 /**
  * http://www.eclipse.org/jetty/documentation/current/embedding-jetty.html
  * 
  * @author danidemi
  */
-public class PocStandardWebApp implements ApplicationContextAware,
-		WebApplicationInitializer {
-
-	public static void main(String[] args) {
-		try {
-			new PocStandardWebApp().run();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+public class PocStandardWebApp implements ApplicationContextAware, EmbeddableServer {
+	
+	private static final Logger log = LoggerFactory.getLogger(PocStandardWebApp.class);
 
 	private Server server;
 	private ApplicationContext mainSpringContext;
 	private GenericWebApplicationContext webApplicationContext;
+	private int httpPort = 8080;
+	private int idleTimeout = 30000;
+	private boolean dirAllowed = true;
+	private String[] virtualHosts = null;
+	private String webappContextPath = "/";
+	private String dispatcherServletSubPath = "/";
 
-	public void start() throws Exception {
-		this.run();
+	private Thread jettyThread;
+	
+	
+	/**
+	 * The paths that will be taken in charge by Spring's DispatcherServlet.
+	 * Values as {@code /appa/*} or {@code /} are ok. 
+	 * @param dispatcherServletSubPath
+	 */
+	public void setDispatcherServletSubPath(String dispatcherServletSubPath) {
+		this.dispatcherServletSubPath = dispatcherServletSubPath;
+	}
+	
+	public String getDispatcherServletSubPath() {
+		return dispatcherServletSubPath;
+	}
+	
+	/**
+	 * The context path the default web app will be published under.
+	 * Values as "/" or "/app" are accepted.
+	 */
+	public void setWebappContextPath(String webappContextPath) {
+		this.webappContextPath = webappContextPath;
+	}
+	
+	public void setVirtualHosts(List<String> virtualHosts) {
+		this.virtualHosts = virtualHosts.toArray( new String[virtualHosts.size()] );
+	}
+	
+	public void setVirtualHost(String virtualHost) {
+		this.setVirtualHosts( Arrays.asList( new String[]{virtualHost} ) );
+	}
+	
+	public boolean isDirAllowed() {
+		return dirAllowed;
+	}
+	
+	public void setDirAllowed(boolean dirAllowed) {
+		this.dirAllowed = dirAllowed;
+	}
+	
+	public void setIdleTimeout(int idleTimeout) {
+		this.idleTimeout = idleTimeout;
 	}
 
-	public void stop() throws Exception {
-		server.stop();
+	public void setHttpPort(int httpPort) {
+		this.httpPort = httpPort;
 	}
-
-	private void run() throws Exception {
-
+	
+	@Override
+	public void start() throws ServerStartException {
+		
+		String springResourcePathForWebApp = "webapp";
+		String resourceURI;
+		try {
+			resourceURI = new ClassPathResource(springResourcePathForWebApp).getURI().toString();
+		} catch (IOException e) {
+			throw new ServerStartException("Unable to find web app files at resource '" + springResourcePathForWebApp + "'", e);
+		}
+		
 		server = new Server();
-
+		
 		// shared http config
 		HttpConfiguration http_config = new HttpConfiguration();
 		http_config.setSecureScheme("https");
 		http_config.setSecurePort(8443);
 		http_config.setOutputBufferSize(32768);
-
+		
 		// HTTP connector #1
 		ServerConnector http = new ServerConnector(server,
 				new HttpConnectionFactory(http_config));
-		http.setPort(8080);
-		http.setIdleTimeout(30000);
-
-		// HTTP connector #2
-		ServerConnector http2 = new ServerConnector(server,
-				new HttpConnectionFactory(http_config));
-		http2.setPort(9090);
-		http2.setIdleTimeout(30000);
-
-		WebAppContext webapp = new WebAppContext();
-		webapp.setVirtualHosts(new String[] { "localhost" });
-		webapp.setContextPath("/oh");
-		/* Disable directory listings if no index.html is found. */
-		webapp.setWar(new ClassPathResource("webapp").getURI().toString());
-		webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed",
-				"true");
-//		webapp.addEventListener(new ServletContextListener() {
-//
-//			@Override
-//			public void contextInitialized(final ServletContextEvent sce) {
-//				PocStandardWebApp.this.onContextInitialized(sce);
-//			}
-//
-//			@Override
-//			public void contextDestroyed(final ServletContextEvent sce) {
-//				PocStandardWebApp.this.onContextDestroyed(sce);
-//			}
-//		});
+		http.setPort(httpPort);
+		http.setIdleTimeout(idleTimeout);
 		
-		webapp.addEventListener(new ZuppaEventListener(this));
-
+		// HTTP connector #2
+//		ServerConnector http2 = new ServerConnector(server,
+//				new HttpConnectionFactory(http_config));
+//		http2.setPort(9090);
+//		http2.setIdleTimeout(30000);
+		
+		WebAppContext webapp = new WebAppContext();
+		
+		webapp.setVirtualHosts(virtualHosts);
+		
+		webapp.setContextPath(webappContextPath);
+		/* Disable directory listings if no index.html is found. */
+		
+		webapp.setWar(resourceURI);
+		
+		webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed",
+				String.valueOf(dirAllowed));
+		
+		
+		webapp.addEventListener(new InitializerListener(this));
+		
 		// Create the root web application context and set it as a servlet
 		// attribute so the dispatcher servlet can find it.
 		webApplicationContext = new GenericWebApplicationContext();
@@ -113,65 +150,91 @@ public class PocStandardWebApp implements ApplicationContextAware,
 		webapp.setAttribute(
 				WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,
 				webApplicationContext);
-
+		
 		server.setHandler(webapp);
-		server.setConnectors(new Connector[] { http, http2 });
+		server.setConnectors(new Connector[] { http });
+		
+		try {
+			log.info("Starting Jetty...");
+			
+			jettyThread = new Thread( new Runnable() {
 
-		server.start();
-		server.dumpStdErr();
-		server.join();
+				@Override
+				public void run() {
+					try {
+						server.start();
+						StringBuffer stringBuffer = new StringBuffer();
+						server.dump(stringBuffer);
+						log.debug( stringBuffer.toString() );
+						try{
+							server.join();							
+						}catch(InterruptedException ie){
+							log.info("Stopping Jetty...");
+						}
+						
+						log.info("Jetty stopped...");
+						
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+					
+				}
+				
+			});
+			jettyThread.setUncaughtExceptionHandler( new UncaughtExceptionHandler() {
+				
+				@Override
+				public void uncaughtException(Thread t, Throwable e) {
+					PocStandardWebApp.this.uncaughtExceptionOnJettyThread(t, e);
+				}
+			} );
+			jettyThread.start();
+			
+
+			log.info("Jetty Started.");
+		} catch (Exception e) {
+			throw new ServerStartException("An error occurred starting Jetty.", e);
+		}
 	}
 
-	protected void onContextDestroyed(ServletContextEvent sce) {
-		System.out.println("context destroyed");
-
+	protected void uncaughtExceptionOnJettyThread(Thread t, Throwable e) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public void stop() throws ServerStopException {
+		try {
+			log.info("Stopping Jetty...");
+			server.stop();
+			if(jettyThread!=null){
+				jettyThread.interrupt();
+			}
+		} catch (Exception e) {
+			throw new ServerStopException("An error occurred stopping Jetty.", e);
+		}
+	}
+
 
 	protected void onContextInitialized(ServletContextEvent sce) {
-		System.out.println("context initialized");
-
+		log.warn("jaxax.servlet context initialized");
+	}
+	
+	protected void onContextDestroyed(ServletContextEvent sce) {
+		log.warn("jaxax.servlet context destroyed");
 	}
 
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
+	public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.mainSpringContext = applicationContext;
-
-	}
-
-	@Override
-	public void onStartup(ServletContext container) throws ServletException {
-		
-		DispatcherServlet dispatcherServlet = mainSpringContext.getBean(DispatcherServlet.class);
-		
-		if(dispatcherServlet == null) {
-			throw new IllegalStateException("No dispatcher servlet");
-		}
-		if(webApplicationContext == null){
-			throw new IllegalStateException("No webApplicationContext available yet");
-		}
-		
-		dispatcherServlet.setApplicationContext(webApplicationContext);
-		
-		ServletRegistration.Dynamic dispatcher = container.addServlet("dispatcher", dispatcherServlet);
-		dispatcher.setLoadOnStartup(1);
-		dispatcher.addMapping("/spring");
-		
-//		XmlWebApplicationContext appContext = new XmlWebApplicationContext();
-//		appContext.setConfigLocation("/WEB-INF/spring/dispatcher-config.xml");
-//
-//		ServletRegistration.Dynamic dispatcher = container.addServlet(
-//				"dispatcher", new DispatcherServlet(appContext));
-//		dispatcher.setLoadOnStartup(1);
-//		dispatcher.addMapping("/");
-
 	}
 		
-	private static class ZuppaEventListener extends AbstractDispatcherServletInitializer implements ServletContextListener {
+	private static class InitializerListener extends AbstractDispatcherServletInitializer implements ServletContextListener {
 
 		private PocStandardWebApp poc;
 
-		public ZuppaEventListener(PocStandardWebApp pocStandardWebApp) {
+		public InitializerListener(PocStandardWebApp pocStandardWebApp) {
 			this.poc = pocStandardWebApp;
 		}
 
@@ -200,7 +263,7 @@ public class PocStandardWebApp implements ApplicationContextAware,
 
 		@Override
 		protected String[] getServletMappings() {
-			return new String[]{"/appa/*"};
+			return new String[]{poc.getDispatcherServletSubPath()};
 		}
 
 		@Override

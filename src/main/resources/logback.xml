@@ -10,15 +10,18 @@
 		</encoder>
 	</appender>
 	
-	<root level="DEBUG">
+	<root level="WARN">
 		<appender-ref ref="console" />
 	</root>
 	
+	<logger name="com.danidemi.europrice.jetty" level="ALL" />
+	<!--  
 	<logger name="org.springframework" level="INFO" />
 	<logger name="org.springframework.web" level="ALL" />
 	<logger name="org.springframework.web.servlet.DispatcherServlet" level="ALL" />
 	<logger name="org.eclipse.jetty" level="INFO" />
 	<logger name="org.hibernate" level="INFO" />
 	<logger name="org.flywaydb" level="INFO" />
+	-->
 	
 </configuration>
