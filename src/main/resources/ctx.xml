@@ -24,8 +24,23 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd        
         ">
 
+	<bean id="dbms" class="com.danidemi.jlubricant.embeddable.hsql.HsqlDbms" init-method="start" destroy-method="stop">
+		<property name="databases">
+			<bean class="com.danidemi.jlubricant.embeddable.hsql.HsqlDatabase">
+				<property name="dbName" value="europrices" />
+				<property name="password" value="europrices-pwd" />
+				<property name="username" value="europrices-usr" />
+				<property name="storage">
+					<bean class="com.danidemi.jlubricant.embeddable.hsql.ServerMode">
+						<property name="dbFolder" value="./db" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
 	<!-- Defaults to db/migration -->
-	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate">
+	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="dbms">
 	    <property name="dataSource" ref="dataSource"/>
 	</bean>
 
@@ -85,25 +100,22 @@
 
 	<task:scheduler id="myScheduler" pool-size="10"/>
 	
-	<beans profile="embedded">
+	<task:scheduled-tasks scheduler="myScheduler">
+	    <task:scheduled ref="task" method="run" trigger="trigger"/>
+	</task:scheduled-tasks>
+	<bean name="trigger" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
 	
-		<jdbc:embedded-database id="dataSource" />
 		
+	<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="" />
+		<property name="url" value="jdbc:hsqldb:hsql://localhost/europrices" />
+		<property name="username" value="europrices-usr" />
+		<property name="password" value="europrices-pwd" />
+	</bean>
+	
+	<beans profile="embedded">	
 	</beans>
 	<beans profile="local">
-	
-		<task:scheduled-tasks scheduler="myScheduler">
-		    <task:scheduled ref="task" method="run" trigger="trigger"/>
-		</task:scheduled-tasks>
-		<bean name="trigger" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
-		
-			
-		<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-			<property name="driverClassName" value="" />
-			<property name="url" value="jdbc:hsqldb:hsql://localhost/europrices" />
-			<property name="username" value="SA" />
-			<property name="password" value="" />
-		</bean>
 	</beans>	
 
 </beans>

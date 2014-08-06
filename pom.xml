@@ -137,7 +137,7 @@
         <!-- JLubricant                               -->
         <!-- ======================================== -->    
         
-        		<!--  
+        		  
                 <dependency>
                     <groupId>com.danidemi.jlubricant</groupId>
                     <artifactId>jlubricant-embeddable</artifactId>
@@ -146,10 +146,10 @@
                 
                 <dependency>
                     <groupId>com.danidemi.jlubricant</groupId>
-                    <artifactId>jlubricant-hsql</artifactId>
+                    <artifactId>jlubricant-embeddable-hsql</artifactId>
                     <version>0.0.5-SNAPSHOT</version>
                 </dependency>
-        		-->
+        		
                 <dependency>
                     <groupId>com.danidemi.jlubricant</groupId>
                     <artifactId>jlubricant-spring-context</artifactId>
