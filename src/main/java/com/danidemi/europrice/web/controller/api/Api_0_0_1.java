@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.danidemi.europrice.db.ProductItem;
 import com.danidemi.europrice.db.ProductItemRepository;
@@ -20,6 +21,12 @@ public class Api_0_0_1 {
 	
 	@Autowired ShopRepository shopRepo;
 	@Autowired ProductItemRepository productItemRep;
+	
+	@RequestMapping(value="/version", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public String version() {
+		return "v0.0.001";
+	}
 	
 	@Transactional
 	@RequestMapping(value="/keyword/{keyword}", method=RequestMethod.GET)

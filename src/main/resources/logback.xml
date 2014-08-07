@@ -15,6 +15,7 @@
 	</root>
 	
 	<logger name="com.danidemi.europrice.jetty" level="ALL" />
+	<logger name="com.danidemi.jlubricant.embeddable.hsql" level="ALL" />
 	<!--  
 	<logger name="org.springframework" level="INFO" />
 	<logger name="org.springframework.web" level="ALL" />
