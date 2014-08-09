@@ -1,5 +1,6 @@
 package com.danidemi.europrice.web.controller.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -16,7 +17,7 @@ import com.danidemi.europrice.db.ProductItemRepository;
 import com.danidemi.europrice.db.ShopRepository;
 
 @Controller
-@RequestMapping(value="/api/0.0.1", produces="application/json")
+@RequestMapping(value="/api/", produces="application/json")
 public class Api_0_0_1 {
 	
 	@Autowired ShopRepository shopRepo;
@@ -30,9 +31,13 @@ public class Api_0_0_1 {
 	
 	@Transactional
 	@RequestMapping(value="/keyword/{keyword}", method=RequestMethod.GET)
-	public List<ProductItem> productByKeyword(@PathVariable String keyword){	
+	@ResponseBody
+	public List<ProductItem> productByKeyword(@PathVariable(value="keyword") String keyword){	
 		List<ProductItem> findProductItemsByKeyword = productItemRep.findProductItemsByKeyword(keyword);
-		return findProductItemsByKeyword;
+		return 
+			findProductItemsByKeyword == null || findProductItemsByKeyword.isEmpty() 
+			? new ArrayList<ProductItem>() : 
+				findProductItemsByKeyword;
 	}
 	
 	
