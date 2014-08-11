@@ -1,6 +1,7 @@
 package com.danidemi.europrice.tasks.scrapers;
 
 import static com.danidemi.europrice.screenscraping.Scrape.forEachItem;
+import static com.danidemi.europrice.screenscraping.Scrape.forEachPageWithNextLinkDo;
 import static com.danidemi.europrice.screenscraping.Scrape.goTo;
 import static com.danidemi.europrice.screenscraping.Scrape.inSequence;
 
@@ -11,16 +12,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.parser.ParserException;
 
 import com.danidemi.europrice.poc.pricegrabber.Callback;
-import com.danidemi.europrice.poc.pricegrabber.MyAction;
-import com.danidemi.europrice.poc.pricegrabber.PriceParser;
 import com.danidemi.europrice.poc.pricegrabber.Request;
 import com.danidemi.europrice.screenscraping.ScrapeAction;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.Scraper;
 
+/**
+ * It seems this shops only has covers!
+ */
 public class UtuizamobiScrapeAction extends AbstractShopScraper {
 	
 	private static final Logger log = LoggerFactory.getLogger(UtuizamobiScrapeAction.class);
@@ -64,11 +65,14 @@ public class UtuizamobiScrapeAction extends AbstractShopScraper {
 		String searchTerm = request.getSearchTerm();
 		return 
 				inSequence( goTo("http://www.etuizamobi.si/catalogsearch/result/?q=" + searchTerm) )
-				.then(  
-						forEachItem(
-								By.cssSelector(".item"), 
-								action
-						)
+				.then(
+					forEachPageWithNextLinkDo(
+							By.cssSelector(".next"), 
+							forEachItem(
+									By.cssSelector(".item"), 
+									action
+							))
+
 				);
 	}
 
