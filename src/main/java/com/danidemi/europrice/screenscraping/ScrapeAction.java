@@ -13,10 +13,10 @@ package com.danidemi.europrice.screenscraping;
  */
 public interface ScrapeAction {
 
-	void onStartScraping();
+	void startScraping();
 	
     public void scrape(ScrapeContext ctx);
 
-	void onEndScraping();
+	void endScraping();
     
 }

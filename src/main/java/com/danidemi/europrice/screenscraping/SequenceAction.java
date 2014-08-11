@@ -10,20 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * A list of actions executed one after the other.
  * @author daniele
  */
-public class ActionList implements ScrapeAction {
-	
-	public final ActionList then(ScrapeAction sa){
-		this.add(sa);
-		return this;
-	}
-	
+public class SequenceAction implements ScrapeAction {
+		
     private List<ScrapeAction> actions = new ArrayList<>();
  
     @Override
-	public void onStartScraping() {
+	public void startScraping() {
 	
 	}
     
@@ -35,12 +30,17 @@ public class ActionList implements ScrapeAction {
     }
     
     @Override
-	public void onEndScraping() {
+	public void endScraping() {
 	
 	}
 
     public void add(ScrapeAction action) {
         actions.add( action );
     }
+    
+	public final SequenceAction then(ScrapeAction sa){
+		this.add(sa);
+		return this;
+	}    
     
 }

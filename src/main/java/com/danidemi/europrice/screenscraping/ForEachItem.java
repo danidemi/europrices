@@ -61,13 +61,13 @@ public class ForEachItem implements ScrapeAction {
 	}
 
 	@Override
-	public void onStartScraping() {
-		this.action.onStartScraping();
+	public void startScraping() {
+		this.action.startScraping();
 	}
 
 	@Override
-	public void onEndScraping() {
-		this.action.onEndScraping();
+	public void endScraping() {
+		this.action.endScraping();
 	}
 	
 

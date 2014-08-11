@@ -1,13 +1,19 @@
 package com.danidemi.europrice.screenscraping;
 
+import java.net.MalformedURLException;
+
 import org.openqa.selenium.By;
 
 public class Scrape {
 
-	public static ActionList inSequence(ScrapeAction firstAction){
-		ActionList actionList = new ActionList();
+	public static SequenceAction inSequence(ScrapeAction firstAction){
+		SequenceAction actionList = new SequenceAction();
 		actionList.add( firstAction );
 		return actionList;
+	}
+	
+	public static GoToUrl goTo(String url) throws MalformedURLException{
+		return new GoToUrl(url);
 	}
 	
 	public static Search search(String searchTerm, By searchField, By searchButton){

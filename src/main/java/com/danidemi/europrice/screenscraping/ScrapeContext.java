@@ -7,6 +7,7 @@
 package com.danidemi.europrice.screenscraping;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.openqa.selenium.By;
@@ -24,34 +25,16 @@ import org.slf4j.LoggerFactory;
  */
 public class ScrapeContext {
 
-    private final PhantomJSDriver driver;
-    private final Logger log;
+	private static final Logger log = LoggerFactory.getLogger(ScrapeContext.class);
+	
+	private WebDriver driver;
     private WebElement sub;
     
-    public ScrapeContext(){
-    	
-    	
-        DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-        capabilities.setCapability("phantomjs.binary.path", "/opt/phantomjs/phantomjs/bin/phantomjs");
-        Proxy proxy = new Proxy();
-        proxy.setHttpProxy("10.1.51.10:80");
-        //capabilities.setCapability("proxy", proxy);
+    public ScrapeContext(PhantomJSDriver driver2) {
+    	this.driver = driver2;
+	}    
         
-        
-        
-        driver = new PhantomJSDriver(capabilities);
-        log = LoggerFactory.getLogger("scrape.session");
-        Runtime.getRuntime().addShutdownHook(new Thread(){
-        	@Override
-        	public void run() {
-        		log.info("Quitting PhantomJSDriver");
-        		ScrapeContext.this.driver.quit();
-        		log.info("PhantomJSDriver quitted");
-        	}
-        });
-    }
-    
-    WebDriver getWebDriver() {
+	WebDriver getWebDriver() {
         return driver;
     }
 
@@ -91,5 +74,17 @@ public class ScrapeContext {
     	info("Looking for {} starting from {}", cssSelector, sub);
         return sub.findElements(cssSelector);
     }    
+    
+    public void close() {
+    	Set<String> windowHandles = driver.getWindowHandles();
+    	for (String handle : windowHandles) {
+    		driver.switchTo().window(handle);
+    		log.info("Closing window {}", driver.getTitle());
+    		driver.close();
+		}
+    	log.info("Closing driver");
+    	driver.quit();
+    	
+    }
     
 }

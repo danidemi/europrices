@@ -13,12 +13,12 @@ import org.openqa.selenium.By;
  */
 public class Search implements ScrapeAction {
 
-    private ActionList actionList;
+    private SequenceAction actionList;
     private final FillField fillField;
     private final ItemClick click;
 
     public Search() {
-        actionList = new ActionList();
+        actionList = new SequenceAction();
         fillField = new FillField();
         actionList.add(fillField);
         click = new ItemClick();
@@ -26,13 +26,13 @@ public class Search implements ScrapeAction {
     }
         
     @Override
-    public void onStartScraping() {
-    	actionList.onStartScraping();
+    public void startScraping() {
+    	actionList.startScraping();
     }
     
     @Override
-    public void onEndScraping() {
-    	actionList.onEndScraping();
+    public void endScraping() {
+    	actionList.endScraping();
     }
 
     @Override

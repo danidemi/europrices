@@ -38,11 +38,11 @@ public class GoToUrl implements ScrapeAction {
     }
 
 	@Override
-	public void onStartScraping() {
+	public void startScraping() {
 	}
 
 	@Override
-	public void onEndScraping() {		
+	public void endScraping() {		
 	}
     
 }

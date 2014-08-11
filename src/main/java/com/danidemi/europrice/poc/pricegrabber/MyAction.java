@@ -59,7 +59,12 @@ public class MyAction implements ScrapeAction {
 	public void setPriceSelector(By priceSelector) {
 		this.priceSelector = priceSelector;
 	}
-	public void setPriceScraper(Scraper priceScraper){
+	
+	/** 
+	 * This scraper should return the price as a {@link String}.
+	 * It will responsibility of the {@link PriceParser} to actually extract the numeric value. 
+	 * */
+	public void setPriceScraper(Scraper<String> priceScraper){
 		this.priceScraper = priceScraper;
 	}
 	
@@ -80,7 +85,7 @@ public class MyAction implements ScrapeAction {
 	}
 	
 	@Override
-	public void onStartScraping() {
+	public void startScraping() {
 		if(Boolean.TRUE != status){
 			callback.onStart();
 			status = Boolean.TRUE;
@@ -88,7 +93,7 @@ public class MyAction implements ScrapeAction {
 	}
 
 	@Override
-	public void onEndScraping() {
+	public void endScraping() {
 		if(Boolean.FALSE != status){
 			callback.onEnd();
 			status = Boolean.FALSE;
@@ -135,6 +140,8 @@ public class MyAction implements ScrapeAction {
 		item.setPriceInCent(priceInCent);
 		item.setUrlDetail(href);
 		item.setShopName(shopName);
+		
+		callback.onNewItem(item);
 
 	}
 

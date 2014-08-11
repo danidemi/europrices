@@ -33,14 +33,14 @@ public class ForEachPage implements ScrapeAction {
 	}
     
 	@Override
-	public void onStartScraping() {
+	public void startScraping() {
 		pageNumber = 1;
-		action.onStartScraping();
+		action.startScraping();
 	}
 
 	@Override
-	public void onEndScraping() {
-		action.onEndScraping();
+	public void endScraping() {
+		action.endScraping();
 	}
 
     public void scrape(ScrapeContext ctx) {

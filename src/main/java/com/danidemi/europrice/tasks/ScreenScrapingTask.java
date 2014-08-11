@@ -10,16 +10,26 @@ import com.danidemi.europrice.db.Shop;
 import com.danidemi.europrice.db.ShopRepository;
 import com.danidemi.europrice.poc.pricegrabber.Callback;
 import com.danidemi.europrice.poc.pricegrabber.Item;
-import com.danidemi.europrice.tasks.scrapers.ShopScraper;
+import com.danidemi.europrice.poc.pricegrabber.Request;
+import com.danidemi.europrice.screenscraping.ScrapeContext;
+import com.danidemi.europrice.screenscraping.ScrapeContextFactory;
+import com.danidemi.europrice.screenscraping.Search;
+import com.danidemi.europrice.tasks.scrapers.ProductItemScraper;
 
 public class ScreenScrapingTask implements Runnable {
 	
 	private ShopRepository shopRepository;
 	private ProductItemRepository productItemRepository;
 	private Shop currentShop;
-	private List<ShopScraper> scrapers;
+	private List<ProductItemScraper> scrapers;
+	private List<Request> searches;
+	private ScrapeContextFactory ctxFactory;
 	
 
+	public void setCtxFactory(ScrapeContextFactory ctxFactory) {
+		this.ctxFactory = ctxFactory;
+	}
+	
 	@Override @Transactional
 	public void run() {
 		
@@ -40,16 +50,26 @@ public class ScreenScrapingTask implements Runnable {
 				ScreenScrapingTask.this.onEnd();
 			}
 		};
-		
-		for (ShopScraper scraper : scrapers) {
-			scraper.setCallback(callback);
-			scraper.run();
+	
+		ScrapeContext scrapeContext = ctxFactory.getScrapeContext();
+		for (Request request : searches) {
+			
+			for (ProductItemScraper scraper : scrapers) {
+			
+				scraper.scrape(scrapeContext, request, callback);
+			
+			}
+			
 		}
 		
 	}
 	
-	public void setScrapers(List<ShopScraper> scrapers) {
+	public void setScrapers(List<ProductItemScraper> scrapers) {
 		this.scrapers = scrapers;
+	}
+	
+	void setRequests(List<Request> searches){
+		this.searches = searches;
 	}
 	
 	private void onStart() {
