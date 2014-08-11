@@ -31,7 +31,7 @@ public class OsSelectionGrabber implements Grabber {
     @Override
     public void run(Request request, Callback callback) {
         
-        callback.onStart();
+        callback.onStartScraping();
         
         //http://www.smartphonehoesjes.nl/
         driver.get( "http://www.oselection.es/" );
@@ -74,12 +74,12 @@ public class OsSelectionGrabber implements Grabber {
                 
                 
                 
-                Item item = new Item();
+                ShopItem item = new ShopItem();
                 item.setDescription(text2);
                 item.setPriceInCent(priceInCent);
                 item.setUrlDetail(href);
                 
-                callback.onNewItem(item);
+                callback.onNewShopItem(item);
 
 
             }
@@ -91,7 +91,7 @@ public class OsSelectionGrabber implements Grabber {
         driver.close();
         driver.quit();
         
-        callback.onEnd();
+        callback.onEndScraping();
         
         
     }

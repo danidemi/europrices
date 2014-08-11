@@ -87,7 +87,7 @@ public class MyAction implements ScrapeAction {
 	@Override
 	public void startScraping() {
 		if(Boolean.TRUE != status){
-			callback.onStart();
+			callback.onStartScraping();
 			status = Boolean.TRUE;
 		}
 	}
@@ -95,7 +95,7 @@ public class MyAction implements ScrapeAction {
 	@Override
 	public void endScraping() {
 		if(Boolean.FALSE != status){
-			callback.onEnd();
+			callback.onEndScraping();
 			status = Boolean.FALSE;
 		}
 	}
@@ -135,13 +135,13 @@ public class MyAction implements ScrapeAction {
 		ctx.info( String.valueOf( priceInCent ) );
 		ctx.info( String.valueOf( href ) );
 
-		Item item = new Item();
+		ShopItem item = new ShopItem();
 		item.setDescription(descrption);
 		item.setPriceInCent(priceInCent);
 		item.setUrlDetail(href);
 		item.setShopName(shopName);
 		
-		callback.onNewItem(item);
+		callback.onNewShopItem(item);
 
 	}
 

@@ -6,10 +6,10 @@ package com.danidemi.europrice.poc.pricegrabber;
  */
 public interface Callback {
     
-    void onStart();
+    void onStartScraping();
     
-    void onNewItem( Item item );
+    void onNewShopItem( ShopItem item );
     
-    void onEnd();
+    void onEndScraping();
     
 }

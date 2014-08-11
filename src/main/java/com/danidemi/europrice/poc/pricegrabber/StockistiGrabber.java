@@ -32,7 +32,7 @@ public class StockistiGrabber implements Grabber {
     @Override
     public void run(Request request, Callback callback) {
 
-        callback.onStart();
+        callback.onStartScraping();
         
         driver.get( "http://www.glistockisti.it/" );
         
@@ -53,7 +53,7 @@ public class StockistiGrabber implements Grabber {
             
         }
         
-        callback.onEnd();
+        callback.onEndScraping();
         
     }
     

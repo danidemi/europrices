@@ -19,13 +19,15 @@ public class SequenceAction implements ScrapeAction {
  
     @Override
 	public void startScraping() {
-	
+    	
 	}
     
     @Override
     public void scrape(ScrapeContext ctx) {
         for (ScrapeAction scrapeAction : actions) {
+        	scrapeAction.startScraping();
             scrapeAction.scrape(ctx);
+            scrapeAction.endScraping();
         }
     }
     

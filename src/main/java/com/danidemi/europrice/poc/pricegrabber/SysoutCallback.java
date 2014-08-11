@@ -19,12 +19,12 @@ public class SysoutCallback implements Callback {
     }
 
     @Override
-    public void onStart() {
+    public void onStartScraping() {
         
     }
 
     @Override
-    public void onNewItem(Item item) {
+    public void onNewShopItem(ShopItem item) {
         System.out.println("====================================");
         System.out.println("Price:" + DecimalFormat.getCurrencyInstance(Locale.ITALIAN).format( item.getPriceInCent() / 100.0) );
         System.out.println("Product:" + item.getDescription());
@@ -33,7 +33,7 @@ public class SysoutCallback implements Callback {
     }
 
     @Override
-    public void onEnd() {
+    public void onEndScraping() {
         
     }
     

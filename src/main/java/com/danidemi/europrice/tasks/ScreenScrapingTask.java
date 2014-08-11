@@ -4,12 +4,17 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
 import com.danidemi.europrice.db.ProductItem;
 import com.danidemi.europrice.db.ProductItemRepository;
 import com.danidemi.europrice.db.Shop;
 import com.danidemi.europrice.db.ShopRepository;
 import com.danidemi.europrice.poc.pricegrabber.Callback;
-import com.danidemi.europrice.poc.pricegrabber.Item;
+import com.danidemi.europrice.poc.pricegrabber.ShopItem;
 import com.danidemi.europrice.poc.pricegrabber.Request;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.ScrapeContextFactory;
@@ -24,59 +29,49 @@ public class ScreenScrapingTask implements Runnable {
 	private List<ProductItemScraper> scrapers;
 	private List<Request> searches;
 	private ScrapeContextFactory ctxFactory;
-	
-
-	public void setCtxFactory(ScrapeContextFactory ctxFactory) {
-		this.ctxFactory = ctxFactory;
-	}
-	
+	private int itemCount;
+	private JpaTransactionManager txManager;
+	private TransactionStatus transaction;
+	private int itemsPerTransactions;
+		
 	@Override @Transactional
 	public void run() {
 		
 		Callback callback = new Callback() {
 			
 			@Override
-			public void onStart() {
-				ScreenScrapingTask.this.onStart();
+			public void onStartScraping() {
+				ScreenScrapingTask.this.onStartScraping();
 			}
 			
 			@Override
-			public void onNewItem(Item item) {
-				ScreenScrapingTask.this.onNewItem(item);
+			public void onNewShopItem(ShopItem item) {
+				ScreenScrapingTask.this.onNewShopItem(item);
 			}
 			
 			@Override
-			public void onEnd() {
-				ScreenScrapingTask.this.onEnd();
+			public void onEndScraping() {
+				ScreenScrapingTask.this.onEndScraping();
 			}
 		};
 	
 		ScrapeContext scrapeContext = ctxFactory.getScrapeContext();
 		for (Request request : searches) {
-			
 			for (ProductItemScraper scraper : scrapers) {
-			
 				scraper.scrape(scrapeContext, request, callback);
-			
 			}
-			
 		}
 		
 	}
 	
-	public void setScrapers(List<ProductItemScraper> scrapers) {
-		this.scrapers = scrapers;
-	}
-	
-	void setRequests(List<Request> searches){
-		this.searches = searches;
-	}
-	
-	private void onStart() {
+	private void onStartScraping() {
 		currentShop = null;
+		itemCount = 0;
+		
+		transaction = txManager.getTransaction( new DefaultTransactionDefinition() );
 	}
 	
-	private void onNewItem(Item item) {
+	private void onNewShopItem(ShopItem item) {
 		
 		if(currentShop == null){
 			String shopName = item.getShopName();			
@@ -96,11 +91,19 @@ public class ScreenScrapingTask implements Runnable {
 			}
 		}
 		
+		itemCount++;
+		
 		ProductItem productItem = currentShop.newProductItem();
 		productItem.setKeywordsBundle( item.getDescription() );
 		productItem.setShop(currentShop);
 		productItem.setPriceInCent( item.getPriceInCent() );
 		productItemRepository.save(productItem);
+		
+		if(itemCount == itemsPerTransactions){
+			itemCount = 0;
+			txManager.commit(transaction);
+			transaction = txManager.getTransaction( new DefaultTransactionDefinition() );
+		}
 		
 	}
 
@@ -110,8 +113,23 @@ public class ScreenScrapingTask implements Runnable {
 		return theShop;
 	}
 
-	private void onEnd() {
+	private void onEndScraping() {
 		currentShop = null;
+		txManager.commit(transaction);
+	}	
+	
+	/**
+	 * The list of {@link ProductItemScraper} that will be run as part of this task.
+	 */
+	public void setScrapers(List<ProductItemScraper> scrapers) {
+		this.scrapers = scrapers;
+	}
+	
+	/**
+	 * The list of request that will be issued as part of this task.
+	 */
+	void setRequests(List<Request> searches){
+		this.searches = searches;
 	}
 	
 	public void setProductItemRepository(
@@ -121,6 +139,10 @@ public class ScreenScrapingTask implements Runnable {
 	
 	public void setShopRepository(ShopRepository shopRepository) {
 		this.shopRepository = shopRepository;
+	}
+	
+	public void setCtxFactory(ScrapeContextFactory ctxFactory) {
+		this.ctxFactory = ctxFactory;
 	}
 	
 }
