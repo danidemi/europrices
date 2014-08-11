@@ -79,6 +79,7 @@ public class ScreenScrapingTask implements Runnable {
 			if(currentShop == null){
 				currentShop = new Shop();
 				currentShop.setName(item.getShopName());
+				shopRepository.save(currentShop);
 			}
 		}else{
 			if(!currentShop.getName().equals(item.getShopName())){
@@ -87,6 +88,7 @@ public class ScreenScrapingTask implements Runnable {
 				if(currentShop == null){
 					currentShop = new Shop();
 					currentShop.setName(item.getShopName());
+					shopRepository.save(currentShop);
 				}
 			}
 		}
@@ -128,7 +130,7 @@ public class ScreenScrapingTask implements Runnable {
 	/**
 	 * The list of request that will be issued as part of this task.
 	 */
-	void setRequests(List<Request> searches){
+	public void setRequests(List<Request> searches){
 		this.searches = searches;
 	}
 	
@@ -143,6 +145,10 @@ public class ScreenScrapingTask implements Runnable {
 	
 	public void setCtxFactory(ScrapeContextFactory ctxFactory) {
 		this.ctxFactory = ctxFactory;
+	}
+	
+	public void setTxManager(JpaTransactionManager txManager) {
+		this.txManager = txManager;
 	}
 	
 }

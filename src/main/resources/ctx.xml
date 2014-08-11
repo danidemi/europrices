@@ -86,11 +86,27 @@
 	<bean id="task" class="com.danidemi.europrice.tasks.ScreenScrapingTask">
 		<property name="productItemRepository" ref="productItemRepository" />
 		<property name="shopRepository" ref="shopRepository" />
+		<property name="ctxFactory">
+			<bean class="com.danidemi.europrice.screenscraping.PhantomjsFactory">
+				<property name="enableProxy" value="false" />
+			</bean>
+		</property>
 		<property name="scrapers">
 			<list>
-				<bean class="com.danidemi.europrice.tasks.scrapers.OSelectionScraper" />
+				<bean class="com.danidemi.europrice.tasks.scrapers.OSelectionScrapeAction" />
+				<bean class="com.danidemi.europrice.tasks.scrapers.StockistiScraper" />
+				<bean class="com.danidemi.europrice.tasks.scrapers.UtuizamobiScrapeAction" />
 			</list>
 		</property>
+		<property name="requests">
+			<list>
+				<value>samsung</value>
+				<value>nexus</value>
+				<value>lg</value>
+				<value>oppo</value>
+			</list>
+		</property>		
+		<property name="txManager" ref="transactionManager" />
 	</bean>
 	
   
@@ -106,9 +122,15 @@
 	<task:scheduler id="myScheduler" pool-size="10"/>
 	
 	<task:scheduled-tasks scheduler="myScheduler">
-	    <task:scheduled ref="task" method="run" trigger="trigger"/>
+	    <task:scheduled ref="task" method="run" trigger="trigger1"/>
 	</task:scheduled-tasks>
-	<bean name="trigger" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+	<bean name="triggerN" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+	<bean name="trigger1" class="org.springframework.scheduling.support.PeriodicTrigger">
+		<constructor-arg value="1" />
+		<constructor-arg value="DAYS" />
+		<property name="fixedRate" value="false" />
+	</bean>
+	
 	
 		
 	<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
