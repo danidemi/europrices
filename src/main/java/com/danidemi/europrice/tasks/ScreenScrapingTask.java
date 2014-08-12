@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -22,6 +24,8 @@ import com.danidemi.europrice.screenscraping.Search;
 import com.danidemi.europrice.tasks.scrapers.ProductItemScraper;
 
 public class ScreenScrapingTask implements Runnable {
+	
+	private Logger log = LoggerFactory.getLogger(ScreenScrapingTask.class);
 	
 	private ShopRepository shopRepository;
 	private ProductItemRepository productItemRepository;
@@ -58,6 +62,9 @@ public class ScreenScrapingTask implements Runnable {
 		ScrapeContext scrapeContext = ctxFactory.getScrapeContext();
 		for (Request request : searches) {
 			for (ProductItemScraper scraper : scrapers) {
+				
+				log.info("Scraping for '{}' on '{}'.", request, scraper);
+				
 				scraper.scrape(scrapeContext, request, callback);
 			}
 		}
@@ -99,7 +106,13 @@ public class ScreenScrapingTask implements Runnable {
 		productItem.setKeywordsBundle( item.getDescription() );
 		productItem.setShop(currentShop);
 		productItem.setPriceInCent( item.getPriceInCent() );
-		productItemRepository.save(productItem);
+		productItem.setDetailsURL(item.getUrlDetail());
+		
+		try{
+			productItemRepository.save(productItem);			
+		}catch(Exception e){
+			log.error("Item " + productItem + " could not be saved, ignoring", e);
+		}
 		
 		if(itemCount == itemsPerTransactions){
 			itemCount = 0;

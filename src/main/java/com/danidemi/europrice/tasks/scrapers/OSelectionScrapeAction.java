@@ -29,10 +29,13 @@ import com.danidemi.europrice.screenscraping.Scrapers;
 public class OSelectionScrapeAction extends AbstractShopScraper {
     
 	public OSelectionScrapeAction() throws MalformedURLException {
-		
-
-                
+		super();
     }
+	
+	@Override
+	public String toString() {
+		return "OSelection.es"; 
+	}
 
 	@Override
 	protected ScrapeAction buildScrapeAction(ScrapeContext ctx,

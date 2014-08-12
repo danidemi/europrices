@@ -15,6 +15,11 @@ import static com.danidemi.europrice.screenscraping.Scrape.inSequence;
 import static com.danidemi.europrice.screenscraping.Scrape.search;
 
 public class StockistiScraper extends AbstractShopScraper {
+	
+	@Override
+	public String toString() {
+		return "Gli Stockisti";
+	}	
 
 	@Override
 	protected ScrapeAction buildScrapeAction(ScrapeContext ctx, Request request, Callback callback) throws Exception {

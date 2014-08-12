@@ -15,7 +15,7 @@ public interface ScrapeAction {
 
 	void startScraping();
 	
-    public void scrape(ScrapeContext ctx);
+    public void scrape(ScrapeContext ctx) throws ScrapeException;
 
 	void endScraping();
     

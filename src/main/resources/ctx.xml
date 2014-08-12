@@ -46,7 +46,7 @@
 
 
 	<!-- the name 'entityManagerFactory' is mandatory to made it available to spring-data repos -->
-	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="flyway">
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="dbms, flyway">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.danidemi.europrice.db" />
 		<property name="jpaVendorAdapter">
@@ -93,9 +93,11 @@
 		</property>
 		<property name="scrapers">
 			<list>
-				<bean class="com.danidemi.europrice.tasks.scrapers.OSelectionScrapeAction" />
 				<bean class="com.danidemi.europrice.tasks.scrapers.StockistiScraper" />
 				<bean class="com.danidemi.europrice.tasks.scrapers.UtuizamobiScrapeAction" />
+				<!--  
+				<bean class="com.danidemi.europrice.tasks.scrapers.OSelectionScrapeAction" />
+				-->
 			</list>
 		</property>
 		<property name="requests">

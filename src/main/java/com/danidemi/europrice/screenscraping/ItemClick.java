@@ -19,7 +19,7 @@ public class ItemClick implements ScrapeAction {
     private By item;    
     
     @Override
-    public void scrape(ScrapeContext ctx) {
+    public void scrape(ScrapeContext ctx) throws ScrapeException {
         
     	WebElement findElement = ctx.findElement(item);
     	if(findElement==null){

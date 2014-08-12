@@ -27,7 +27,7 @@ public class FillField implements ScrapeAction {
 	}
 
 	@Override
-	public void scrape(ScrapeContext ctx) {
+	public void scrape(ScrapeContext ctx) throws ElementCardinalityException {
 		support.scrape(ctx);
 		
 		ctx.info("Selecting search field '{}'", fieldSelector);

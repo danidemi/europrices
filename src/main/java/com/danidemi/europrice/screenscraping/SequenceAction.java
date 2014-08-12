@@ -23,7 +23,7 @@ public class SequenceAction implements ScrapeAction {
 	}
     
     @Override
-    public void scrape(ScrapeContext ctx) {
+    public void scrape(ScrapeContext ctx) throws ScrapeException {
         for (ScrapeAction scrapeAction : actions) {
         	scrapeAction.startScraping();
             scrapeAction.scrape(ctx);

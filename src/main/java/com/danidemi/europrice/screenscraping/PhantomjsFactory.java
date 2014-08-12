@@ -12,7 +12,7 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 	
 	private String proxy;
 	private int port;
-	private boolean enableProxy;
+	private boolean enableProxy = false;
 	
 	public void setEnableProxy(boolean enabled) {
 		this.enableProxy = enabled;
@@ -31,6 +31,7 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 		
         DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
         capabilities.setCapability("phantomjs.binary.path", "/opt/phantomjs/phantomjs/bin/phantomjs");
+        
         
         if(enableProxy) {
         	Proxy proxy = new Proxy();

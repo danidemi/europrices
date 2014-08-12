@@ -22,4 +22,9 @@ public class Request {
         return searchTerm;
     }
     
+    @Override
+    public String toString() {
+    	return searchTerm;
+    }
+    
 }

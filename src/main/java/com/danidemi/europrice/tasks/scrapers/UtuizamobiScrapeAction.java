@@ -27,6 +27,11 @@ public class UtuizamobiScrapeAction extends AbstractShopScraper {
 	private static final Logger log = LoggerFactory.getLogger(UtuizamobiScrapeAction.class);
 
 	@Override
+	public String toString() {
+		return "Utuizamobi";
+	}
+	
+	@Override
 	protected ScrapeAction buildScrapeAction(ScrapeContext ctx,
 			Request request, Callback callback) throws Exception {
 

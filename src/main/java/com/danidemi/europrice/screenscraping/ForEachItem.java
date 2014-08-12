@@ -27,7 +27,7 @@ public class ForEachItem implements ScrapeAction {
 	}
 
 	@Override
-	public void scrape(ScrapeContext ctx) {
+	public void scrape(ScrapeContext ctx) throws ScrapeException {
 		
 		if(action == null) {
 			throw new IllegalStateException("Please, set an action");

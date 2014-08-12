@@ -36,7 +36,7 @@ public class Search implements ScrapeAction {
     }
 
     @Override
-    public void scrape(ScrapeContext ctx) {
+    public void scrape(ScrapeContext ctx) throws ScrapeException {
         actionList.scrape(ctx);
     }
 

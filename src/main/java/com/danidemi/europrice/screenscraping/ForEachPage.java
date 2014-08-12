@@ -43,7 +43,7 @@ public class ForEachPage implements ScrapeAction {
 		action.endScraping();
 	}
 
-    public void scrape(ScrapeContext ctx) {
+    public void scrape(ScrapeContext ctx) throws ScrapeException {
         boolean goOn;
         do {
 
