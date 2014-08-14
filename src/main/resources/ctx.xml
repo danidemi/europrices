@@ -32,7 +32,7 @@
 				<property name="username" value="europrices-usr" />
 				<property name="storage">
 					<bean class="com.danidemi.jlubricant.embeddable.hsql.ServerMode">
-						<property name="dbFolder" value="./db" />
+						<property name="dbFolder" value="/var/misc/europrices/db/db" />
 					</bean>
 				</property>
 			</bean>
@@ -124,7 +124,7 @@
 	<task:scheduler id="myScheduler" pool-size="10"/>
 	
 	<task:scheduled-tasks scheduler="myScheduler">
-	    <task:scheduled ref="task" method="run" trigger="trigger1"/>
+	    <task:scheduled ref="task" method="run" trigger="triggerN"/>
 	</task:scheduled-tasks>
 	<bean name="triggerN" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
 	<bean name="trigger1" class="org.springframework.scheduling.support.PeriodicTrigger">
