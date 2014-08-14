@@ -2,6 +2,8 @@ package com.danidemi.europrice.web.controller.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -32,12 +34,15 @@ public class Api_0_0_1 {
 	@Transactional
 	@RequestMapping(value="/keyword/{keyword}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<ProductItem> productByKeyword(@PathVariable(value="keyword") String keyword){	
-		List<ProductItem> findProductItemsByKeyword = productItemRep.findProductItemsByKeyword(keyword);
-		return 
-			findProductItemsByKeyword == null || findProductItemsByKeyword.isEmpty() 
-			? new ArrayList<ProductItem>() : 
-				findProductItemsByKeyword;
+	public List<ResourceProductItem> productByKeyword(@PathVariable(value="keyword") String keyword){
+		
+		List<ProductItem> findProductItemsByKeyword2 = productItemRep.findProductItemsByKeyword(keyword);
+		List<ResourceProductItem> collect = findProductItemsByKeyword2
+			.stream()
+			.map(p -> new ResourceProductItem(p))
+			.collect(Collectors.toList());
+		
+		return collect;
 	}
 	
 	

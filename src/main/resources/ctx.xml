@@ -23,6 +23,16 @@
 		http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd        
         ">
+        
+	<task:scheduled-tasks scheduler="myScheduler">
+	    <task:scheduled ref="task" method="run" trigger="triggerN"/>
+	</task:scheduled-tasks>
+	<bean name="triggerN" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+	<bean name="trigger1" class="org.springframework.scheduling.support.PeriodicTrigger">
+		<constructor-arg value="1" />
+		<constructor-arg value="DAYS" />
+		<property name="fixedRate" value="false" />
+	</bean>
 
 	<bean id="dbms" class="com.danidemi.jlubricant.embeddable.hsql.HsqlDbms" init-method="start" destroy-method="stop">
 		<property name="databases">
@@ -123,15 +133,7 @@
 
 	<task:scheduler id="myScheduler" pool-size="10"/>
 	
-	<task:scheduled-tasks scheduler="myScheduler">
-	    <task:scheduled ref="task" method="run" trigger="triggerN"/>
-	</task:scheduled-tasks>
-	<bean name="triggerN" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
-	<bean name="trigger1" class="org.springframework.scheduling.support.PeriodicTrigger">
-		<constructor-arg value="1" />
-		<constructor-arg value="DAYS" />
-		<property name="fixedRate" value="false" />
-	</bean>
+
 	
 	
 		

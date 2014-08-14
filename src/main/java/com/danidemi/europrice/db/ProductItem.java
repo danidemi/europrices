@@ -88,6 +88,26 @@ public class ProductItem implements Serializable {
 
 	public void setKeywordsBundle(String keywordsBundle) {
 
+		this.keywordsBundle = keywordsBundle;
+	}
+	
+	@Transient
+	public void setKeywords(String... strings) {
+		
+		StringBuilder sb = new StringBuilder();
+		for (String string : strings) {
+			if(sb.length() > 0){
+				sb.append("|");
+			}
+			sb.append( string.toLowerCase().trim() );
+		}
+		keywordsBundle = "|" + sb.toString() + "|";
+		
+	}
+	
+	@Transient
+	public void setKeywords(String keywordsBundle) {
+		
 		if (keywordsBundle != null) {
 			String replaceAll = keywordsBundle.trim().toLowerCase()
 					.replaceAll("\\s{2,}", " ");
@@ -98,10 +118,12 @@ public class ProductItem implements Serializable {
 		}
 
 		this.keywordsBundle = keywordsBundle;
+		
 	}
-
-	public void setKeywords(String... keywords) {
-		this.setKeywordsBundle(StringUtils.join(keywords));
+	
+	@Transient
+	public String getShortDescription() {
+		return keywordsBundle.replaceAll("|", " ");
 	}
 
 	@Transient
