@@ -1,23 +1,16 @@
 package com.danidemi.europrice.db;
 
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -53,11 +46,12 @@ public class RepositoryTest {
                 shop.setName("the shop");
 		ProductItem pi = shop.newProductItem();
                 pi.setPriceInCent(1000L);
-                pi.setKeywords("good", "excellent");
+                pi.withKeywords("good", "excellent");
                 
 		repository.save(pi);
 	}
 
+	@Transactional
 	@Test
 	public void shouldSearchForProductByKeyword() {
 		
@@ -67,15 +61,15 @@ public class RepositoryTest {
 		
 		ProductItem p1 = shop.newProductItem();
                 p1.setPriceInCent(102L);
-		p1.setKeywordsBundle("gl 120 Luna");
+		p1.withKeywordsIn("gl 120 Luna");
 		
 		ProductItem p2 = shop.newProductItem();
                 p2.setPriceInCent(102L);
-		p2.setKeywordsBundle("ZAMZUNG super plus 334 120Gb ");
+		p2.withKeywordsIn("ZAMZUNG super plus 334 120Gb ");
 		
 		ProductItem p3 = shop.newProductItem();
                 p3.setPriceInCent(102L);
-		p3.setKeywordsBundle("NewtWearable omni");
+		p3.withKeywordsIn("NewtWearable omni");
 		
 		repository.save( Arrays.asList( p1, p2, p3 ) );
 		

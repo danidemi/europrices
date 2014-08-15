@@ -91,39 +91,42 @@ public class ProductItem implements Serializable {
 		this.keywordsBundle = keywordsBundle;
 	}
 	
+	/** Set this product keywords. */
 	@Transient
-	public void setKeywords(String... strings) {
+	public void withKeywords(String... keywords) {
 		
 		StringBuilder sb = new StringBuilder();
-		for (String string : strings) {
+		for (String string : keywords) {
 			if(sb.length() > 0){
 				sb.append("|");
 			}
-			sb.append( string.toLowerCase().trim() );
+			sb.append( string.toLowerCase().trim().replaceAll("\\|", "\\|\\|") );
 		}
 		keywordsBundle = "|" + sb.toString() + "|";
 		
 	}
 	
-	@Transient
-	public void setKeywords(String keywordsBundle) {
+	/** Set this product keywords using all the words in the provided string. */
+	public void withKeywordsIn(String stringWithKeywords) {
 		
-		if (keywordsBundle != null) {
-			String replaceAll = keywordsBundle.trim().toLowerCase()
+		if (stringWithKeywords != null) {
+			String replaceAll = stringWithKeywords.trim().toLowerCase()
 					.replaceAll("\\s{2,}", " ");
-			keywordsBundle = replaceAll.replaceAll("\\|", "\\|\\|");
+			stringWithKeywords = replaceAll.replaceAll("\\|", "\\|\\|");
 
-			String[] split = keywordsBundle.split(" ");
-			keywordsBundle = "|" + StringUtils.join(split, "|") + "|";
+			String[] split = stringWithKeywords.split(" ");
+			stringWithKeywords = "|" + StringUtils.join(split, "|") + "|";
 		}
 
-		this.keywordsBundle = keywordsBundle;
+		this.keywordsBundle = stringWithKeywords;
 		
 	}
 	
 	@Transient
 	public String getShortDescription() {
-		return keywordsBundle.replaceAll("|", " ");
+		
+		String trim = keywordsBundle.replaceAll("\\|", " ").trim();
+		return trim;
 	}
 
 	@Transient
@@ -139,7 +142,7 @@ public class ProductItem implements Serializable {
 	
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).toString();
+		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).toString();
 	}
 
 }

@@ -13,33 +13,46 @@
 		
 			<div ng-controller="SearchController">
 		
-				<div>
-					Europrices
-					spot the best prices in the eurozone
+				<div style="text-align: center; margin: auto auto 4em auto; background-color: blue;">
+					<div style="color: blue; font-size: xx-large; color: yellow;">europrices</div>
+					<div style="font-size: small; color: yellow;">spot the best mobile prices in the eurozone</div>
 				</div>
 				
-				<div>
+				<div style="text-align: center; margin: auto;">
 					<form>
-						<input type="text" /><button ng-click="onSearch()">search</button>
+						<input type="search" placeholder="samsung, galaxy..."  ng-model="searchTerms" /><button ng-click="onSearch()">search</button>
 					</form>
 				</div>
 
-				<ul>
-					<li ng-repeat="item in foundProductItems">
-						{{item.name}}
-					</li>
-				</ul>
-			
 
+				<div style="margin: auto;">
+					<table ng-if="productItemsHaveBeenFound()" style="margin: auto;">
+						<thead>
+							<tr>
+								<td>Item</td>
+								<td>Price</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in foundProductItems">
+								<td>
+									<a href="{{item.detailsUrl}}">{{item.name}}</a>
+								</td>
+								<td>
+									{{item.priceInEuroCent/100 | currency:"€"}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 			
 		</div>
 		
 		
 		
-		<footer>
-			This is served by Jetty.
-			<a href="even.jsp">It provides jsp too!</a>
+		<footer style="margin: 4em auto auto auto; text-align: center;">
+			Brought to you by <a target="_blank" href="http://www.danidemi.com">Studio Danidemi</a>
 		</footer>
 		
 	</body>

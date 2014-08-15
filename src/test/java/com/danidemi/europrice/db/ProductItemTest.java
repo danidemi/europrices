@@ -6,6 +6,21 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public class ProductItemTest {
+	
+	@Test 
+	public void shouldReturnADescription(){
+		
+		// given
+		ProductItem tested = new ProductItem();
+		tested.withKeywords("key1", "key2");
+		
+		// when
+		String shortDescription = tested.getShortDescription();
+		
+		// then
+		assertThat(shortDescription, equalTo("key1 key2"));
+		
+	}
 
 	@Test
 	public void shouldStoreKeywords() {
@@ -14,25 +29,11 @@ public class ProductItemTest {
 		ProductItem tested = new ProductItem();
 		
 		// when
-		tested.setKeywordsBundle(" Zamzung   45-2234  8 mB RAM ");
+		tested.withKeywordsIn(" Zamzung   45-2234  8 mB RAM ");
 		
 		// then
 		assertThat( tested.getKeywordsBundle(), equalTo("|zamzung|45-2234|8|mb|ram|") );
 		
 	}
-	
-	@Test
-	public void shouldStoreKeywordsWithPipes() {
 		
-		// given
-		ProductItem tested = new ProductItem();
-		
-		// when
-		tested.setKeywordsBundle(" product ||Gost|| ");
-		
-		// then
-		assertThat( tested.getKeywordsBundle(), equalTo("|product|||||gost|||||") );
-		
-	}	
-	
 }

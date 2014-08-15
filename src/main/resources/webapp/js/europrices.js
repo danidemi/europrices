@@ -1,13 +1,18 @@
 angular.module('europrices', []).controller('SearchController',
 		[ '$scope','$http', function($scope, $http) {
 			
-			$scope.foundProductItems = [{name:'name#1'},{name:'name#2'}];
+			$scope.foundProductItems = [];
+			$scope.searchTerms;
+			
+			$scope.productItemsHaveBeenFound = function() {
+				return $scope.foundProductItems.length > 0;
+			}
 			
 			$scope.onSearch = function() {
 				
 				
 				$http
-					.get('/app/api/keyword/samsung')
+					.get('/app/api/keyword/' + $scope.searchTerms)
 					.success(function(data){
 						data.forEach(function(item){
 							$scope.foundProductItems.push(item);
