@@ -1,0 +1,63 @@
+{
+	"variables": 
+	{
+		"aws_access_key": "",
+		"aws_secret_key": ""
+	},
+
+	"builders": 
+	[
+		{
+			"vm_name": "europrices-ub-14.04.1.i386.virtualbox",
+			"type": "virtualbox-iso",
+			"guest_os_type": "Ubuntu",
+			"iso_urls": 
+			[
+				"http://mirror.internetone.it/ubuntu-cd/trusty/ubuntu-14.04.1-server-i386.iso",
+				"http://releases.ubuntu.com/14.04/ubuntu-14.04.1-server-i386.iso"
+			],
+
+			"iso_checksum": "3aa14ca13d52df070870d39306f4a4eb",
+			"iso_checksum_type": "md5",
+			"ssh_username": "vagrant",
+			"ssh_password": "vagrant",
+			"http_directory": "./http/",
+			"ssh_wait_timeout": "20m",
+			"shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+			"disk_size": 20000,
+			"format": "ovf",
+			"guest_additions_mode": "upload",
+			"headless": "false",
+			"hard_drive_interface": "sata",
+			"vboxmanage": 
+			[
+				[
+					"modifyvm",
+					"{{.Name}}",
+					"--memory",
+					"1024"
+				],
+
+				[
+					"modifyvm",
+					"{{.Name}}",
+					"--cpus",
+					"1"
+				]
+			],
+
+			"boot_command": 
+			[
+				"<esc><esc><enter><wait>",
+				"/install/vmlinuz noapic ",
+				"preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+				"debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+				"hostname={{ .Name }} ",
+				"fb=false debconf/frontend=noninteractive ",
+				"keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+				"keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+				"initrd=/install/initrd.gz -- <enter>"
+			]
+		}
+	]
+}

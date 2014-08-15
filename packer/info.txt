@@ -1,0 +1,7 @@
+- create <whatever>.json
+- packer validate <whatever>.json
+- packer build -debug <whatever>.json
+
+examples
+--------
+https://github.com/thasmo/packer.templates
