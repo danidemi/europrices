@@ -1,11 +1,5 @@
-Packer
---------
-create <whatever>.json
-packer validate <whatever>.json
-packer build -debug <whatever>.json
+#!/bin/bash -x
 
-Java 8
---------
 #that makes 'add-apt-repository' available
 sudo apt-get -y install software-properties-common
   
@@ -22,11 +16,3 @@ sudo apt-get -y install oracle-java8-installer
 # sudo update-java-alternatives -s java-8-oracle (this seems to be not needed)
 sudo apt-get -y install oracle-java8-set-default
 
-examples
---------
-
-- A working template
-https://github.com/thasmo/packer.templates
-
-- Install java 8
-http://blog.mrwebmaster.it/2014/03/24/installare-java-8-in-ubuntu.html

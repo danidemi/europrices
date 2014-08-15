@@ -59,5 +59,22 @@
 				"initrd=/install/initrd.gz -- <enter>"
 			]
 		}
+	],
+
+	"provisioners": 
+	[
+		{
+			"type": "shell",
+			"inline": 
+			[
+				"sleep 10"
+			]
+		},
+
+		{
+			"type": "shell",
+			"script": "./provisioning/java8.sh",
+			"execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+		}
 	]
 }
