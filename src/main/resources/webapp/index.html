@@ -33,6 +33,7 @@
 								<td>Item</td>
 								<td>Shop</td>
 								<td>Price</td>
+								<td>Translate</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -45,6 +46,9 @@
 								</td>
 								<td>
 									{{item.priceInEuroCent/100 | currency:"€"}}
+								</td>
+								<td>
+									<a target="_blank" href="http://translate.google.com/translate?js=n&sl=auto&tl=it&u={{item.detailsUrl}}">google</a>
 								</td>
 							</tr>
 						</tbody>

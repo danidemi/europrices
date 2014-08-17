@@ -1,3 +1,47 @@
+Eurozone Languages
+------------------
+Austria   : Deutsch - de    	
+Belgium   : Deutsch - de, le français - fr,  Nederlands - nl	
+Cyprus    : ελληνικά - el, Türkçe - tr
+Estonia   : eesti keel - et
+Finland   : suomi - fi, svenska - sv, 
+France    
+Germany 	
+Greece 	
+Ireland 	: English - en, Gaeilge - ga 
+Italy
+Latvia 	    : latviešu valoda - lv
+Luxembourg 	: Lëtzebuergesch - lb
+Malta 	    : Malti - mt
+Netherlands:
+Portugal 	: português - pt
+Slovakia 	: slovenský jazyk - sk
+Slovenia 	: slovenščina - sl
+Spain 	 	: español - es, Euskara - eu, català - ca, galego - gl, occitan - oc, aragonés- an
+
+aragonés- an
+català - ca
+Deutsch - de
+eesti keel - et
+English - en
+español - es
+Euskara - eu
+Gaeilge - ga
+galego - gl
+latviešu valoda - lv
+le français - fr
+Lëtzebuergesch - lb
+Malti - mt
+Nederlands - nl
+occitan - oc
+português - pt
+slovenščina - sl
+slovenský jazyk - sk
+suomi - fi
+svenska - sv
+Türkçe - tr
+ελληνικά - el
+
 Eurozone Countries
 ------------------
 Austria 	
