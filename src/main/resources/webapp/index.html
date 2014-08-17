@@ -30,6 +30,7 @@
 						<thead>
 							<tr>
 								<td>Item</td>
+								<td>Shop</td>
 								<td>Price</td>
 							</tr>
 						</thead>
@@ -37,6 +38,9 @@
 							<tr ng-repeat="item in foundProductItems">
 								<td>
 									<a href="{{item.detailsUrl}}">{{item.name}}</a>
+								</td>
+								<td>
+									{{item.shop.name}}
 								</td>
 								<td>
 									{{item.priceInEuroCent/100 | currency:"€"}}

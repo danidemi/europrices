@@ -33,7 +33,7 @@ public class StockistiScraper extends AbstractShopScraper {
 		action.setPriceSelector(By.cssSelector("span.price"));
 		action.setPriceScraper(Scrapers.text());
 		
-		action.setShopName("oselection.es");
+		action.setShopName("Gli Stockisti");
 		
 		return
 				inSequence( new GoToUrl("http://www.glistockisti.it/") )

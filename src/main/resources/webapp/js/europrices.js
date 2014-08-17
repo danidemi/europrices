@@ -10,6 +10,7 @@ angular.module('europrices', []).controller('SearchController',
 			
 			$scope.onSearch = function() {
 				
+				$scope.foundProductItems = [];
 				
 				$http
 					.get('/app/api/search?searchTerms=' + $scope.searchTerms)

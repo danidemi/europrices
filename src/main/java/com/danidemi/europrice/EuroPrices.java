@@ -6,7 +6,7 @@ public class EuroPrices {
 
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext();
-		ctx.getEnvironment().setActiveProfiles("local");
+		ctx.getEnvironment().setActiveProfiles("prod");
 		ctx.setConfigLocation("ctx.xml");
 		ctx.registerShutdownHook();
 		ctx.refresh();

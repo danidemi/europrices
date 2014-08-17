@@ -140,18 +140,22 @@
 			</property>
 		</bean>	
 	
-		<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource" depends-on="dbms">
 			<property name="driverClassName" value="" />
 			<property name="url" value="jdbc:hsqldb:hsql://localhost/europrices" />
 			<property name="username" value="europrices-usr" />
 			<property name="password" value="europrices-pwd" />
 		</bean>
 		
-		<bean name="trigger" class="org.springframework.scheduling.support.PeriodicTrigger">
+		<bean name="trigger1" class="org.springframework.scheduling.support.PeriodicTrigger">
 			<constructor-arg value="1" />
 			<constructor-arg value="DAYS" />
 			<property name="fixedRate" value="false" />
 		</bean>		
+		
+		<bean name="triggerN" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+		
+		<alias name="triggerN" alias="trigger"/>
 	</beans>	
 
 </beans>
