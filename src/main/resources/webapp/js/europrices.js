@@ -12,7 +12,7 @@ angular.module('europrices', []).controller('SearchController',
 				
 				
 				$http
-					.get('/app/api/keyword/' + $scope.searchTerms)
+					.get('/app/api/search?searchTerms=' + $scope.searchTerms)
 					.success(function(data){
 						data.forEach(function(item){
 							$scope.foundProductItems.push(item);
