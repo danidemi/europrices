@@ -1,10 +1,14 @@
 package com.danidemi.europrice.web.controller.api;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.collections.ComparatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,28 +39,29 @@ public class Api_0_0_1 {
 	@Transactional
 	@RequestMapping(value="/search", method=RequestMethod.GET)
 	@ResponseBody
-	public List<ResourceProductItem> search(@RequestParam("searchTerms")String searchTerms) {
-		List<String> terms = splitter.split(searchTerms);;
+	public List<ResourceProductItemWithRelevancy> search(@RequestParam("searchTerms")String searchTerms) {
+		List<String> terms = splitter.split(searchTerms);
+		
+		RelevancyScorer scorer = new RelevancyScorer(terms);
+		
 		List<ProductItem> findProductItemsByKeywords = productItemRep.findProductItemsByKeywords(terms);
-		return map(findProductItemsByKeywords);
+		
+		List<ResourceProductItemWithRelevancy> map = map(findProductItemsByKeywords, scorer);
+		
+		Comparator<ResourceProductItemWithRelevancy> c1 = (ResourceProductItemWithRelevancy p1, ResourceProductItemWithRelevancy p2) -> p1.getPriceInEuroCent().compareTo(p2.getPriceInEuroCent());
+		Comparator<ResourceProductItemWithRelevancy> c2 = (ResourceProductItemWithRelevancy p1, ResourceProductItemWithRelevancy p2) -> p2.getRelevancy().compareTo(p1.getRelevancy());
+		Collections.sort(map, ComparatorUtils.chainedComparator(c2, c1));
+		
+		return map;
 	}
 	
-	@Transactional
-	@RequestMapping(value="/keyword/{keyword}", method=RequestMethod.GET)
-	@ResponseBody
-	public List<ResourceProductItem> productByKeyword(@PathVariable(value="keyword") String keyword){
+	private List<ResourceProductItemWithRelevancy> map(List<ProductItem> findProductItemsByKeyword2, RelevancyScorer scorer) {
 		
-		List<ProductItem> findProductItemsByKeyword2 = productItemRep.findProductItemsByKeyword(keyword);
-		List<ResourceProductItem> collect = map(findProductItemsByKeyword2);
-		
-		return collect;
-	}
-
-	private List<ResourceProductItem> map(List<ProductItem> findProductItemsByKeyword2) {
-		List<ResourceProductItem> collect = findProductItemsByKeyword2
+		List<ResourceProductItemWithRelevancy> collect = findProductItemsByKeyword2
 			.stream()
-			.map(p -> new ResourceProductItem(p))
+			.map(p -> new ResourceProductItemWithRelevancy(p, scorer))
 			.collect(Collectors.toList());
+		
 		return collect;
 	}
 	

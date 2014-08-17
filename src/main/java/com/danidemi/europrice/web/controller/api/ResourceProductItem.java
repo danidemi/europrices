@@ -12,7 +12,7 @@ public class ResourceProductItem {
 		return this.dbProductItem.getShortDescription();
 	}
 	
-	public long getPriceInEuroCent() {
+	public Long getPriceInEuroCent() {
 		return this.dbProductItem.getPriceInCent();
 	}
 	
