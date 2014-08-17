@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -51,7 +52,8 @@ public class ProductItem implements Serializable {
 		this.shop = shop;
 	}
 
-	@Basic(optional = true)
+	@Basic(optional = false)
+	@Column(unique=true, nullable=false)
 	public String getDetailsURL() {
 		return detailsUrl;
 	}

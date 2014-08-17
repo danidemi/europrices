@@ -10,13 +10,14 @@
 		</encoder>
 	</appender>
 	
-	<root level="INFO">
+	<root level="WARN">
 		<appender-ref ref="console" />
 	</root>
 	
 	<logger name="com.danidemi.europrice.jetty" level="WARN" />
+	<logger name="com.danidemi.europrice.tasks.ScreenScrapingTask" level="INFO" />
+	<logger name="com.danidemi.europrice.screenscraping.ScrapeContext" level="WARN" />
 	<logger name="com.danidemi.jlubricant.embeddable.hsql" level="WARN" />
-	<logger name="com.danidemi.europrice.screenscraping.ScrapeContext" level="INFO" />
 	
 	<logger name="org.springframework" level="WARN" />
 	<logger name="org.springframework.web" level="WARN" />
@@ -27,8 +28,8 @@
 	<logger name="org.flywaydb" level="WARN" />
 	
 	<logger name="org.hibernate" level="WARN" />
-	<logger name="org.hibernate.SQL" level="ALL" />
-	<logger name="org.hibernate.type" level="ALL" />	
+	<logger name="org.hibernate.SQL" level="WARN" />
+	<logger name="org.hibernate.type" level="WARN" />	
 	<!--  
 	-->
 	

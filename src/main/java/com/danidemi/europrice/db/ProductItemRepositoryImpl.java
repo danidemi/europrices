@@ -1,5 +1,6 @@
 package com.danidemi.europrice.db;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -25,7 +26,7 @@ public class ProductItemRepositoryImpl implements ProductItemRepositoryCustom {
 	public List<ProductItem> findProductItemsByKeywords(List<String> terms) {
 		return findProductItemsByKeywords( terms.toArray(new String[terms.size()]) );
 	}    
-
+	
 	@Override
 	public List<ProductItem> findProductItemsByKeywords(String[] keywords) {
 		

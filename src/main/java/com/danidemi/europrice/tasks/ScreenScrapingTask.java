@@ -1,9 +1,11 @@
 package com.danidemi.europrice.tasks;
 
+import java.net.URL;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -37,6 +39,10 @@ public class ScreenScrapingTask implements Runnable {
 	private JpaTransactionManager txManager;
 	private TransactionStatus transaction;
 	private int itemsPerTransactions;
+	
+	private int newItems = 0;
+	private int updatedItems = 0;
+	private int errorItems = 0;
 		
 	@Override @Transactional
 	public void run() {
@@ -78,6 +84,14 @@ public class ScreenScrapingTask implements Runnable {
 		transaction = txManager.getTransaction( new DefaultTransactionDefinition() );
 	}
 	
+	private static <T> T firstIfExists(List<T> items){
+		if(items != null && !items.isEmpty()){
+			return items.iterator().next();			
+		}else{
+			return null;
+		}
+	}
+	
 	private void onNewShopItem(ScrapedShopItem item) {
 		
 		if(currentShop == null){
@@ -100,21 +114,42 @@ public class ScreenScrapingTask implements Runnable {
 			}
 		}
 		
-		itemCount++;
 		
-		ProductItem productItem = currentShop.newProductItem();
-		productItem.withKeywordsIn( item.getDescription() );
-		productItem.setShop(currentShop);
-		productItem.setPriceInCent( item.getPriceInCent() );
-		productItem.setDetailsURL(item.getUrlDetail());
 		
+		ProductItem productItem = null;
+		boolean isNew = false;
 		try{
+			
+			
+			URL urlDetail = item.getUrlDetail();
+			productItem = firstIfExists( productItemRepository.findByDetailsURL(urlDetail.toString()) );
+			if(productItem == null){
+				log.debug("New product '{}' from {}.", StringUtils.abbreviate(item.getDescription(), 25), currentShop);
+				productItem = currentShop.newProductItem();
+				isNew = true;
+			}else{
+				log.debug("Updating existing product '{}'.", StringUtils.abbreviate(productItem.getShortDescription(), 25));
+				isNew = false;
+			}
+			productItem.withKeywordsIn( item.getDescription() );
+			productItem.setShop(currentShop);
+			productItem.setPriceInCent( item.getPriceInCent() );
+			productItem.setDetailsURL(urlDetail);
+			
 			productItemRepository.save(productItem);			
+			itemCount++;
+			
+			if(isNew) { newItems++;} else {updatedItems++;}
+			
 		}catch(Exception e){
 			log.error("Item " + productItem + " could not be saved, ignoring", e);
+			errorItems++;
 		}
 		
 		if(itemCount == itemsPerTransactions){
+			
+			log.debug("Committing transaction for {} items.", itemCount);
+			
 			itemCount = 0;
 			txManager.commit(transaction);
 			transaction = txManager.getTransaction( new DefaultTransactionDefinition() );
@@ -130,7 +165,12 @@ public class ScreenScrapingTask implements Runnable {
 
 	private void onEndScraping() {
 		currentShop = null;
+		
+		log.debug("Committing transaction for {} items.", itemCount);
+		
 		txManager.commit(transaction);
+		
+		log.info("{} new items, {} updated, {} with errors", newItems, updatedItems, errorItems);
 	}	
 	
 	/**
