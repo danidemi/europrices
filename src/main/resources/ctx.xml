@@ -154,7 +154,7 @@
 		
 		<bean name="triggerN" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
 		
-		<alias name="trigger1" alias="trigger"/>
+		<alias name="triggerN" alias="trigger"/>
 	</beans>	
 
 </beans>
