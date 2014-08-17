@@ -24,6 +24,7 @@ import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.ScrapeContextFactory;
 import com.danidemi.europrice.screenscraping.Search;
 import com.danidemi.europrice.tasks.scrapers.ProductItemScraper;
+import com.danidemi.europrice.utils.Utils;
 
 public class ScreenScrapingTask implements Runnable {
 	
@@ -84,13 +85,7 @@ public class ScreenScrapingTask implements Runnable {
 		transaction = txManager.getTransaction( new DefaultTransactionDefinition() );
 	}
 	
-	private static <T> T firstIfExists(List<T> items){
-		if(items != null && !items.isEmpty()){
-			return items.iterator().next();			
-		}else{
-			return null;
-		}
-	}
+
 	
 	private void onNewShopItem(ScrapedShopItem item) {
 		
@@ -122,7 +117,7 @@ public class ScreenScrapingTask implements Runnable {
 			
 			
 			URL urlDetail = item.getUrlDetail();
-			productItem = firstIfExists( productItemRepository.findByDetailsURL(urlDetail.toString()) );
+			productItem = Utils.firstIfExists( productItemRepository.findByDetailsURL(urlDetail.toString()) );
 			if(productItem == null){
 				log.debug("New product '{}' from {}.", StringUtils.abbreviate(item.getDescription(), 25), currentShop);
 				productItem = currentShop.newProductItem();

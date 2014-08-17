@@ -1,7 +1,9 @@
 package com.danidemi.europrice.web.controller.api;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -19,7 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.danidemi.europrice.db.ProductItem;
 import com.danidemi.europrice.db.ProductItemRepository;
+import com.danidemi.europrice.db.Search;
+import com.danidemi.europrice.db.SearchRepository;
 import com.danidemi.europrice.db.ShopRepository;
+import com.danidemi.europrice.utils.Utils;
 
 @Controller
 @RequestMapping(value="/api/", produces="application/json")
@@ -27,6 +32,7 @@ public class Api_0_0_1 {
 	
 	@Autowired ShopRepository shopRepo;
 	@Autowired ProductItemRepository productItemRep;
+	@Autowired SearchRepository searchRepository;
 	
 	private SearchTermSplitter splitter = new SearchTermSplitter();
 		
@@ -40,6 +46,7 @@ public class Api_0_0_1 {
 	@RequestMapping(value="/search", method=RequestMethod.GET)
 	@ResponseBody
 	public List<ResourceProductItemWithRelevancy> search(@RequestParam("searchTerms")String searchTerms) {
+				
 		List<String> terms = splitter.split(searchTerms);
 		
 		RelevancyScorer scorer = new RelevancyScorer(terms);
@@ -51,6 +58,15 @@ public class Api_0_0_1 {
 		Comparator<ResourceProductItemWithRelevancy> c1 = (ResourceProductItemWithRelevancy p1, ResourceProductItemWithRelevancy p2) -> p1.getPriceInEuroCent().compareTo(p2.getPriceInEuroCent());
 		Comparator<ResourceProductItemWithRelevancy> c2 = (ResourceProductItemWithRelevancy p1, ResourceProductItemWithRelevancy p2) -> p2.getRelevancy().compareTo(p1.getRelevancy());
 		Collections.sort(map, ComparatorUtils.chainedComparator(c2, c1));
+		
+		Search search = Utils.firstIfExists( searchRepository.findBySearch(searchTerms) );
+		if(search == null) {
+			search = new Search(searchTerms);
+		}
+		search.setLastTime(new Timestamp(System.currentTimeMillis()));
+		search.incTimes();
+		search.setResultCount(map.size());
+		searchRepository.save(search);
 		
 		return map;
 	}
