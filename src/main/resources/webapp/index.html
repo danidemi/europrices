@@ -33,7 +33,10 @@
 								<td>Item</td>
 								<td>Shop</td>
 								<td>Price</td>
-								<td>Translate</td>
+								<td>
+									Translate in
+									<select ng-model="destinationLanguage" ng-options="language.name for language in languages"></select> 
+								</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -48,7 +51,7 @@
 									{{item.priceInEuroCent/100 | currency:"€"}}
 								</td>
 								<td>
-									<a target="_blank" href="http://translate.google.com/translate?js=n&sl=auto&tl=it&u={{item.detailsUrl}}">google</a>
+									<a target="_blank" href="http://translate.google.com/translate?js=n&sl=auto&tl={{destinationLanguage.iso}}&u={{item.detailsUrl}}">google</a>									
 								</td>
 							</tr>
 						</tbody>

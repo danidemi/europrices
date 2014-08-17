@@ -4,6 +4,31 @@ angular.module('europrices', []).controller('SearchController',
 			$scope.foundProductItems = [];
 			$scope.searchTerms;
 			
+			$scope.languages = [
+			        {name:"aragonés", iso:"an"},
+			        {name:"català", iso:"ca"},
+			        {name:"Deutsch", iso:"de"},
+			        {name:"eesti keel", iso:"et"},
+			        {name:"English", iso:"en"},
+			        {name:"español", iso:"es"},
+			        {name:"Euskara", iso:"eu"},
+			        {name:"Gaeilge", iso:"ga"},
+			        {name:"galego", iso:"gl"},
+			        {name:"latviešu valoda", iso:"lv"},
+			        {name:"le français", iso:"fr"},
+			        {name:"Lëtzebuergesch", iso:"lb"},
+			        {name:"Malti", iso:"mt"},
+			        {name:"Nederlands", iso:"nl"},
+			        {name:"occitan", iso:"oc"},
+			        {name:"português", iso:"pt"},
+			        {name:"slovenščina", iso:"sl"},
+			        {name:"slovenský jazyk", iso:"sk"},
+			        {name:"suomi", iso:"fi"},
+			        {name:"svenska", iso:"sv"},
+			        {name:"Türkçe", iso:"tr"},
+			        {name:"ελληνικά", iso:"el"}
+			];
+			
 			$scope.productItemsHaveBeenFound = function() {
 				return $scope.foundProductItems.length > 0;
 			}
