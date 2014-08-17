@@ -29,12 +29,12 @@ import com.danidemi.europrice.screenscraping.Scrapers;
 public class OSelectionScrapeAction extends AbstractShopScraper {
     
 	public OSelectionScrapeAction() throws MalformedURLException {
-		super();
+		super("Oselection.es");
     }
 	
 	@Override
 	public String toString() {
-		return "OSelection.es"; 
+		return getShopName();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class OSelectionScrapeAction extends AbstractShopScraper {
 		action.setPriceSelector(By.cssSelector(".discount-price"));
 		action.setPriceScraper(Scrapers.text());
 		
-		action.setShopName("oselection.es");
+		action.setShopName(getShopName());
 		
 		return
 				inSequence( new GoToUrl("http://www.oselection.es/") )

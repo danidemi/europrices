@@ -16,6 +16,10 @@ import static com.danidemi.europrice.screenscraping.Scrape.search;
 
 public class StockistiScraper extends AbstractShopScraper {
 	
+	public StockistiScraper() {
+		super("Gli Stockisti");
+	}
+	
 	@Override
 	public String toString() {
 		return "Gli Stockisti";
@@ -33,7 +37,7 @@ public class StockistiScraper extends AbstractShopScraper {
 		action.setPriceSelector(By.cssSelector("span.price"));
 		action.setPriceScraper(Scrapers.text());
 		
-		action.setShopName("Gli Stockisti");
+		action.setShopName(getShopName());
 		
 		return
 				inSequence( new GoToUrl("http://www.glistockisti.it/") )

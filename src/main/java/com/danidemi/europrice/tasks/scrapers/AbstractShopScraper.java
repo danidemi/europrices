@@ -19,9 +19,15 @@ public abstract class AbstractShopScraper implements ProductItemScraper {
 
 	protected final MyAction action;
 	protected ScrapeAction root;
+	protected final String shopName;
 	
-	public AbstractShopScraper() {
+	public AbstractShopScraper(String shopName) {
 		action = new MyAction();			
+		this.shopName = shopName;
+	}
+	
+	public String getShopName() {
+		return shopName;
 	}
 
 	protected abstract ScrapeAction buildScrapeAction(ScrapeContext ctx, Request request, Callback callback) throws Exception;

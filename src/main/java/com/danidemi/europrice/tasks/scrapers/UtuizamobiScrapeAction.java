@@ -25,17 +25,21 @@ import com.danidemi.europrice.screenscraping.Scraper;
 public class UtuizamobiScrapeAction extends AbstractShopScraper {
 	
 	private static final Logger log = LoggerFactory.getLogger(UtuizamobiScrapeAction.class);
+	
+	public UtuizamobiScrapeAction() {
+		super("Etui Za Mobi.si");
+	}
 
 	@Override
 	public String toString() {
-		return "Utuizamobi";
+		return getShopName();
 	}
 	
 	@Override
 	protected ScrapeAction buildScrapeAction(ScrapeContext ctx,
 			Request request, Callback callback) throws Exception {
 
-		action.setShopName("etuizamobi.si");
+		action.setShopName(getShopName());
 		action.setDescriptionSelector(By.cssSelector(".product-name a"));
 		action.setDescriptionScraper(new Scraper<String>() {
 
