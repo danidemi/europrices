@@ -8,7 +8,7 @@ public interface Callback {
     
     void onStartScraping();
     
-    void onNewShopItem( ShopItem item );
+    void onNewShopItem( ScrapedShopItem item );
     
     void onEndScraping();
     

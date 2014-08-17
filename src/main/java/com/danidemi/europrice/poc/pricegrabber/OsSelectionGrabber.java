@@ -74,7 +74,7 @@ public class OsSelectionGrabber implements Grabber {
                 
                 
                 
-                ShopItem item = new ShopItem();
+                ScrapedShopItem item = new ScrapedShopItem();
                 item.setDescription(text2);
                 item.setPriceInCent(priceInCent);
                 item.setUrlDetail(href);

@@ -91,7 +91,7 @@ public class EPriceItGrabber implements Grabber {
                     Logger.getLogger(OsSelectionGrabber.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                ShopItem item = new ShopItem();
+                ScrapedShopItem item = new ScrapedShopItem();
                 item.setDescription(text2);
                 item.setPriceInCent(priceInCent);
                 item.setUrlDetail(href);

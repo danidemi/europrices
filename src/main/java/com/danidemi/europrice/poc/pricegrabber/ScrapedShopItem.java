@@ -6,7 +6,7 @@ import java.net.URL;
  *
  * @author danidemi
  */
-public class ShopItem {
+public class ScrapedShopItem {
 
     private Long priceInCent;
     private String description;

@@ -135,7 +135,7 @@ public class MyAction implements ScrapeAction {
 		ctx.info( String.valueOf( priceInCent ) );
 		ctx.info( String.valueOf( href ) );
 
-		ShopItem item = new ShopItem();
+		ScrapedShopItem item = new ScrapedShopItem();
 		item.setDescription(descrption);
 		item.setPriceInCent(priceInCent);
 		item.setUrlDetail(href);

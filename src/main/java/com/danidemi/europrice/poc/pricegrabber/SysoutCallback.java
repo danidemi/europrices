@@ -24,7 +24,7 @@ public class SysoutCallback implements Callback {
     }
 
     @Override
-    public void onNewShopItem(ShopItem item) {
+    public void onNewShopItem(ScrapedShopItem item) {
         System.out.println("====================================");
         System.out.println("Price:" + DecimalFormat.getCurrencyInstance(Locale.ITALIAN).format( item.getPriceInCent() / 100.0) );
         System.out.println("Product:" + item.getDescription());

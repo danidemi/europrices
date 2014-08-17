@@ -16,7 +16,7 @@ import com.danidemi.europrice.db.ProductItemRepository;
 import com.danidemi.europrice.db.Shop;
 import com.danidemi.europrice.db.ShopRepository;
 import com.danidemi.europrice.poc.pricegrabber.Callback;
-import com.danidemi.europrice.poc.pricegrabber.ShopItem;
+import com.danidemi.europrice.poc.pricegrabber.ScrapedShopItem;
 import com.danidemi.europrice.poc.pricegrabber.Request;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.ScrapeContextFactory;
@@ -49,7 +49,7 @@ public class ScreenScrapingTask implements Runnable {
 			}
 			
 			@Override
-			public void onNewShopItem(ShopItem item) {
+			public void onNewShopItem(ScrapedShopItem item) {
 				ScreenScrapingTask.this.onNewShopItem(item);
 			}
 			
@@ -78,7 +78,7 @@ public class ScreenScrapingTask implements Runnable {
 		transaction = txManager.getTransaction( new DefaultTransactionDefinition() );
 	}
 	
-	private void onNewShopItem(ShopItem item) {
+	private void onNewShopItem(ScrapedShopItem item) {
 		
 		if(currentShop == null){
 			String shopName = item.getShopName();			
