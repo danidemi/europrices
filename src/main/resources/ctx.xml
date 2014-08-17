@@ -84,9 +84,8 @@
 			<list>
 				<bean class="com.danidemi.europrice.tasks.scrapers.StockistiScraper" />
 				<bean class="com.danidemi.europrice.tasks.scrapers.UtuizamobiScrapeAction" />
-				<!--  
 				<bean class="com.danidemi.europrice.tasks.scrapers.OSelectionScrapeAction" />
-				-->
+				<bean class="com.danidemi.europrice.tasks.scrapers.BigShopLv" />
 			</list>
 		</property>
 		<property name="requests">
