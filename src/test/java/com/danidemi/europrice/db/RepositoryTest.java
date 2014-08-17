@@ -20,16 +20,16 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/ctx.xml")
-@ActiveProfiles(profiles="embedded")
+@ActiveProfiles(profiles="test")
 @Transactional
 @TransactionConfiguration(defaultRollback=true)
 public class RepositoryTest {
 		
 	@Autowired
-	private ProductItemRepository repository;
+	ProductItemRepository repository;
 	
 	@Autowired
-	private ShopRepository shopRepository;	
+	ShopRepository shopRepository;	
 	
 	@Test
 	public void shouldCreateAShop(){
@@ -47,6 +47,7 @@ public class RepositoryTest {
 		ProductItem pi = shop.newProductItem();
                 pi.setPriceInCent(1000L);
                 pi.withKeywords("good", "excellent");
+                pi.setDetailsURL("http://url");
                 
 		repository.save(pi);
 	}
@@ -61,14 +62,17 @@ public class RepositoryTest {
 		
 		ProductItem p1 = shop.newProductItem();
                 p1.setPriceInCent(102L);
+                p1.setDetailsURL("http://url");
 		p1.withKeywordsIn("gl 120 Luna");
 		
 		ProductItem p2 = shop.newProductItem();
                 p2.setPriceInCent(102L);
+                p2.setDetailsURL("http://url");
 		p2.withKeywordsIn("ZAMZUNG super plus 334 120Gb ");
 		
 		ProductItem p3 = shop.newProductItem();
                 p3.setPriceInCent(102L);
+                p3.setDetailsURL("http://url");
 		p3.withKeywordsIn("NewtWearable omni");
 		
 		repository.save( Arrays.asList( p1, p2, p3 ) );

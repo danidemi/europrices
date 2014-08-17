@@ -8,4 +8,6 @@ public interface ProductItemRepositoryCustom {
 
 	List<ProductItem> findProductItemsByKeywords(String[] keywords);
 	
+	List<ProductItem> findProductItemsByKeywords(List<String> terms);	
+	
 }

@@ -25,38 +25,17 @@
         ">
         
 	<task:scheduled-tasks scheduler="myScheduler">
-	    <task:scheduled ref="task" method="run" trigger="triggerN"/>
+	    <task:scheduled ref="task" method="run" trigger="trigger"/>
 	</task:scheduled-tasks>
-	<bean name="triggerN" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
-	<bean name="trigger1" class="org.springframework.scheduling.support.PeriodicTrigger">
-		<constructor-arg value="1" />
-		<constructor-arg value="DAYS" />
-		<property name="fixedRate" value="false" />
-	</bean>
-
-	<bean id="dbms" class="com.danidemi.jlubricant.embeddable.hsql.HsqlDbms" init-method="start" destroy-method="stop">
-		<property name="databases">
-			<bean class="com.danidemi.jlubricant.embeddable.hsql.HsqlDatabase">
-				<property name="dbName" value="europrices" />
-				<property name="password" value="europrices-pwd" />
-				<property name="username" value="europrices-usr" />
-				<property name="storage">
-					<bean class="com.danidemi.jlubricant.embeddable.hsql.ServerMode">
-						<property name="dbFolder" value="/var/misc/europrices/db/db" />
-					</bean>
-				</property>
-			</bean>
-		</property>
-	</bean>
 
 	<!-- Defaults to db/migration -->
-	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="dbms">
+	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="dataSource">
 	    <property name="dataSource" ref="dataSource"/>
 	</bean>
 
 
 	<!-- the name 'entityManagerFactory' is mandatory to made it available to spring-data repos -->
-	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="dbms, flyway">
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="dataSource, flyway">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.danidemi.europrice.db" />
 		<property name="jpaVendorAdapter">
@@ -137,16 +116,42 @@
 	
 	
 		
-	<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="" />
-		<property name="url" value="jdbc:hsqldb:hsql://localhost/europrices" />
-		<property name="username" value="europrices-usr" />
-		<property name="password" value="europrices-pwd" />
-	</bean>
 	
-	<beans profile="embedded">	
+	<beans profile="test">
+		<jdbc:embedded-database type="HSQL" id="dataSource" />
+		
+		<bean name="trigger" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+
 	</beans>
-	<beans profile="local">
+	<beans profile="prod">
+
+		<bean id="dbms" class="com.danidemi.jlubricant.embeddable.hsql.HsqlDbms" init-method="start" destroy-method="stop">
+			<property name="databases">
+				<bean class="com.danidemi.jlubricant.embeddable.hsql.HsqlDatabase">
+					<property name="dbName" value="europrices" />
+					<property name="password" value="europrices-pwd" />
+					<property name="username" value="europrices-usr" />
+					<property name="storage">
+						<bean class="com.danidemi.jlubricant.embeddable.hsql.ServerMode">
+							<property name="dbFolder" value="/var/misc/europrices/db/db" />
+						</bean>
+					</property>
+				</bean>
+			</property>
+		</bean>	
+	
+		<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+			<property name="driverClassName" value="" />
+			<property name="url" value="jdbc:hsqldb:hsql://localhost/europrices" />
+			<property name="username" value="europrices-usr" />
+			<property name="password" value="europrices-pwd" />
+		</bean>
+		
+		<bean name="trigger" class="org.springframework.scheduling.support.PeriodicTrigger">
+			<constructor-arg value="1" />
+			<constructor-arg value="DAYS" />
+			<property name="fixedRate" value="false" />
+		</bean>		
 	</beans>	
 
 </beans>
