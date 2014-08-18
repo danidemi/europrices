@@ -13,11 +13,12 @@ import com.danidemi.europrice.screenscraping.GoToUrl;
 import com.danidemi.europrice.screenscraping.ScrapeAction;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.Scrapers;
+import com.danidemi.europrice.utils.Utils.Language;
 
 public class BigShopLv extends AbstractShopScraper {
 
 	public BigShopLv() {
-		super("BIGSHOP-LV");
+		super("BIGSHOP-LV", Language.lv);
 	}
 
 	@Override

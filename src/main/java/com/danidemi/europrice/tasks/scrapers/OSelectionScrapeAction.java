@@ -21,6 +21,7 @@ import com.danidemi.europrice.screenscraping.GoToUrl;
 import com.danidemi.europrice.screenscraping.ScrapeAction;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.Scrapers;
+import com.danidemi.europrice.utils.Utils.Language;
 
 /**
  * The {@link ProductItemScraper} for "http://www.oselection.es/"
@@ -29,7 +30,7 @@ import com.danidemi.europrice.screenscraping.Scrapers;
 public class OSelectionScrapeAction extends AbstractShopScraper {
     
 	public OSelectionScrapeAction() throws MalformedURLException {
-		super("Oselection.es");
+		super("Oselection.es", Language.es);
     }
 	
 	@Override

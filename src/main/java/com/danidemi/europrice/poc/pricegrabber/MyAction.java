@@ -9,6 +9,7 @@ package com.danidemi.europrice.poc.pricegrabber;
 import com.danidemi.europrice.screenscraping.ScrapeAction;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.Scraper;
+import com.danidemi.europrice.utils.Utils.Language;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 
 import java.net.MalformedURLException;
@@ -42,6 +43,8 @@ public class MyAction implements ScrapeAction {
 	private Scraper<String> detailUrlSelectorScraper;
 
 	private String shopName;
+
+	private Language language;
 
 	public MyAction(Callback callback) {
 		priceParser = new PriceParser();
@@ -147,6 +150,14 @@ public class MyAction implements ScrapeAction {
 
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+	
+	public Language getLanguage() {
+		return language;
 	}
 
 }

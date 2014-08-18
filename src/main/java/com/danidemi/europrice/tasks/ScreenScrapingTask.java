@@ -130,6 +130,7 @@ public class ScreenScrapingTask implements Runnable {
 			productItem.setShop(currentShop);
 			productItem.setPriceInCent( item.getPriceInCent() );
 			productItem.setDetailsURL(urlDetail);
+			productItem.setLanguage( item.getLanguage() );
 			
 			productItemRepository.save(productItem);			
 			itemCount++;

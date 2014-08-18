@@ -18,6 +18,7 @@ import com.danidemi.europrice.poc.pricegrabber.Request;
 import com.danidemi.europrice.screenscraping.ScrapeAction;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.Scraper;
+import com.danidemi.europrice.utils.Utils.Language;
 
 /**
  * It seems this shops only has covers!
@@ -27,7 +28,7 @@ public class UtuizamobiScrapeAction extends AbstractShopScraper {
 	private static final Logger log = LoggerFactory.getLogger(UtuizamobiScrapeAction.class);
 	
 	public UtuizamobiScrapeAction() {
-		super("Etui Za Mobi.si");
+		super("Etui Za Mobi.si", Language.sl);
 	}
 
 	@Override

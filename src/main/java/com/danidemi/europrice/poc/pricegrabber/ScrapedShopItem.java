@@ -2,6 +2,8 @@ package com.danidemi.europrice.poc.pricegrabber;
 
 import java.net.URL;
 
+import com.danidemi.europrice.utils.Utils.Language;
+
 /**
  *
  * @author danidemi
@@ -12,6 +14,7 @@ public class ScrapedShopItem {
     private String description;
     private URL url;
 	private String shopName;
+	private Language language;
 
     public Long getPriceInCent() {
         return priceInCent;
@@ -44,5 +47,13 @@ public class ScrapedShopItem {
 	public String getShopName() {
 		return shopName;
 	}
-    
+	
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+	
+	public Language getLanguage() {
+		return language;
+	}
+	    
 }

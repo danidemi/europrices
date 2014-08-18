@@ -8,6 +8,7 @@ import com.danidemi.europrice.screenscraping.GoToUrl;
 import com.danidemi.europrice.screenscraping.ScrapeAction;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.Scrapers;
+import com.danidemi.europrice.utils.Utils.Language;
 
 import static com.danidemi.europrice.screenscraping.Scrape.forEachItem;
 import static com.danidemi.europrice.screenscraping.Scrape.forEachPageWithNextLinkDo;
@@ -17,7 +18,7 @@ import static com.danidemi.europrice.screenscraping.Scrape.search;
 public class StockistiScraper extends AbstractShopScraper {
 	
 	public StockistiScraper() {
-		super("Gli Stockisti");
+		super("Gli Stockisti", Language.it);
 	}
 	
 	@Override

@@ -77,7 +77,9 @@
 		<property name="shopRepository" ref="shopRepository" />
 		<property name="ctxFactory">
 			<bean class="com.danidemi.europrice.screenscraping.PhantomjsFactory">
-				<property name="enableProxy" value="false" />
+				<property name="enableProxy" value="true" />
+				<property name="proxy" value="10.1.51.10" />
+				<property name="port" value="80" />
 			</bean>
 		</property>
 		<property name="scrapers">
@@ -90,10 +92,25 @@
 		</property>
 		<property name="requests">
 			<list>
-				<value>samsung</value>
-				<value>nexus</value>
+				<value>asus</value>
+				<value>blackberry</value>
+				<value>htc</value>
+				<value>huawei</value>
+				<value>iphone</value>
+				<value>lenovo</value>
 				<value>lg</value>
+				<value>lumia</value>
+				<value>meizu</value>
+				<value>moto</value>
+				<value>nexus</value>
+				<value>nokia</value>
 				<value>oppo</value>
+				<value>pantech</value>
+				<value>samsung</value>
+				<value>seven</value>
+				<value>sony</value>
+				<value>vivo</value>
+				<value>xiaomi</value>
 			</list>
 		</property>		
 		<property name="txManager" ref="transactionManager" />

@@ -8,7 +8,8 @@ CREATE TABLE ProductItem (
 	shop_id BIGINT FOREIGN KEY REFERENCES Shop(id),
 	detailsUrl VARCHAR(1024) UNIQUE NOT NULL,
 	keywordsBundle VARCHAR(1024) NOT NULL,
-	priceInCent BIGINT NOT NULL
+	priceInCent BIGINT NOT NULL,
+	language VARCHAR(3) NULL
 );
 
 CREATE TABLE Search (

@@ -1,5 +1,9 @@
 package com.danidemi.europrice.tasks.scrapers;
 
+import java.util.Locale;
+
+import net.sf.cglib.core.Local;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +13,8 @@ import com.danidemi.europrice.poc.pricegrabber.Request;
 import com.danidemi.europrice.screenscraping.ScrapeAction;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.ScrapeException;
+import com.danidemi.europrice.utils.Utils;
+import com.danidemi.europrice.utils.Utils.Language;
 
 /**
  * Base class that allows just to implement {@link AbstractShopScraper#buildScrapeAction(ScrapeContext, Request, Callback)} to define a {@link ProductItemScraper}.
@@ -21,8 +27,9 @@ public abstract class AbstractShopScraper implements ProductItemScraper {
 	protected ScrapeAction root;
 	protected final String shopName;
 	
-	public AbstractShopScraper(String shopName) {
-		action = new MyAction();			
+	public AbstractShopScraper(String shopName, Utils.Language language) {
+		action = new MyAction();
+		action.setLanguage(language);
 		this.shopName = shopName;
 	}
 	
