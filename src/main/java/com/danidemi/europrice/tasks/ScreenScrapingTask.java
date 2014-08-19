@@ -23,6 +23,7 @@ import com.danidemi.europrice.screenscraping.ScrapeContextFactory;
 import com.danidemi.europrice.tasks.scrapers.ProductItemScraper;
 import com.danidemi.europrice.utils.Utils;
 
+@Deprecated
 public class ScreenScrapingTask implements Runnable {
 	
 	private Logger log = LoggerFactory.getLogger(ScreenScrapingTask.class);

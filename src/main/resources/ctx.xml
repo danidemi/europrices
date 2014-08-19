@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans
@@ -23,19 +20,23 @@
 		http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd        
         ">
-        
+
 	<task:scheduled-tasks scheduler="myScheduler">
-	    <task:scheduled ref="task" method="run" trigger="trigger"/>
+		<task:scheduled ref="task" method="run" trigger="trigger" />
 	</task:scheduled-tasks>
 
 	<!-- Defaults to db/migration -->
-	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="dataSource">
-	    <property name="dataSource" ref="dataSource"/>
+	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate"
+		depends-on="dataSource">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 
-	<!-- the name 'entityManagerFactory' is mandatory to made it available to spring-data repos -->
-	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="dataSource, flyway">
+	<!-- the name 'entityManagerFactory' is mandatory to made it available to 
+		spring-data repos -->
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		depends-on="dataSource, flyway">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.danidemi.europrice.db" />
 		<property name="jpaVendorAdapter">
@@ -50,31 +51,37 @@
 			</props>
 		</property>
 	</bean>
-	
-	<jpa:repositories base-package="com.danidemi.europrice.db"/>
+
+	<jpa:repositories base-package="com.danidemi.europrice.db" />
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	<tx:annotation-driven />
-	
-	<context:annotation-config/>
-	<context:component-scan base-package="com.danidemi.europrice.web.controller"/>
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.danidemi.europrice.web.controller" />
 	<mvc:annotation-driven />
-	
-	
-		
+
+
+
 
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-		
-	<bean id="repo"
-		class="com.danidemi.europrice.db.Repository" >
+
+	<bean id="repo" class="com.danidemi.europrice.db.Repository">
 	</bean>
 
-	<bean id="task" class="com.danidemi.europrice.tasks.ScreenScrapingTask">
-		<property name="productItemRepository" ref="productItemRepository" />
-		<property name="shopRepository" ref="shopRepository" />
+	<bean id="task" class="com.danidemi.europrice.tasks.ModularScreenScrapingTask">
+		<property name="callback">
+			<bean class="com.danidemi.europrice.tasks.TransactionCallback">
+				<property name="commitInterval" value="10" />
+				<property name="txManager" ref="txManager" />
+				<property name="delegate">
+					<bean class="com.danidemi.europrice.tasks.BusinessCallback" />
+				</property>
+			</bean>
+		</property>
 		<property name="ctxFactory">
 			<bean class="com.danidemi.europrice.screenscraping.PhantomjsFactory">
 				<property name="enableProxy" value="true" />
@@ -90,34 +97,69 @@
 				<bean class="com.danidemi.europrice.tasks.scrapers.BigShopLv" />
 			</list>
 		</property>
-		<property name="requests">
+
+		<property name="iterators">
 			<list>
-				<value>asus</value>
-				<value>blackberry</value>
-				<value>htc</value>
-				<value>huawei</value>
-				<value>iphone</value>
-				<value>lenovo</value>
-				<value>lg</value>
-				<value>lumia</value>
-				<value>meizu</value>
-				<value>moto</value>
-				<value>nexus</value>
-				<value>nokia</value>
-				<value>oppo</value>
-				<value>pantech</value>
-				<value>samsung</value>
-				<value>seven</value>
-				<value>sony</value>
-				<value>vivo</value>
-				<value>xiaomi</value>
+				<bean class="com.danidemi.europrice.tasks.FixedIterator">
+					<property name="scrapers">
+						<list>
+							<bean class="com.danidemi.europrice.tasks.scrapers.StockistiScraper" />
+							<bean class="com.danidemi.europrice.tasks.scrapers.UtuizamobiScrapeAction" />
+							<bean class="com.danidemi.europrice.tasks.scrapers.OSelectionScrapeAction" />
+							<bean class="com.danidemi.europrice.tasks.scrapers.BigShopLv" />
+						</list>
+					</property>
+					<property name="requests">
+						<list>
+							<value>asus</value>
+							<value>blackberry</value>
+							<value>htc</value>
+							<value>huawei</value>
+							<value>iphone</value>
+							<value>lenovo</value>
+							<value>lg</value>
+							<value>lumia</value>
+							<value>meizu</value>
+							<value>moto</value>
+							<value>nexus</value>
+							<value>nokia</value>
+							<value>oppo</value>
+							<value>pantech</value>
+							<value>samsung</value>
+							<value>seven</value>
+							<value>sony</value>
+							<value>vivo</value>
+							<value>xiaomi</value>
+						</list>
+					</property>
+				</bean>
 			</list>
-		</property>		
-		<property name="txManager" ref="transactionManager" />
+		</property>
+
+
 	</bean>
-	
-  
-	<bean name="js" class="com.danidemi.europrice.jetty.poc.PocStandardWebApp" init-method="start" destroy-method="stop">
+
+	<!-- <bean id="taskOld" class="com.danidemi.europrice.tasks.ScreenScrapingTask"> 
+		<property name="productItemRepository" ref="productItemRepository" /> <property 
+		name="shopRepository" ref="shopRepository" /> <property name="ctxFactory"> 
+		<bean class="com.danidemi.europrice.screenscraping.PhantomjsFactory"> <property 
+		name="enableProxy" value="true" /> <property name="proxy" value="10.1.51.10" 
+		/> <property name="port" value="80" /> </bean> </property> <property name="scrapers"> 
+		<list> <bean class="com.danidemi.europrice.tasks.scrapers.StockistiScraper" 
+		/> <bean class="com.danidemi.europrice.tasks.scrapers.UtuizamobiScrapeAction" 
+		/> <bean class="com.danidemi.europrice.tasks.scrapers.OSelectionScrapeAction" 
+		/> <bean class="com.danidemi.europrice.tasks.scrapers.BigShopLv" /> </list> 
+		</property> <property name="requests"> <list> <value>asus</value> <value>blackberry</value> 
+		<value>htc</value> <value>huawei</value> <value>iphone</value> <value>lenovo</value> 
+		<value>lg</value> <value>lumia</value> <value>meizu</value> <value>moto</value> 
+		<value>nexus</value> <value>nokia</value> <value>oppo</value> <value>pantech</value> 
+		<value>samsung</value> <value>seven</value> <value>sony</value> <value>vivo</value> 
+		<value>xiaomi</value> </list> </property> <property name="txManager" ref="transactionManager" 
+		/> </bean> -->
+
+
+	<bean name="js" class="com.danidemi.europrice.jetty.poc.PocStandardWebApp"
+		init-method="start" destroy-method="stop">
 		<property name="dirAllowed" value="true" />
 		<property name="dispatcherServletSubPath" value="/app/*" />
 		<property name="httpPort" value="8080" />
@@ -126,22 +168,24 @@
 	</bean>
 
 
-	<task:scheduler id="myScheduler" pool-size="10"/>
-	
+	<task:scheduler id="myScheduler" pool-size="10" />
 
-	
-	
-		
-	
+
+
+
+
+
 	<beans profile="test">
 		<jdbc:embedded-database type="HSQL" id="dataSource" />
-		
-		<bean name="trigger" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+
+		<bean name="trigger"
+			class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
 
 	</beans>
 	<beans profile="prod">
 
-		<bean id="dbms" class="com.danidemi.jlubricant.embeddable.hsql.HsqlDbms" init-method="start" destroy-method="stop">
+		<bean id="dbms" class="com.danidemi.jlubricant.embeddable.hsql.HsqlDbms"
+			init-method="start" destroy-method="stop">
 			<property name="databases">
 				<bean class="com.danidemi.jlubricant.embeddable.hsql.HsqlDatabase">
 					<property name="dbName" value="europrices" />
@@ -154,24 +198,27 @@
 					</property>
 				</bean>
 			</property>
-		</bean>	
-	
-		<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource" depends-on="dbms">
+		</bean>
+
+		<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+			depends-on="dbms">
 			<property name="driverClassName" value="" />
 			<property name="url" value="jdbc:hsqldb:hsql://localhost/europrices" />
 			<property name="username" value="europrices-usr" />
 			<property name="password" value="europrices-pwd" />
 		</bean>
-		
-		<bean name="trigger1" class="org.springframework.scheduling.support.PeriodicTrigger">
+
+		<bean name="trigger1"
+			class="org.springframework.scheduling.support.PeriodicTrigger">
 			<constructor-arg value="1" />
 			<constructor-arg value="DAYS" />
 			<property name="fixedRate" value="false" />
-		</bean>		
-		
-		<bean name="triggerN" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
-		
+		</bean>
+
+		<bean name="triggerN"
+			class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+
 		<alias alias="trigger" name="triggerN" />
-	</beans>	
+	</beans>
 
 </beans>
