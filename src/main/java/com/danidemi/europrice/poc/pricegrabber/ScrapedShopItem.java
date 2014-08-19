@@ -15,8 +15,22 @@ public class ScrapedShopItem {
     private URL url;
 	private String shopName;
 	private Language language;
+	
+    public ScrapedShopItem(Long priceInCent, String description, URL url,
+			String shopName, Language language) {
+		super();
+		this.priceInCent = priceInCent;
+		this.description = description;
+		this.url = url;
+		this.shopName = shopName;
+		this.language = language;
+	}
+    
+    public ScrapedShopItem() {
+	
+	}
 
-    public Long getPriceInCent() {
+	public Long getPriceInCent() {
         return priceInCent;
     }
 

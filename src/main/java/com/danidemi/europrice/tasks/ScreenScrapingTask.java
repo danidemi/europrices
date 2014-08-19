@@ -3,13 +3,11 @@ package com.danidemi.europrice.tasks;
 import java.net.URL;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -18,26 +16,27 @@ import com.danidemi.europrice.db.ProductItemRepository;
 import com.danidemi.europrice.db.Shop;
 import com.danidemi.europrice.db.ShopRepository;
 import com.danidemi.europrice.poc.pricegrabber.Callback;
-import com.danidemi.europrice.poc.pricegrabber.ScrapedShopItem;
 import com.danidemi.europrice.poc.pricegrabber.Request;
+import com.danidemi.europrice.poc.pricegrabber.ScrapedShopItem;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.ScrapeContextFactory;
-import com.danidemi.europrice.screenscraping.Search;
 import com.danidemi.europrice.tasks.scrapers.ProductItemScraper;
 import com.danidemi.europrice.utils.Utils;
 
 public class ScreenScrapingTask implements Runnable {
 	
 	private Logger log = LoggerFactory.getLogger(ScreenScrapingTask.class);
-	
+
+	// dependencies
 	private ShopRepository shopRepository;
 	private ProductItemRepository productItemRepository;
-	private Shop currentShop;
 	private List<ProductItemScraper> scrapers;
 	private List<Request> searches;
 	private ScrapeContextFactory ctxFactory;
+	private PlatformTransactionManager txManager;
+	
+	private Shop currentShop;	
 	private int itemCount;
-	private JpaTransactionManager txManager;
 	private TransactionStatus transaction;
 	private int itemsPerTransactions;
 	
@@ -45,7 +44,7 @@ public class ScreenScrapingTask implements Runnable {
 	private int updatedItems = 0;
 	private int errorItems = 0;
 		
-	@Override @Transactional
+	@Override
 	public void run() {
 		
 		Callback callback = new Callback() {
@@ -196,7 +195,7 @@ public class ScreenScrapingTask implements Runnable {
 		this.ctxFactory = ctxFactory;
 	}
 	
-	public void setTxManager(JpaTransactionManager txManager) {
+	public void setTxManager(PlatformTransactionManager txManager) {
 		this.txManager = txManager;
 	}
 	
