@@ -24,4 +24,8 @@ public class ResourceProductItem {
 		return dbProductItem.getDetailsURL();
 	}
 	
+	public String getLanguageIsoCode() {
+		return dbProductItem.getLanguage().name();
+	}
+	
 }

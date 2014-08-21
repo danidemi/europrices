@@ -76,7 +76,7 @@
 		<property name="callback">
 			<bean class="com.danidemi.europrice.tasks.TransactionCallback">
 				<property name="commitInterval" value="10" />
-				<property name="txManager" ref="txManager" />
+				<property name="txManager" ref="transactionManager" />
 				<property name="delegate">
 					<bean class="com.danidemi.europrice.tasks.BusinessCallback" />
 				</property>
@@ -89,15 +89,6 @@
 				<property name="port" value="80" />
 			</bean>
 		</property>
-		<property name="scrapers">
-			<list>
-				<bean class="com.danidemi.europrice.tasks.scrapers.StockistiScraper" />
-				<bean class="com.danidemi.europrice.tasks.scrapers.UtuizamobiScrapeAction" />
-				<bean class="com.danidemi.europrice.tasks.scrapers.OSelectionScrapeAction" />
-				<bean class="com.danidemi.europrice.tasks.scrapers.BigShopLv" />
-			</list>
-		</property>
-
 		<property name="iterators">
 			<list>
 				<bean class="com.danidemi.europrice.tasks.FixedIterator">
