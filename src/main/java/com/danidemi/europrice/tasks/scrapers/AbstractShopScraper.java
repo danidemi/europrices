@@ -1,6 +1,7 @@
 package com.danidemi.europrice.tasks.scrapers;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import net.sf.cglib.core.Local;
 
@@ -29,6 +30,10 @@ public abstract class AbstractShopScraper implements ProductItemScraper {
 	
 	public AbstractShopScraper(String shopName, Utils.Language language) {
 		action = new MyAction();
+		
+		Objects.requireNonNull(language, "language cannot be null");
+		Objects.requireNonNull(shopName, "shopName cannot be null");
+		
 		action.setLanguage(language);
 		this.shopName = shopName;
 	}

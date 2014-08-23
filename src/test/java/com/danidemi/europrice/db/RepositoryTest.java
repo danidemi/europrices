@@ -16,6 +16,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
+import com.danidemi.europrice.utils.Utils.Language;
+
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,6 +50,7 @@ public class RepositoryTest {
                 pi.setPriceInCent(1000L);
                 pi.withKeywords("good", "excellent");
                 pi.setDetailsURL("http://url");
+                pi.setLanguage(Language.ca);
                 
 		repository.save(pi);
 	}
@@ -63,19 +66,25 @@ public class RepositoryTest {
 		ProductItem p1 = shop.newProductItem();
                 p1.setPriceInCent(102L);
                 p1.setDetailsURL("http://url");
+                p1.setLanguage(Language.el);
 		p1.withKeywordsIn("gl 120 Luna");
+		repository.save(p1);
 		
-		ProductItem p2 = shop.newProductItem();
-                p2.setPriceInCent(102L);
-                p2.setDetailsURL("http://url");
-		p2.withKeywordsIn("ZAMZUNG super plus 334 120Gb ");
 		
 		ProductItem p3 = shop.newProductItem();
                 p3.setPriceInCent(102L);
                 p3.setDetailsURL("http://url");
+                p3.setLanguage(Language.el);
 		p3.withKeywordsIn("NewtWearable omni");
+		repository.save(p3);
 		
-		repository.save( Arrays.asList( p1, p2, p3 ) );
+		ProductItem p2 = shop.newProductItem();
+		p2.setPriceInCent(102L);
+		p2.setDetailsURL("http://url");
+		p2.setLanguage(Language.el);
+		p2.withKeywordsIn("ZAMZUNG super plus 334 120Gb ");
+		repository.save(p2);
+		
 		
 		// when
 		List<ProductItem> items = repository.findProductItemsByKeyword("120");

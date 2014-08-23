@@ -28,8 +28,8 @@
 	<logger name="org.flywaydb" level="WARN" />
 	
 	<logger name="org.hibernate" level="WARN" />
+	-->
 	<logger name="org.hibernate.SQL" level="ALL" />
 	<logger name="org.hibernate.type" level="ALL" />	
-	-->
 	
 </configuration>

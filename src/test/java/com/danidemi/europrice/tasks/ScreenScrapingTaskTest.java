@@ -76,7 +76,7 @@ public class ScreenScrapingTaskTest {
 		// then
 		verify( productItemRepository ).save( dbProductItemArg.capture() );
 		ProductItem dbItem = dbProductItemArg.getValue();
-		assertThat( dbItem.getLanguage(), equalTo(Language.it) );
+		assertThat( dbItem.getLanguage(), equalTo(Language.de) );
 		
 	}
 	

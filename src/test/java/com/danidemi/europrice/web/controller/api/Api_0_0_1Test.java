@@ -19,6 +19,7 @@ import com.danidemi.europrice.db.ProductItem;
 import com.danidemi.europrice.db.ProductItemRepository;
 import com.danidemi.europrice.db.Shop;
 import com.danidemi.europrice.db.ShopRepository;
+import com.danidemi.europrice.utils.Utils.Language;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,16 +69,19 @@ public class Api_0_0_1Test {
     	zamzungCompact.withKeywordsIn("zamzung compact 2");
     	zamzungCompact.setDetailsURL("http://url");
     	zamzungCompact.setPriceInCent(90_00L);
+    	zamzungCompact.setLanguage(Language.it);
     	
     	ProductItem zamzungCompact3 = shop.newProductItem();
     	zamzungCompact3.withKeywordsIn("zamzung compact 3");
     	zamzungCompact3.setDetailsURL("http://url");
     	zamzungCompact3.setPriceInCent(91_00L);
+    	zamzungCompact3.setLanguage(Language.it);
     	
     	ProductItem glPreviux = shop.newProductItem();
     	glPreviux.withKeywordsIn("gl previux");
     	glPreviux.setDetailsURL("http://url");
     	glPreviux.setPriceInCent(92_00L);
+    	glPreviux.setLanguage(Language.it);
     	
     	itemRepository.save( Arrays.asList( zamzungCompact, zamzungCompact3, glPreviux ) );
     	}

@@ -106,45 +106,63 @@ public class MyAction implements ScrapeAction {
 	@Override
 	public void scrape(ScrapeContext ctx) {
 
-
+		boolean error = false;
+		
 		
 		// search price
-		List<WebElement> findElements = ctx.findElementsFromSubRoot(priceSelector);
-		String text = priceScraper.get(findElements.get(0));
+		
 		Long priceInCent = null;
 		try {
+			List<WebElement> findElements = ctx.findElementsFromSubRoot(priceSelector);
+			String text = priceScraper.get(findElements.get(0));
 			priceInCent = priceParser.parse(text);
-		} catch (ParserException ex) {
-			ctx.info(ex.getMessage());
-		}
+		} catch (Exception ex) {
+			ctx.info("An error occurred while retrieving price:" + ex.getMessage());
+			error = true;
+		} 
 
 		// search description
-		List<WebElement> findElements2 = ctx.findElementsFromSubRoot(descriptionSelector);
-		String descrption = descriptionScraper.get( findElements2.get(0) );
+		String descrption = null;
+		try {
+			List<WebElement> findElements2 = ctx.findElementsFromSubRoot(descriptionSelector);
+			descrption = descriptionScraper.get( findElements2.get(0) );						
+		}catch(Exception e){
+			ctx.info("An error occurred while retrieving price:" + e.getMessage());
+			error = true;			
+		}
 		
 		// search url details
-		List<WebElement> findElements3 = ctx.findElementsFromSubRoot(detailUrlSelector);
 		URL href = null;
 		try {
+			List<WebElement> findElements3 = ctx.findElementsFromSubRoot(detailUrlSelector);
 			WebElement theElms = findElements3.get(0);
 			String theUrl = this.detailUrlSelectorScraper.get( theElms );
 			href = new URL( theUrl);
-		} catch (MalformedURLException ex) {
-			ctx.info(ex.getMessage());
-		}		// TODO Auto-generated method stub
+		} catch (Exception ex) {
+			ctx.info("An error occurred while retrieving price:" + ex.getMessage());
+			error = true;			
+		}		
 		
-		ctx.info("Found");
-		ctx.info(descrption);
-		ctx.info( String.valueOf( priceInCent ) );
-		ctx.info( String.valueOf( href ) );
-
-		ScrapedShopItem item = new ScrapedShopItem();
-		item.setDescription(descrption);
-		item.setPriceInCent(priceInCent);
-		item.setUrlDetail(href);
-		item.setShopName(shopName);
 		
-		callback.onNewShopItem(item);
+		if(!error){
+			
+			ctx.info("Found");
+			ctx.info(descrption);
+			ctx.info( String.valueOf( priceInCent ) );
+			ctx.info( String.valueOf( href ) );
+			
+			ScrapedShopItem item = new ScrapedShopItem();
+			item.setDescription(descrption);
+			item.setPriceInCent(priceInCent);
+			item.setUrlDetail(href);
+			item.setShopName(shopName);
+			item.setLanguage(language);
+			
+			callback.onNewShopItem(item);
+			
+		}else{
+			ctx.info("Item not scraped due to previous errors");
+		}
 
 	}
 

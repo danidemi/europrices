@@ -2,12 +2,12 @@ package com.danidemi.europrice.tasks;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.danidemi.europrice.db.ProductItem;
 import com.danidemi.europrice.db.ProductItemRepository;
@@ -19,19 +19,30 @@ import com.danidemi.europrice.utils.Utils;
 
 public class BusinessCallback implements Callback {
 	
-	private Logger log = LoggerFactory.getLogger(ScreenScrapingTask.class);
+	private Logger log = LoggerFactory.getLogger(BusinessCallback.class);
 	
-	private ShopRepository shopRepository;
-	private ProductItemRepository productItemRepository;
+	@Autowired private ShopRepository shopRepository;
+	@Autowired private ProductItemRepository productItemRepository;
 	private Shop currentShop;	
-	private int itemCount;	
 	private int newItems = 0;
 	private int updatedItems = 0;
 	private int errorItems = 0;
 
+	public void setShopRepository(ShopRepository shopRepository) {
+		this.shopRepository = shopRepository;
+	}
+	
+	public void setProductItemRepository(
+			ProductItemRepository productItemRepository) {
+		this.productItemRepository = productItemRepository;
+	}
 
 	@Override
 	public void onStartScraping() {
+		
+		Objects.requireNonNull(shopRepository, "Please set a shopRepository");
+		Objects.requireNonNull(productItemRepository, "Please set a productItemRepository");
+		
 		currentShop = null;
 	}
 
@@ -82,7 +93,6 @@ public class BusinessCallback implements Callback {
 			productItem.setLanguage( item.getLanguage() );
 			
 			productItemRepository.save(productItem);			
-			itemCount++;
 			
 			if(isNew) { newItems++;} else {updatedItems++;}
 			
@@ -96,10 +106,7 @@ public class BusinessCallback implements Callback {
 	@Override
 	public void onEndScraping() {
 		currentShop = null;
-		
-		
 		log.info("{} new items, {} updated, {} with errors", newItems, updatedItems, errorItems);
-		
 	}
 	
 	private Shop firstShop(String shopName) {

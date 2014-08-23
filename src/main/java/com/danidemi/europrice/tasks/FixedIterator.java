@@ -7,6 +7,9 @@ import java.util.List;
 import com.danidemi.europrice.poc.pricegrabber.Request;
 import com.danidemi.europrice.tasks.scrapers.ProductItemScraper;
 
+/**
+ * {@link FixedIterator} provide configure a set of searches on a a given set of shop.
+ */
 public class FixedIterator implements Iterable< Tupla2<Request,ProductItemScraper> >{
 
 	private List<ProductItemScraper> scrapers;
@@ -19,7 +22,7 @@ public class FixedIterator implements Iterable< Tupla2<Request,ProductItemScrape
 		
 		for (Request request : searches) {
 			for (ProductItemScraper scraper : scrapers) {
-				result.add( new Tupla2<Request, ProductItemScraper>() );
+				result.add( new Tupla2<Request, ProductItemScraper>(request, scraper) );
 			}
 		}
 		
@@ -39,5 +42,7 @@ public class FixedIterator implements Iterable< Tupla2<Request,ProductItemScrape
 	public void setRequests(List<Request> searches){
 		this.searches = searches;
 	}
+	
+	
 
 }

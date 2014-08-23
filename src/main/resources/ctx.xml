@@ -79,12 +79,12 @@
 				<property name="txManager" ref="transactionManager" />
 				<property name="delegate">
 					<bean class="com.danidemi.europrice.tasks.BusinessCallback" />
-				</property>
+				</property>				
 			</bean>
 		</property>
 		<property name="ctxFactory">
 			<bean class="com.danidemi.europrice.screenscraping.PhantomjsFactory">
-				<property name="enableProxy" value="true" />
+				<property name="enableProxy" value="false" />
 				<property name="proxy" value="10.1.51.10" />
 				<property name="port" value="80" />
 			</bean>
@@ -209,7 +209,7 @@
 		<bean name="triggerN"
 			class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
 
-		<alias alias="trigger" name="triggerN" />
+		<alias alias="trigger" name="trigger1" />
 	</beans>
 
 </beans>

@@ -9,7 +9,7 @@ CREATE TABLE ProductItem (
 	detailsUrl VARCHAR(1024) UNIQUE NOT NULL,
 	keywordsBundle VARCHAR(1024) NOT NULL,
 	priceInCent BIGINT NOT NULL,
-	language VARCHAR(3) NULL
+	language VARCHAR(3) NOT NULL
 );
 
 CREATE TABLE Search (

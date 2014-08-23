@@ -2,6 +2,7 @@ package com.danidemi.europrice.tasks;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -49,8 +50,10 @@ public class ModularScreenScrapingTask implements Runnable {
 			
 			for (Tupla2<Request, ProductItemScraper> tupla2 : iterator) {
 				
-				Request one = tupla2.getOne();
-				ProductItemScraper two = tupla2.getTwo();
+				
+				
+				Request one = Objects.requireNonNull(tupla2.getOne(), "Request cannot be null");
+				ProductItemScraper two = Objects.requireNonNull(tupla2.getTwo(), "scraper cannot be null");
 				log.info("Scraping for '{}' on '{}'.", one, two);
 				two.scrape(scrapeContext, one, callback);
 				

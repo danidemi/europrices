@@ -102,7 +102,7 @@ public class ProductItem implements Serializable {
 		this.language = language;
 	}
 	
-	@Column(nullable=true)
+	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	public Language getLanguage() {
 		return language;
