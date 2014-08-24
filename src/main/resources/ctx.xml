@@ -21,6 +21,8 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd        
         ">
 
+	<context:property-placeholder location="classpath:config.main.xml" />        
+
 	<task:scheduled-tasks scheduler="myScheduler">
 		<task:scheduled ref="task" method="run" trigger="trigger" />
 	</task:scheduled-tasks>
@@ -84,9 +86,9 @@
 		</property>
 		<property name="ctxFactory">
 			<bean class="com.danidemi.europrice.screenscraping.PhantomjsFactory">
-				<property name="enableProxy" value="false" />
-				<property name="proxy" value="10.1.51.10" />
-				<property name="port" value="80" />
+				<property name="enableProxy" value="${europrices.phantomjs.proxy.enabled}" />
+				<property name="proxy" value="${europrices.phantomjs.proxy.host}" />
+				<property name="port" value="${europrices.phantomjs.proxy.port}" />
 			</bean>
 		</property>
 		<property name="iterators">
@@ -151,9 +153,9 @@
 
 	<bean name="js" class="com.danidemi.europrice.jetty.poc.PocStandardWebApp"
 		init-method="start" destroy-method="stop">
-		<property name="dirAllowed" value="true" />
+		<property name="dirAllowed" value="${europrices.http.dirAllowed}" />
 		<property name="dispatcherServletSubPath" value="/app/*" />
-		<property name="httpPort" value="8080" />
+		<property name="httpPort" value="${europrices.http.port}" />
 		<property name="virtualHost" value="localhost" />
 		<property name="webappContextPath" value="/" />
 	</bean>
@@ -209,7 +211,7 @@
 		<bean name="triggerN"
 			class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
 
-		<alias alias="trigger" name="trigger1" />
+		<alias alias="trigger" name="triggerN" />
 	</beans>
 
 </beans>

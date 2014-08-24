@@ -80,6 +80,13 @@ public class PocStandardWebApp implements ApplicationContextAware, EmbeddableSer
 		this.setVirtualHosts( Arrays.asList( new String[]{virtualHost} ) );
 	}
 	
+	public void setVirtualHosts(String virtualHost) {
+		
+		String[] split = virtualHost.split(",");
+		
+		this.setVirtualHosts( Arrays.asList( split ));
+	}	
+	
 	public boolean isDirAllowed() {
 		return dirAllowed;
 	}
