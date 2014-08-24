@@ -18,81 +18,76 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import com.danidemi.europrice.utils.Utils.Language;
 
-
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/ctx.xml")
-@ActiveProfiles(profiles="test")
+@ContextConfiguration(locations = "/ctx.xml")
+@ActiveProfiles(profiles = "test")
 @Transactional
-@TransactionConfiguration(defaultRollback=true)
+@TransactionConfiguration(defaultRollback = true)
 public class RepositoryTest {
-		
+
 	@Autowired
 	ProductItemRepository repository;
-	
+
 	@Autowired
-	ShopRepository shopRepository;	
-	
+	ShopRepository shopRepository;
+
 	@Test
-	public void shouldCreateAShop(){
-		
+	public void shouldCreateAShop() {
+
 		Shop shop = new Shop();
-                shop.setName("the shop");
+		shop.setName("the shop");
 		shopRepository.save(shop);
-		
+
 	}
-	
+
 	@Test
 	public void shouldCreateAProductItem() {
 		Shop shop = new Shop();
-                shop.setName("the shop");
+		shop.setName("the shop");
 		ProductItem pi = shop.newProductItem();
-                pi.setPriceInCent(1000L);
-                pi.withKeywords("good", "excellent");
-                pi.setDetailsURL("http://url");
-                pi.setLanguage(Language.ca);
-                
+		pi.setPriceInCent(1000L);
+		pi.withKeywords("good", "excellent");
+		pi.setDetailsURL("http://url");
+		pi.setLanguage(Language.ca);
+
 		repository.save(pi);
 	}
 
 	@Transactional
 	@Test
 	public void shouldSearchForProductByKeyword() {
-		
-		// given 
+
+		// given
 		Shop shop = new Shop();
-                shop.setName("the shop");
-		
+		shop.setName("the shop");
+		shopRepository.save(shop);
+
 		ProductItem p1 = shop.newProductItem();
-                p1.setPriceInCent(102L);
-                p1.setDetailsURL("http://url");
-                p1.setLanguage(Language.el);
+		p1.setPriceInCent(102L);
+		p1.setDetailsURL("http://url1");
+		p1.setLanguage(Language.el);
 		p1.withKeywordsIn("gl 120 Luna");
 		repository.save(p1);
-		
-		
+
 		ProductItem p3 = shop.newProductItem();
-                p3.setPriceInCent(102L);
-                p3.setDetailsURL("http://url");
-                p3.setLanguage(Language.el);
+		p3.setPriceInCent(102L);
+		p3.setDetailsURL("http://url2");
+		p3.setLanguage(Language.el);
 		p3.withKeywordsIn("NewtWearable omni");
 		repository.save(p3);
-		
+
 		ProductItem p2 = shop.newProductItem();
 		p2.setPriceInCent(102L);
-		p2.setDetailsURL("http://url");
+		p2.setDetailsURL("http://url3");
 		p2.setLanguage(Language.el);
 		p2.withKeywordsIn("ZAMZUNG super plus 334 120Gb ");
 		repository.save(p2);
-		
-		
+
 		// when
 		List<ProductItem> items = repository.findProductItemsByKeyword("120");
-		
+
 		// then
-		assertThat(items, containsInAnyOrder(p1, p2) );
-		
+		assertThat(items, containsInAnyOrder(p1, p2));
+
 	}
 }
-
-

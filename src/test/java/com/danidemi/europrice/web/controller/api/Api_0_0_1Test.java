@@ -67,19 +67,19 @@ public class Api_0_0_1Test {
     	
     	ProductItem zamzungCompact = shop.newProductItem();
     	zamzungCompact.withKeywordsIn("zamzung compact 2");
-    	zamzungCompact.setDetailsURL("http://url");
+    	zamzungCompact.setDetailsURL("http://url1");
     	zamzungCompact.setPriceInCent(90_00L);
     	zamzungCompact.setLanguage(Language.it);
     	
     	ProductItem zamzungCompact3 = shop.newProductItem();
     	zamzungCompact3.withKeywordsIn("zamzung compact 3");
-    	zamzungCompact3.setDetailsURL("http://url");
+    	zamzungCompact3.setDetailsURL("http://url2");
     	zamzungCompact3.setPriceInCent(91_00L);
     	zamzungCompact3.setLanguage(Language.it);
     	
     	ProductItem glPreviux = shop.newProductItem();
     	glPreviux.withKeywordsIn("gl previux");
-    	glPreviux.setDetailsURL("http://url");
+    	glPreviux.setDetailsURL("http://url3");
     	glPreviux.setPriceInCent(92_00L);
     	glPreviux.setLanguage(Language.it);
     	
@@ -91,19 +91,22 @@ public class Api_0_0_1Test {
 	    	shop.setName("telefonini.fr");
 	    	
 	    	ProductItem zamzungCompact = shop.newProductItem();
-	    	zamzungCompact.withKeywordsIn("zamzung compact 2");
-	    	zamzungCompact.setDetailsURL("http://url");
+	    	zamzungCompact.withKeywordsIn("zamzung compact");
+	    	zamzungCompact.setDetailsURL("http://url4");
 	    	zamzungCompact.setPriceInCent(100_00L);
+	    	zamzungCompact.setLanguage(Language.it);
 	    	
 	    	ProductItem zamzungCompact3 = shop.newProductItem();
-	    	zamzungCompact3.withKeywordsIn("zamzung compact 3");
-	    	zamzungCompact3.setDetailsURL("http://url");
+	    	zamzungCompact3.withKeywordsIn("zamzung compact");
+	    	zamzungCompact3.setDetailsURL("http://url5");
 	    	zamzungCompact3.setPriceInCent(110_00L);
+	    	zamzungCompact3.setLanguage(Language.it);
 	    	
 	    	ProductItem glPreviux = shop.newProductItem();
 	    	glPreviux.withKeywordsIn("gl previux");
-	    	glPreviux.setDetailsURL("http://url");
+	    	glPreviux.setDetailsURL("http://url6");
 	    	glPreviux.setPriceInCent(120_00L);
+	    	glPreviux.setLanguage(Language.it);
 			itemRepository.save(Arrays.asList(zamzungCompact, zamzungCompact3,
 					glPreviux));
     	}
@@ -114,8 +117,9 @@ public class Api_0_0_1Test {
 	    		    	
 	    	ProductItem enginolaPreviux = shop.newProductItem();
 	    	enginolaPreviux.withKeywordsIn("enginola previux");
-	    	enginolaPreviux.setDetailsURL("http://url");
+	    	enginolaPreviux.setDetailsURL("http://url7");
 	    	enginolaPreviux.setPriceInCent(77_00L);
+	    	enginolaPreviux.setLanguage(Language.it);
 			itemRepository.save(Arrays.asList(enginolaPreviux));
     	}    	
 	}

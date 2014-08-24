@@ -17,6 +17,7 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<jetty.version>9.2.2.v20140723</jetty.version>
 		<jackson-2-version>2.4.1</jackson-2-version>
+		<jlubricant.version>0.0.6</jlubricant.version>
 	</properties>
 
 	<dependencies>
@@ -201,19 +202,19 @@
 		<dependency>
 			<groupId>com.danidemi.jlubricant</groupId>
 			<artifactId>jlubricant-embeddable</artifactId>
-			<version>0.0.5-SNAPSHOT</version>
+			<version>${jlubricant.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.danidemi.jlubricant</groupId>
 			<artifactId>jlubricant-embeddable-hsql</artifactId>
-			<version>0.0.5-SNAPSHOT</version>
+			<version>${jlubricant.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.danidemi.jlubricant</groupId>
 			<artifactId>jlubricant-spring-context</artifactId>
-			<version>0.0.5-SNAPSHOT</version>
+			<version>${jlubricant.version}</version>
 		</dependency>
 
 		<!-- ======================================== -->
