@@ -21,7 +21,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd        
         ">
 
-	<context:property-placeholder location="classpath:config.main.xml" />        
+	<context:property-placeholder location="classpath:config.xml" />        
 
 	<task:scheduled-tasks scheduler="myScheduler">
 		<task:scheduled ref="task" method="run" trigger="trigger" />
@@ -181,6 +181,8 @@
 			init-method="start" destroy-method="stop">
 			<property name="databases">
 				<bean class="com.danidemi.jlubricant.embeddable.hsql.HsqlDatabase">
+					<!-- It is possible to bind to the internal IP with port range: 15000 - 35530  -->
+					<property name="port" value="15000" />
 					<property name="dbName" value="europrices" />
 					<property name="password" value="europrices-pwd" />
 					<property name="username" value="europrices-usr" />
