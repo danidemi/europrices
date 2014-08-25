@@ -24,12 +24,25 @@
 	</dependencySets>
 	
 	<fileSets>
+	
 		<fileSet>
 			<directory>src/main/scripts</directory>
 			<outputDirectory>/</outputDirectory>
 			<fileMode>0744</fileMode>
 		</fileSet>
+		
+		<!-- copy the environmental configuration files -->
+		<fileSet>
+			<directory>${basedir}/env/${my.environment}</directory>
+			<outputDirectory>/conf</outputDirectory>
+			<includes>
+				<include>*.properties</include>
+				<include>*.xml</include>
+			</includes>			
+		</fileSet>
+		
 	</fileSets>
+	
 	
 	
   

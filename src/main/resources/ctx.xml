@@ -156,7 +156,7 @@
 		<property name="dirAllowed" value="${europrices.http.dirAllowed}" />
 		<property name="dispatcherServletSubPath" value="/app/*" />
 		<property name="httpPort" value="${europrices.http.port}" />
-		<property name="virtualHost" value="localhost" />
+		<property name="virtualHosts" value="localhost,127.0.0.1" />
 		<property name="webappContextPath" value="/" />
 	</bean>
 

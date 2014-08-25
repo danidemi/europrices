@@ -364,6 +364,20 @@
 	</dependencies>
 
 	<build>
+	
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<!-- logback.xml not copied because the one from the correct environment will be used instead -->
+					<exclude>logback.xml</exclude>
+					<!-- config.xml not copied because the one from the correct environment will be used instead -->
+					<exclude>config.xml</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -396,5 +410,17 @@
 
 
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>openshift</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<my.environment>openshift</my.environment>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>
