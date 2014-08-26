@@ -29,7 +29,7 @@
 
 	<!-- Defaults to db/migration -->
 	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate"
-		depends-on="dataSource">
+		depends-on="dbms">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
@@ -179,22 +179,21 @@
 
 		<bean id="dbms" class="com.danidemi.jlubricant.embeddable.hsql.HsqlDbms"
 			init-method="start" destroy-method="stop">
-			<property name="databases">
-				<bean class="com.danidemi.jlubricant.embeddable.hsql.HsqlDatabase">
-					<!-- It is possible to bind to the internal IP with port range: 15000 - 35530  -->
-					<property name="port" value="15000" />
-					<property name="dbName" value="europrices" />
-					<property name="password" value="europrices-pwd" />
-					<property name="username" value="europrices-usr" />
-					<property name="storage">
-						<bean class="com.danidemi.jlubricant.embeddable.hsql.ServerMode">
-							<property name="dbFolder" value="/var/misc/europrices/db/db" />
-						</bean>
-					</property>
+			<property name="port" value="${europrices.db.port}" />
+			<property name="databases" ref="dataSource" />
+		</bean>
+		<bean class="com.danidemi.jlubricant.embeddable.hsql.HsqlDatabase" id="dataSource">
+			<property name="dbName" value="europrices" />
+			<property name="password" value="europrices-pwd" />
+			<property name="username" value="europrices-usr" />
+			<property name="storage">
+				<bean class="com.danidemi.jlubricant.embeddable.hsql.ServerMode">
+					<property name="dbFolder" value="/var/misc/europrices/db/db" />
 				</bean>
 			</property>
 		</bean>
 
+		<!--  
 		<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 			depends-on="dbms">
 			<property name="driverClassName" value="" />
@@ -202,6 +201,7 @@
 			<property name="username" value="europrices-usr" />
 			<property name="password" value="europrices-pwd" />
 		</bean>
+		-->
 
 		<bean name="trigger1"
 			class="org.springframework.scheduling.support.PeriodicTrigger">
