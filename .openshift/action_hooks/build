@@ -3,16 +3,14 @@
 # Otherwise it will execute while your application is stopped before the deploy step. 
 # This script gets executed directly, so it could be python, php, ruby, etc.
 
+
+
 # checkout the code
-git clone europrices-danidemi.rhcloud.com/~/git/europrices.git/
+cd $OPENSHIFT_DATA_DIR
+rm -rf europrices/
+git clone ~/git/europrices.git/
 
 # build the sources
 cd europrices
-mvn clean install assembly:single -P openshift
-mv target/*tar.gz ${OPENSHIFT_DATA_DIR}
-cd ${OPENSHIFT_DATA_DIR}
-tar xvf *tar.gz
-
-# start the app
-cd ${OPENSHIFT_DATA_DIR}/europrices.sh
+mvn clean install -DskipTest -P openshift
 
