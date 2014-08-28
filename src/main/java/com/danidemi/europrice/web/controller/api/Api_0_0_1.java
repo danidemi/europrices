@@ -12,6 +12,8 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.collections.ComparatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.CollectionUtils;
+import org.springframework.cglib.core.Transformer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,8 +57,26 @@ public class Api_0_0_1 {
 		
 		List<ResourceProductItemWithRelevancy> map = map(findProductItemsByKeywords, scorer);
 		
-		Comparator<ResourceProductItemWithRelevancy> c1 = (ResourceProductItemWithRelevancy p1, ResourceProductItemWithRelevancy p2) -> p1.getPriceInEuroCent().compareTo(p2.getPriceInEuroCent());
-		Comparator<ResourceProductItemWithRelevancy> c2 = (ResourceProductItemWithRelevancy p1, ResourceProductItemWithRelevancy p2) -> p2.getRelevancy().compareTo(p1.getRelevancy());
+		// TODO: back to j1.8		
+		// Comparator<ResourceProductItemWithRelevancy> c1 = (ResourceProductItemWithRelevancy p1, ResourceProductItemWithRelevancy p2) -> p1.getPriceInEuroCent().compareTo(p2.getPriceInEuroCent());
+		// Comparator<ResourceProductItemWithRelevancy> c2 = (ResourceProductItemWithRelevancy p1, ResourceProductItemWithRelevancy p2) -> p2.getRelevancy().compareTo(p1.getRelevancy());
+		
+		Comparator<ResourceProductItemWithRelevancy> c1 = new Comparator<ResourceProductItemWithRelevancy>() {
+
+			@Override
+			public int compare(ResourceProductItemWithRelevancy o1, ResourceProductItemWithRelevancy o2) {
+				return o1.getPriceInEuroCent().compareTo(o2.getPriceInEuroCent());
+			}
+		};
+		
+		Comparator<ResourceProductItemWithRelevancy> c2 = new Comparator<ResourceProductItemWithRelevancy>() {
+
+			@Override
+			public int compare(ResourceProductItemWithRelevancy o1, ResourceProductItemWithRelevancy o2) {
+				return o2.getRelevancy().compareTo(o1.getRelevancy());
+			}
+		};		
+		
 		Collections.sort(map, ComparatorUtils.chainedComparator(c2, c1));
 		
 		Search search = Utils.firstIfExists( searchRepository.findBySearch(searchTerms) );
@@ -71,12 +91,21 @@ public class Api_0_0_1 {
 		return map;
 	}
 	
-	private List<ResourceProductItemWithRelevancy> map(List<ProductItem> findProductItemsByKeyword2, RelevancyScorer scorer) {
+	private List<ResourceProductItemWithRelevancy> map(List<ProductItem> findProductItemsByKeyword2, final RelevancyScorer scorer) {
 		
-		List<ResourceProductItemWithRelevancy> collect = findProductItemsByKeyword2
-			.stream()
-			.map(p -> new ResourceProductItemWithRelevancy(p, scorer))
-			.collect(Collectors.toList());
+		// TODO: back to j1.8
+//		List<ResourceProductItemWithRelevancy> collect = findProductItemsByKeyword2
+//			.stream()
+//			.map(p -> new ResourceProductItemWithRelevancy(p, scorer))
+//			.collect(Collectors.toList());
+		
+		List<ResourceProductItemWithRelevancy> collect = CollectionUtils.transform( findProductItemsByKeyword2, new Transformer() {
+			
+			@Override
+			public Object transform(Object arg0) {
+				return new ResourceProductItemWithRelevancy((ProductItem) arg0, scorer);
+			}
+		} );
 		
 		return collect;
 	}
