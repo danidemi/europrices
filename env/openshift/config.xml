@@ -5,12 +5,14 @@
 <!-- ============================================================================ -->
 <properties>
 	<!-- ${VARIABLE} is resolved also against environment variables! -->
+	
 	<entry key="europrices.http.port">${OPENSHIFT_DIY_PORT}</entry>
+	<entry key="europrices.http.dirAllowed">false</entry>
+	<entry key="europrices.http.virtualHosts">localhost,127.0.0.1,europrices.danidemi.com,${OPENSHIFT_APP_DNS}</entry>
+	
 	<entry key="europrices.phantomjs.proxy.enabled">false</entry>
 	<entry key="europrices.phantomjs.proxy.host">0.0.0.0</entry>
 	<entry key="europrices.phantomjs.proxy.port">80</entry>
-	<entry key="europrices.http.dirAllowed">false</entry>
-	<entry key="europrices.http.virtualHosts">localhost,127.0.0.1,europrices.danidemi.com,${OPENSHIFT_APP_DNS}</entry>
 	
 	<!-- It is possible to bind to the internal IP with port range: 15000 - 35530  -->
 	<entry key="europrices.db.port">15000</entry>

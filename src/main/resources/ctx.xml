@@ -169,6 +169,7 @@
 
 
 	<beans profile="test">
+		<alias name="dataSource" alias="dbms"/>
 		<jdbc:embedded-database type="HSQL" id="dataSource" />
 
 		<bean name="trigger"
