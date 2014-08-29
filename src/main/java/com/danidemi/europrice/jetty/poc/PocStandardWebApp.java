@@ -49,6 +49,8 @@ public class PocStandardWebApp implements ApplicationContextAware, EmbeddableSer
 	private String dispatcherServletSubPath = "/";
 
 	private Thread jettyThread;
+
+	private String host;
 	
 	
 	/**
@@ -80,13 +82,10 @@ public class PocStandardWebApp implements ApplicationContextAware, EmbeddableSer
 		this.setVirtualHosts( Arrays.asList( new String[]{virtualHost} ) );
 	}
 	
-	public void setVirtualHosts(String virtualHost) {
+	public void setHost(String host) {
+		this.host = host;
+	}
 		
-		String[] split = virtualHost.split(",");
-		
-		this.setVirtualHosts( Arrays.asList( split ));
-	}	
-	
 	public boolean isDirAllowed() {
 		return dirAllowed;
 	}
@@ -127,6 +126,9 @@ public class PocStandardWebApp implements ApplicationContextAware, EmbeddableSer
 				new HttpConnectionFactory(http_config));
 		http.setPort(httpPort);
 		http.setIdleTimeout(idleTimeout);
+		if(host != null){
+			http.setHost(host);			
+		}
 		
 		// HTTP connector #2
 //		ServerConnector http2 = new ServerConnector(server,
@@ -136,7 +138,9 @@ public class PocStandardWebApp implements ApplicationContextAware, EmbeddableSer
 		
 		WebAppContext webapp = new WebAppContext();
 		
-		webapp.setVirtualHosts(virtualHosts);
+		if(virtualHosts!=null){
+			webapp.setVirtualHosts(virtualHosts);		
+		}
 		
 		webapp.setContextPath(webappContextPath);
 		/* Disable directory listings if no index.html is found. */
