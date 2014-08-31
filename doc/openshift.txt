@@ -14,3 +14,9 @@ export JAVA_HOME=${$OPENSHIFT_DATA_DIR}jdk/jdk/
 export PATH=${JAVA_HOME}bin:$PATH
 
 # Doh! Openshift maven env reset JAVA_HOME && M2_HOME!
+
+
+Phantomjs
+=========
+wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
+tar -jxvf phantomjs-1.9.7-linux-x86_64.tar.bz2

@@ -13,6 +13,16 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 	private String proxy;
 	private int port;
 	private boolean enableProxy = false;
+
+	private String pathToPhantomJsExecutable = null;
+	
+	public PhantomjsFactory() {
+
+	}
+	
+	public void setPathToPhantomJsExecutable(String pathToPhantomJsExecutable) {
+		this.pathToPhantomJsExecutable = pathToPhantomJsExecutable;
+	}
 	
 	public void setEnableProxy(boolean enabled) {
 		this.enableProxy = enabled;
@@ -25,12 +35,16 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 	public void setPort(int port) {
 		this.port = port;
 	}
-
+	
 	@Override
 	public ScrapeContext getScrapeContext() {
 		
+		if(pathToPhantomJsExecutable == null) {
+			throw new IllegalStateException("Please, set pathToPhantomJsExecutable");
+		}
+		
         DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-        capabilities.setCapability("phantomjs.binary.path", "/opt/phantomjs/phantomjs/bin/phantomjs");
+		capabilities.setCapability("phantomjs.binary.path", pathToPhantomJsExecutable);
         
         
         if(enableProxy) {

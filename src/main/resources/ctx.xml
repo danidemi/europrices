@@ -119,6 +119,7 @@
 				<property name="enableProxy" value="${europrices.phantomjs.proxy.enabled}" />
 				<property name="proxy" value="${europrices.phantomjs.proxy.host}" />
 				<property name="port" value="${europrices.phantomjs.proxy.port}" />
+				<property name="pathToPhantomJsExecutable" value="${europrices.phantomjs.executable}" />
 			</bean>
 		</property>
 		<property name="iterators">
@@ -219,7 +220,7 @@
 		<bean name="triggerN"
 			class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
 
-		<alias alias="trigger" name="triggerN" />
+		<alias alias="trigger" name="${europrices.scraping.trigger}" />
 	</beans>
 
 </beans>

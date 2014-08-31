@@ -8,6 +8,7 @@
 	<entry key="europrices.phantomjs.proxy.enabled">false</entry>
 	<entry key="europrices.phantomjs.proxy.host">0.0.0.0</entry>
 	<entry key="europrices.phantomjs.proxy.port">80</entry>
+	<entry key="europrices.phantomjs.executable">${OPENSHIFT_DATA_DIR}phantomjs-1.9.7-linux-x86_64/bin/phantomjs</entry>
 	
 	<entry key="europrices.http.port">${OPENSHIFT_DIY_PORT}</entry>
 	<entry key="europrices.http.dirAllowed">false</entry>
@@ -21,4 +22,6 @@
 	<entry key="europrices.db.username">europrices-usr</entry>
 	<entry key="europrices.db.password">europrices-pwd</entry>
 	<entry key="europrices.db.path">${OPENSHIFT_DATA_DIR}db</entry>
+
+	<entry key="europrices.scraping.trigger">trigger1</entry>
 </properties>
