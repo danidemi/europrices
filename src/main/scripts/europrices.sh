@@ -1,3 +1,3 @@
 #!/bin/bash
 # Launch script
-java -cp "lib/*" com.danidemi.europrice.EuroPrices
+nohup java -cp lib/*:conf com.danidemi.europrice.EuroPrices &> /dev/null &

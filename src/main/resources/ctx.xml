@@ -204,7 +204,7 @@
 			<property name="password" value="${europrices.db.username}" />
 			<property name="username" value="${europrices.db.password}" />
 			<property name="storage">
-				<bean class="com.danidemi.jlubricant.embeddable.hsql.ServerMode">
+				<bean class="com.danidemi.jlubricant.embeddable.hsql.FileSystemStorage">
 					<property name="dbFolder" value="${europrices.db.path}" />
 				</bean>
 			</property>

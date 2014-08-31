@@ -364,20 +364,7 @@
 	</dependencies>
 
 	<build>
-	
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<!--  
-				<excludes>
-					<exclude>logback.xml</exclude>
-					<exclude>config.xml</exclude>
-				</excludes>
-				-->
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	
+		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -395,8 +382,9 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.4.1</version>
 				<configuration>
+					<finalName>${project.artifactId}-${project.version}</finalName>
 					<descriptors>
-						<descriptor>assembly.xml</descriptor>
+						<descriptor>assembly-openshift.xml</descriptor>
 					</descriptors>
 				    <archiverConfig>
 				        <fileMode>420</fileMode> <!-- 420(dec) = 644(oct) -->
@@ -412,6 +400,35 @@
 	</build>
 	
 	<profiles>
+	
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<my.environment>default</my.environment>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<includes>
+							<include>**/*</include>
+						</includes>
+						<filtering>true</filtering>
+					</resource>				
+					<resource>
+						<directory>env/default</directory>
+						<includes>
+							<include>**/*.xml</include>
+						</includes>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+			</build>
+		</profile>	
+		
 		<profile>
 			<id>openshift</id>
 			<activation>
@@ -421,6 +438,7 @@
 				<my.environment>openshift</my.environment>
 			</properties>
 		</profile>
+		
 	</profiles>
-
+	
 </project>
