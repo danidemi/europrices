@@ -117,9 +117,10 @@
 		<property name="ctxFactory">
 			<bean class="com.danidemi.europrice.screenscraping.PhantomjsFactory">
 				<property name="enableProxy" value="${europrices.phantomjs.proxy.enabled}" />
-				<property name="proxy" value="${europrices.phantomjs.proxy.host}" />
-				<property name="port" value="${europrices.phantomjs.proxy.port}" />
+				<property name="proxyHost" value="${europrices.phantomjs.proxy.host}" />
+				<property name="proxyPort" value="${europrices.phantomjs.proxy.port}" />
 				<property name="pathToPhantomJsExecutable" value="${europrices.phantomjs.executable}" />
+				<property name="port" value="${europrices.phantomjs.port}" />
 			</bean>
 		</property>
 		<property name="iterators">

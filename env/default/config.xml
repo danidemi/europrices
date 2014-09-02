@@ -9,6 +9,7 @@
 	<entry key="europrices.phantomjs.proxy.host">10.1.51.10</entry>
 	<entry key="europrices.phantomjs.proxy.port">80</entry>
 	<entry key="europrices.phantomjs.executable">/opt/phantomjs/phantomjs/bin/phantomjs</entry>
+	<entry key="europrices.phantomjs.port">9090</entry>
 	
 	<entry key="europrices.http.port">8080</entry>
 	<entry key="europrices.http.dirAllowed">false</entry>

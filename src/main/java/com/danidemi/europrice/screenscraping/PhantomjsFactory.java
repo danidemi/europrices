@@ -16,11 +16,14 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 	final Logger log = LoggerFactory.getLogger(PhantomjsFactory.class);	
 	
 	
-	private String proxy;
-	private Integer port;
+	private String proxyHost;
+	private Integer proxyPort;
 	private boolean enableProxy = false;
 
 	private File pathToPhantomJsExecutable = null;
+
+
+	private String port;
 	
 	public PhantomjsFactory() {
 
@@ -46,11 +49,15 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 		this.enableProxy = enabled;
 	}
 	
-	public void setProxy(String proxy) {
-		this.proxy = proxy;
+	public void setProxyHost(String proxy) {
+		this.proxyHost = proxy;
 	}
 	
-	public void setPort(int port) {
+	public void setProxyPort(int port) {
+		this.proxyPort = port;
+	}
+	
+	public void setPort(String port){
 		this.port = port;
 	}
 	
@@ -65,13 +72,13 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 		capabilities.setCapability("phantomjs.binary.path", pathToPhantomJsExecutable);
         if(enableProxy) {
         	Proxy proxy = new Proxy();
-        	proxy.setHttpProxy(this.proxy + ":" + port);
+        	proxy.setHttpProxy(this.proxyHost + ":" + proxyPort);
         	capabilities.setCapability("proxy", proxy);
         }
                 
         final PhantomJSDriver driver 
         	//= driverTheCommonWay(capabilities);
-        	= driverTheHardWay(capabilities);
+        	= driverTheHardWay();
         
 
 
@@ -92,24 +99,56 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 	    
 	}
 	
-
-	private PhantomJSDriver driverTheCommonWay(DesiredCapabilities capabilities) {
-		return new PhantomJSDriver(capabilities);
+	public static void main(String[] args) {
+		PhantomjsFactory f = new PhantomjsFactory();
+		
+		DesiredCapabilities defaultCapa = DesiredCapabilities.phantomjs();
+		defaultCapa.setCapability("phantomjs.binary.path", "/opt/phantomjs/phantomjs/bin/phantomjs");
+		defaultCapa.setCapability("phantomjs.cli.args", new String[] {"--debug=true"});
+		
+//		{
+//			PhantomJSDriver driver1 = f.driverTheCommonWay(defaultCapa);
+//			System.out.println( driver1.getCapabilities().asMap() );
+//		}
+		
+		{
+			f.pathToPhantomJsExecutable = new File("/opt/phantomjs/phantomjs/bin/phantomjs");
+			//f.port = "9999";
+			PhantomJSDriver driver2 = f.driverTheHardWay();
+		}
 	}
 	
-	private PhantomJSDriver driverTheHardWay(DesiredCapabilities capabilities) {
+
+	private PhantomJSDriver driverTheCommonWay(DesiredCapabilities capabilities) {
+		PhantomJSDriver phantomJSDriver = new PhantomJSDriver(capabilities);
+		System.out.println( phantomJSDriver.getCapabilities().asMap() );
+		return phantomJSDriver;
+	}
+	
+	private PhantomJSDriver driverTheHardWay() {
 
 		PhantomJSDriverService.Builder builder = new PhantomJSDriverService.Builder();
+		
 		builder.usingPhantomJSExecutable(this.pathToPhantomJsExecutable);
+		
+		
+		
 		//builder..usingGhostDriver(ghostDriverfile) --> whant's that for ? In null uses embedded ghostdriver.
-		if(this.port != null){
-			builder.usingPort(this.port);			
+		if(this.proxyPort != null){
+			builder.usingPort(this.proxyPort);			
 		}
 		if(this.enableProxy){
 			Proxy theProxy = new Proxy();
-			theProxy.setHttpProxy(this.proxy);
+			theProxy.setHttpProxy(this.proxyHost);
 			builder.withProxy( theProxy );			
 		}
+		
+		if(this.port!=null) {
+			builder.usingPort( Integer.parseInt( port ) );
+		}else{
+			builder.usingAnyFreePort();
+		}
+				
 		//builder.withLogFile(new File("/tmp/")); --> doh! I don't want file
 
 		//    --cookies-file=<val>                 Sets the file name to store the persistent cookies
@@ -140,11 +179,19 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 		//	  -h,--help                            Shows this message and quits
 		//	  -v,--version                         Prints out PhantomJS version
 		
-		Map<String, String> paramToValue = new HashMap<>();
-		
+//		Map<String, String> paramToValue = new HashMap<>();
+//		paramToValue.put("debug", "true");
+//		paramToValue.put("ignore-ssl-errors", "true");
+//		String[] params = new String[paramToValue.size()];
+//		int i = 0;
+//		for (Map.Entry<String, String> paramAndValue : paramToValue.entrySet()) {
+//			params[i++] = "--" + paramAndValue.getKey() + "=" + paramAndValue.getValue();
+//		}
+//		builder.usingCommandLineArguments(params);
+//		builder.usingCommandLineArguments(new String[]{"--webdriver=" + port});
 
-		builder.usingCommandLineArguments( new String[] {"--ignore-ssl-errors=true", "--load-images=false"} );
-		return new PhantomJSDriver(builder.build(), capabilities);
+		PhantomJSDriverService build = builder.build();
+		return new PhantomJSDriver(build, DesiredCapabilities.phantomjs());
 	}
 	
 	
