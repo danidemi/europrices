@@ -1,0 +1,7 @@
+RemoteWebDriver
+^
+|
+
+
+#Capabilities FROM RemoteWebDriver
+webdriver.logging.profiler.enabled
