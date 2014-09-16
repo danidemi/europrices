@@ -9,6 +9,7 @@
 	<entry key="europrices.phantomjs.proxy.host">0.0.0.0</entry>
 	<entry key="europrices.phantomjs.proxy.port">80</entry>
 	<entry key="europrices.phantomjs.executable">${OPENSHIFT_DATA_DIR}phantomjs-1.9.7-linux-x86_64/bin/phantomjs</entry>
+	<entry key="europrices.phantomjs.port">80</entry>
 	
 	<entry key="europrices.http.port">${OPENSHIFT_DIY_PORT}</entry>
 	<entry key="europrices.http.dirAllowed">false</entry>

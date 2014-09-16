@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <!-- ============================================================================ -->
-<!-- src/test/resources                                                           -->
+<!-- default                                                                      -->
 <!-- ============================================================================ -->
 <properties>
 	<!-- ${VARIABLE} is resolved also against environment variables! -->
-	<entry key="europrices.phantomjs.proxy.enabled">true</entry>
+	<entry key="europrices.phantomjs.proxy.enabled">false</entry>
 	<entry key="europrices.phantomjs.proxy.host">10.1.51.10</entry>
 	<entry key="europrices.phantomjs.proxy.port">80</entry>
 	<entry key="europrices.phantomjs.executable">/opt/phantomjs/phantomjs/bin/phantomjs</entry>
+	<entry key="europrices.phantomjs.port">9090</entry>
 	
 	<entry key="europrices.http.port">8080</entry>
 	<entry key="europrices.http.dirAllowed">false</entry>
@@ -22,4 +23,6 @@
 	<entry key="europrices.db.username">europrices-usr</entry>
 	<entry key="europrices.db.password">europrices-pwd</entry>
 	<entry key="europrices.db.path">/var/misc/europrices/db</entry>
+	
+	<entry key="europrices.scraping.trigger">trigger1</entry>
 </properties>

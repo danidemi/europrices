@@ -53,7 +53,6 @@ public class RepositoryTest {
 		repository.save(pi);
 	}
 
-	@Transactional
 	@Test
 	public void shouldSearchForProductByKeyword() {
 
@@ -63,22 +62,22 @@ public class RepositoryTest {
 		shopRepository.save(shop);
 
 		ProductItem p1 = shop.newProductItem();
+		p1.setDetailsURL("http://url1" + System.currentTimeMillis());
 		p1.setPriceInCent(102L);
-		p1.setDetailsURL("http://url1");
 		p1.setLanguage(Language.el);
 		p1.withKeywordsIn("gl 120 Luna");
 		repository.save(p1);
 
 		ProductItem p3 = shop.newProductItem();
 		p3.setPriceInCent(102L);
-		p3.setDetailsURL("http://url2");
+		p3.setDetailsURL("http://url2" + System.currentTimeMillis());
 		p3.setLanguage(Language.el);
 		p3.withKeywordsIn("NewtWearable omni");
 		repository.save(p3);
 
 		ProductItem p2 = shop.newProductItem();
 		p2.setPriceInCent(102L);
-		p2.setDetailsURL("http://url3");
+		p2.setDetailsURL("http://url3" + System.currentTimeMillis());
 		p2.setLanguage(Language.el);
 		p2.withKeywordsIn("ZAMZUNG super plus 334 120Gb ");
 		repository.save(p2);
