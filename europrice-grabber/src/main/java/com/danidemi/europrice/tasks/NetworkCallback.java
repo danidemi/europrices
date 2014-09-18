@@ -10,10 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.danidemi.europrice.db.ProductItem;
-import com.danidemi.europrice.db.ProductItemRepository;
-import com.danidemi.europrice.db.Shop;
-import com.danidemi.europrice.db.ShopRepository;
 import com.danidemi.europrice.network.Client;
 import com.danidemi.europrice.poc.pricegrabber.Callback;
 import com.danidemi.europrice.poc.pricegrabber.ScrapedShopItem;
@@ -53,8 +49,4 @@ public class NetworkCallback implements Callback {
 		
 	}
 	
-	private Shop firstShop(String shopName) {
-
-	}
-
 }

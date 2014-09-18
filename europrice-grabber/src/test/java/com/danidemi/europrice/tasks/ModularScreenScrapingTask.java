@@ -1,28 +1,16 @@
 package com.danidemi.europrice.tasks;
 
-import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.danidemi.europrice.db.ProductItem;
-import com.danidemi.europrice.db.ProductItemRepository;
-import com.danidemi.europrice.db.Shop;
-import com.danidemi.europrice.db.ShopRepository;
 import com.danidemi.europrice.poc.pricegrabber.Callback;
 import com.danidemi.europrice.poc.pricegrabber.Request;
-import com.danidemi.europrice.poc.pricegrabber.ScrapedShopItem;
 import com.danidemi.europrice.screenscraping.ScrapeContext;
 import com.danidemi.europrice.screenscraping.ScrapeContextFactory;
 import com.danidemi.europrice.tasks.scrapers.ProductItemScraper;
-import com.danidemi.europrice.utils.Utils;
 
 public class ModularScreenScrapingTask implements Runnable {
 	
