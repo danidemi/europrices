@@ -104,18 +104,18 @@
 	<!-- ========================================================== -->
 	<!-- Scraping                                                   -->
 	<!-- ========================================================== -->
-	<bean id="task" class="com.danidemi.europrice.tasks.ModularScreenScrapingTask">
+	<bean id="task" class="com.danidemi.europrice.tasks.ModularScreenScrapingTask" lazy-init="true">
 		<property name="callback">
-			<bean class="com.danidemi.europrice.tasks.TransactionCallback">
+			<bean class="com.danidemi.europrice.tasks.TransactionScrapedProductCallback">
 				<property name="commitInterval" value="10" />
 				<property name="txManager" ref="transactionManager" />
 				<property name="delegate">
-					<bean class="com.danidemi.europrice.tasks.BusinessCallback" />
+					<bean class="com.danidemi.europrice.tasks.StoreOnDbScrapedProductCallback" />
 				</property>				
 			</bean>
 		</property>
 		<property name="ctxFactory">
-			<bean class="com.danidemi.europrice.screenscraping.PhantomjsFactory">
+			<bean class="com.danidemi.jlubricant.screenscraping.context.PhantomjsFactory">
 				<property name="enableProxy" value="${europrices.phantomjs.proxy.enabled}" />
 				<property name="proxyHost" value="${europrices.phantomjs.proxy.host}" />
 				<property name="proxyPort" value="${europrices.phantomjs.proxy.port}" />
@@ -125,13 +125,13 @@
 		</property>
 		<property name="iterators">
 			<list>
-				<bean class="com.danidemi.europrice.tasks.FixedIterator">
+				<bean class="com.danidemi.europrice.utils.FixedIterator">
 					<property name="scrapers">
 						<list>
-							<bean class="com.danidemi.europrice.tasks.scrapers.StockistiScraper" />
-							<bean class="com.danidemi.europrice.tasks.scrapers.UtuizamobiScrapeAction" />
-							<bean class="com.danidemi.europrice.tasks.scrapers.OSelectionScrapeAction" />
-							<bean class="com.danidemi.europrice.tasks.scrapers.BigShopLv" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.StockistiScraper" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.UtuizamobiScrapeAction" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.OSelectionScrapeAction" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.BigShopLv" />
 						</list>
 					</property>
 					<property name="requests">
@@ -168,7 +168,7 @@
 	<!-- ========================================================== -->
 	<!-- Web                                                        -->
 	<!-- ========================================================== -->
-	<bean name="js" class="com.danidemi.europrice.jetty.poc.PocStandardWebApp" init-method="start" destroy-method="stop">
+	<bean name="js" class="com.danidemi.jlubricant.embeddable.jetty.EmbeddableJetty" init-method="start" destroy-method="stop">
 		<property name="dirAllowed" value="${europrices.http.dirAllowed}" />
 		<property name="dispatcherServletSubPath" value="/app/*" />
 		<property name="httpPort" value="${europrices.http.port}" />

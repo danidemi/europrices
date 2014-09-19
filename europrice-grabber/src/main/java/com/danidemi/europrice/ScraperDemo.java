@@ -1,14 +1,14 @@
 package com.danidemi.europrice;
 
-import com.danidemi.europrice.poc.pricegrabber.Request;
-import com.danidemi.europrice.poc.pricegrabber.SysoutCallback;
-import com.danidemi.europrice.screenscraping.PhantomjsFactory;
-import com.danidemi.europrice.screenscraping.ScrapeContext;
-import com.danidemi.europrice.screenscraping.ScrapeContextFactory;
-import com.danidemi.europrice.screenscraping.Search;
-import com.danidemi.europrice.tasks.scrapers.OSelectionScrapeAction;
-import com.danidemi.europrice.tasks.scrapers.StockistiScraper;
-import com.danidemi.europrice.tasks.scrapers.UtuizamobiScrapeAction;
+import com.danidemi.europrice.pricegrabber.screenscraping.action.SysoutProductCallback;
+import com.danidemi.europrice.pricegrabber.screenscraping.shops.OSelectionScrapeAction;
+import com.danidemi.europrice.pricegrabber.screenscraping.shops.Request;
+import com.danidemi.europrice.pricegrabber.screenscraping.shops.StockistiScraper;
+import com.danidemi.europrice.pricegrabber.screenscraping.shops.UtuizamobiScrapeAction;
+import com.danidemi.jlubricant.screenscraping.action.Search;
+import com.danidemi.jlubricant.screenscraping.context.PhantomjsFactory;
+import com.danidemi.jlubricant.screenscraping.context.ScrapeContext;
+import com.danidemi.jlubricant.screenscraping.context.ScrapeContextFactory;
 
 public class ScraperDemo {
 
@@ -19,7 +19,7 @@ public class ScraperDemo {
 			
 			ScrapeContextFactory factory = new PhantomjsFactory();
 			
-			SysoutCallback callback = new SysoutCallback();
+			SysoutProductCallback callback = new SysoutProductCallback();
 			
 			OSelectionScrapeAction scraper1 = new OSelectionScrapeAction();
 			UtuizamobiScrapeAction scraper2 = new UtuizamobiScrapeAction();
