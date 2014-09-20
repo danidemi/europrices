@@ -15,30 +15,28 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
 import com.danidemi.europrice.pricegrabber.screenscraping.action.ScrapedProduct;
+import com.danidemi.europrice.utils.Json;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Network {
 
-	private ObjectMapper mapper = new ObjectMapper();
-	private StringWriter writer = new StringWriter();
+	private Json mapper = new Json();
 	
-	private CloseableHttpClient httpClient;
 	private String storeProductUri;
 	
 	public Network() {
-		httpClient = HttpClientBuilder.create().build();
 	}
 	
 	public synchronized void storeNewProducts(List<ScrapedProduct> productsToStore) throws JsonGenerationException, JsonMappingException, IOException {
-				
-		mapper.writeValue(writer, productsToStore);
-		String json = writer.toString();
+						
+		CloseableHttpClient httpClient;
+		httpClient = HttpClientBuilder.create().build();
+		String json = mapper.toJson(productsToStore);
 		
-		storeProductUri = "http://httpbin.org/post";
 		HttpPost post = new HttpPost(storeProductUri);
-		post.setHeader("content", "application/json");
+		post.setHeader("Content-Type", "application/json");
 		HttpEntity entity = new StringEntity(json);
 		post.setEntity(entity);
 		
@@ -48,6 +46,9 @@ public class Network {
 		if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){
 			throw new RuntimeException("Server returned an error:" + response.getStatusLine());
 		}
+		
+		response.close();
+		
 		
 	}
 	

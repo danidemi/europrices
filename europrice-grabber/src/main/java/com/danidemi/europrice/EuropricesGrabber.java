@@ -2,7 +2,7 @@ package com.danidemi.europrice;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Grabber {
+public class EuropricesGrabber {
 
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext();

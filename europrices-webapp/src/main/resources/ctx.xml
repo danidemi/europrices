@@ -104,16 +104,17 @@
 	<!-- ========================================================== -->
 	<!-- Scraping                                                   -->
 	<!-- ========================================================== -->
+	
+	<bean id="callback" class="com.danidemi.europrice.tasks.TransactionScrapedProductCallback">
+		<property name="commitInterval" value="10" />
+		<property name="txManager" ref="transactionManager" />
+		<property name="delegate">
+			<bean class="com.danidemi.europrice.tasks.StoreOnDbScrapedProductCallback" />
+		</property>				
+	</bean>
+	
 	<bean id="task" class="com.danidemi.europrice.tasks.ModularScreenScrapingTask" lazy-init="true">
-		<property name="callback">
-			<bean class="com.danidemi.europrice.tasks.TransactionScrapedProductCallback">
-				<property name="commitInterval" value="10" />
-				<property name="txManager" ref="transactionManager" />
-				<property name="delegate">
-					<bean class="com.danidemi.europrice.tasks.StoreOnDbScrapedProductCallback" />
-				</property>				
-			</bean>
-		</property>
+		<property name="callback" ref="callback" />
 		<property name="ctxFactory">
 			<bean class="com.danidemi.jlubricant.screenscraping.context.PhantomjsFactory">
 				<property name="enableProxy" value="${europrices.phantomjs.proxy.enabled}" />
