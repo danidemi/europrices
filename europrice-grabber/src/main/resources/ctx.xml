@@ -21,7 +21,87 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd        
         ">
 
-	<context:property-placeholder location="classpath:config.xml" />        
+	<context:property-placeholder location="classpath:config.xml" />  
+	
+	<!-- ========================================================== -->
+	<!-- Tasks                                                      -->
+	<!-- ========================================================== -->
+	<task:scheduled-tasks scheduler="myScheduler">
+		<task:scheduled ref="task" method="run" trigger="trigger" />
+	</task:scheduled-tasks>
+	
+	<task:scheduler id="myScheduler" pool-size="10" />	
+	
+	<bean name="trigger1" class="org.springframework.scheduling.support.PeriodicTrigger">
+		<constructor-arg value="1" />
+		<constructor-arg value="DAYS" />
+		<property name="fixedRate" value="false" />
+	</bean>
 
+	<bean name="triggerN" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+
+	<alias alias="trigger" name="${europrices.scraping.trigger}" />	
+
+	<!-- ========================================================== -->
+	<!-- Scraping                                                   -->
+	<!-- ========================================================== -->
+	<bean id="task" class="com.danidemi.europrice.tasks.ModularScreenScrapingTask">
+		<property name="callback">
+			<bean class="com.danidemi.europrice.tasks.NetworkCallback">
+				<property name="bufferSize" value="20" />
+				<property name="network">
+					<bean class="com.danidemi.europrice.tasks.Network">
+						<property name="storeProductsUri" value="http://xxxxxxx" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+		<property name="ctxFactory">
+			<bean class="com.danidemi.jlubricant.screenscraping.context.PhantomjsFactory">
+				<property name="enableProxy" value="${europrices.phantomjs.proxy.enabled}" />
+				<property name="proxyHost" value="${europrices.phantomjs.proxy.host}" />
+				<property name="proxyPort" value="${europrices.phantomjs.proxy.port}" />
+				<property name="pathToPhantomJsExecutable" value="${europrices.phantomjs.executable}" />
+				<property name="port" value="${europrices.phantomjs.port}" />
+			</bean>
+		</property>
+		<property name="iterators">
+			<list>
+				<bean class="com.danidemi.europrice.utils.FixedIterator">
+					<property name="scrapers">
+						<list>
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.StockistiScraper" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.UtuizamobiScrapeAction" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.OSelectionScrapeAction" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.BigShopLv" />
+						</list>
+					</property>
+					<property name="requests">
+						<list>
+							<value>asus</value>
+							<value>blackberry</value>
+							<value>htc</value>
+							<value>huawei</value>
+							<value>iphone</value>
+							<value>lenovo</value>
+							<value>lg</value>
+							<value>lumia</value>
+							<value>meizu</value>
+							<value>moto</value>
+							<value>nexus</value>
+							<value>nokia</value>
+							<value>oppo</value>
+							<value>pantech</value>
+							<value>samsung</value>
+							<value>seven</value>
+							<value>sony</value>
+							<value>vivo</value>
+							<value>xiaomi</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 </beans>

@@ -13,6 +13,10 @@ import com.danidemi.europrice.utils.Tupla2;
 import com.danidemi.jlubricant.screenscraping.context.ScrapeContext;
 import com.danidemi.jlubricant.screenscraping.context.ScrapeContextFactory;
 
+/**
+ * Receipt for a quite usual scraping workflow, defined as a {@link Runnable} in order to be executed by some executor.
+ * @author danidemi
+ */
 public class ModularScreenScrapingTask implements Runnable {
 	
 	private Logger log = LoggerFactory.getLogger(ModularScreenScrapingTask.class);

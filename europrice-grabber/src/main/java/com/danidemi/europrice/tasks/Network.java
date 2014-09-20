@@ -1,12 +1,11 @@
-package com.danidemi.europrice;
+package com.danidemi.europrice.tasks;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -16,31 +15,29 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
 import com.danidemi.europrice.pricegrabber.screenscraping.action.ScrapedProduct;
-import com.danidemi.europrice.utils.Utils.Language;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Network {
 
-	public void run() throws JsonGenerationException, JsonMappingException, IOException {
-		
-		ObjectMapper mapper = new ObjectMapper();
-		StringWriter writer = new StringWriter();
-		
-		ScrapedProduct scrapedProduct = new ScrapedProduct();
-		scrapedProduct.setDescription("description");
-		scrapedProduct.setLanguage(Language.ca);
-		scrapedProduct.setPriceInCent(12345L);
-		scrapedProduct.setShopName("shopName");
-		scrapedProduct.setUrlDetail(new URL("http://cacca"));
-		
-		mapper.writeValue(writer, scrapedProduct);
+	private ObjectMapper mapper = new ObjectMapper();
+	private StringWriter writer = new StringWriter();
+	
+	private CloseableHttpClient httpClient;
+	private String storeProductUri;
+	
+	public Network() {
+		httpClient = HttpClientBuilder.create().build();
+	}
+	
+	public synchronized void storeNewProducts(List<ScrapedProduct> productsToStore) throws JsonGenerationException, JsonMappingException, IOException {
+				
+		mapper.writeValue(writer, productsToStore);
 		String json = writer.toString();
 		
-		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-		
-		HttpPost post = new HttpPost("http://httpbin.org/post");
+		storeProductUri = "http://httpbin.org/post";
+		HttpPost post = new HttpPost(storeProductUri);
 		post.setHeader("content", "application/json");
 		HttpEntity entity = new StringEntity(json);
 		post.setEntity(entity);
@@ -48,17 +45,14 @@ public class Network {
 		HttpContext ctx = new BasicHttpContext();
 		CloseableHttpResponse response = httpClient.execute(post, ctx);
 		
-		List<String> readLines = IOUtils.readLines( response.getEntity().getContent() );
-		
-		System.out.println( readLines );
-	}
-	
-	public static void main(String[] args) {
-		try {
-			new Network().run();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){
+			throw new RuntimeException("Server returned an error:" + response.getStatusLine());
 		}
+		
 	}
 	
+	public void setStoreProductsUri(String uri) {
+		this.storeProductUri = uri;
+	}
+		
 }
