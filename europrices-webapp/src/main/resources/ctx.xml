@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd        
+        ">
+
+	<context:property-placeholder location="classpath:config.xml" />        
+
+
+
+
+
+	<!-- ========================================================== -->
+	<!-- Tasks                                                      -->
+	<!-- ========================================================== -->
+	<task:scheduled-tasks scheduler="myScheduler">
+		<task:scheduled ref="task" method="run" trigger="trigger" />
+	</task:scheduled-tasks>
+	
+	<task:scheduler id="myScheduler" pool-size="10" />	
+
+
+
+
+
+	<!-- ========================================================== -->
+	<!-- Database                                                   -->
+	<!-- ========================================================== -->
+	<!-- Defaults to db/migration -->
+	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="dbms">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+
+
+
+	<!-- ========================================================== -->
+	<!-- ORM & Model                                                -->
+	<!-- ========================================================== -->
+	
+	<!-- the name 'entityManagerFactory' is mandatory to made it available to spring-data repos -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		depends-on="dataSource, flyway">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.danidemi.europrice.db" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<!-- http://docs.jboss.org/hibernate/core/3.3/reference/en/html/session-configuration.html#configuration-optional -->
+				<!-- validate | update | create | create-drop -->
+				<prop key="hibernate.hbm2ddl.auto">validate</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+			</props>
+		</property>
+	</bean>
+
+	<jpa:repositories base-package="com.danidemi.europrice.db" />
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<tx:annotation-driven />
+	
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+		
+	<bean id="repo" class="com.danidemi.europrice.db.Repository">
+	</bean>
+
+
+
+
+
+	<!-- ========================================================== -->
+	<!-- WEB MVC                                                    -->
+	<!-- ========================================================== -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.danidemi.europrice.web.controller" />
+	<mvc:annotation-driven />
+
+
+
+
+	<!-- ========================================================== -->
+	<!-- Scraping                                                   -->
+	<!-- ========================================================== -->
+	
+	<bean id="callback" class="com.danidemi.europrice.tasks.TransactionScrapedProductCallback">
+		<property name="commitInterval" value="10" />
+		<property name="txManager" ref="transactionManager" />
+		<property name="delegate">
+			<bean class="com.danidemi.europrice.tasks.StoreOnDbScrapedProductCallback" />
+		</property>				
+	</bean>
+	
+	<bean id="task" class="com.danidemi.europrice.tasks.ModularScreenScrapingTask" lazy-init="true">
+		<property name="callback" ref="callback" />
+		<property name="ctxFactory">
+			<bean class="com.danidemi.jlubricant.screenscraping.context.PhantomjsFactory">
+				<property name="enableProxy" value="${europrices.phantomjs.proxy.enabled}" />
+				<property name="proxyHost" value="${europrices.phantomjs.proxy.host}" />
+				<property name="proxyPort" value="${europrices.phantomjs.proxy.port}" />
+				<property name="pathToPhantomJsExecutable" value="${europrices.phantomjs.executable}" />
+				<property name="port" value="${europrices.phantomjs.port}" />
+			</bean>
+		</property>
+		<property name="iterators">
+			<list>
+				<bean class="com.danidemi.europrice.utils.FixedIterator">
+					<property name="scrapers">
+						<list>
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.StockistiScraper" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.UtuizamobiScrapeAction" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.OSelectionScrapeAction" />
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.BigShopLv" />
+						</list>
+					</property>
+					<property name="requests">
+						<list>
+							<value>asus</value>
+							<value>blackberry</value>
+							<value>htc</value>
+							<value>huawei</value>
+							<value>iphone</value>
+							<value>lenovo</value>
+							<value>lg</value>
+							<value>lumia</value>
+							<value>meizu</value>
+							<value>moto</value>
+							<value>nexus</value>
+							<value>nokia</value>
+							<value>oppo</value>
+							<value>pantech</value>
+							<value>samsung</value>
+							<value>seven</value>
+							<value>sony</value>
+							<value>vivo</value>
+							<value>xiaomi</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+
+
+	<!-- ========================================================== -->
+	<!-- Web                                                        -->
+	<!-- ========================================================== -->
+	<bean name="js" class="com.danidemi.jlubricant.embeddable.jetty.EmbeddableJetty" init-method="start" destroy-method="stop">
+		<property name="dirAllowed" value="${europrices.http.dirAllowed}" />
+		<property name="dispatcherServletSubPath" value="/app/*" />
+		<property name="httpPort" value="${europrices.http.port}" />
+		<property name="host" value="${europrices.http.host}" />
+		<!--  
+		<property name="virtualHosts"><null /></property> 
+		-->
+		<!--  value="${europrices.http.virtualHosts}" />  -->
+		<property name="webappContextPath" value="/" />
+	</bean>
+
+
+
+
+
+	<beans profile="test">
+	
+		<alias name="dataSource" alias="dbms"/>
+		<jdbc:embedded-database type="HSQL" id="dataSource" />
+		<bean name="trigger" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+
+	</beans>
+	
+	<beans profile="prod">
+
+		<bean id="dbms" class="com.danidemi.jlubricant.embeddable.hsql.HsqlDbms"
+			init-method="start" destroy-method="stop">
+			<property name="port" value="${europrices.db-engine.port}" />
+			<property name="ip" value="${europrices.db-engine.address}" />
+			<property name="databases" ref="dataSource" />
+		</bean>
+		
+		<bean id="dataSource" class="com.danidemi.jlubricant.embeddable.hsql.HsqlDatabase">
+			<property name="dbName" value="europrices" />
+			<property name="password" value="${europrices.db.username}" />
+			<property name="username" value="${europrices.db.password}" />
+			<property name="storage">
+				<bean class="com.danidemi.jlubricant.embeddable.hsql.FileSystemStorage">
+					<property name="dbFolder" value="${europrices.db.path}" />
+				</bean>
+			</property>
+		</bean>
+
+		<bean name="trigger1" class="org.springframework.scheduling.support.PeriodicTrigger">
+			<constructor-arg value="1" />
+			<constructor-arg value="DAYS" />
+			<property name="fixedRate" value="false" />
+		</bean>
+
+		<bean name="triggerN"
+			class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
+
+		<alias alias="trigger" name="${europrices.scraping.trigger}" />
+	</beans>
+
+</beans>

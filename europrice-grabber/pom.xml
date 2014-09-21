@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.danidemi.europrice</groupId>
+		<artifactId>europrice</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>europrice-grabber</artifactId>
+	<name>europrice-grabber</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>europrice-common</artifactId>
+		</dependency>
+
+		<!-- ======================================== -->
+		<!-- Logging -->
+		<!-- ======================================== -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<!-- ======================================== -->
+		<!-- Logging -->
+		<!-- ======================================== -->
+		
+		<!-- ======================================== -->
+		<!-- Hibernate -->
+		<!-- ======================================== -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+		<!-- ======================================== -->
+		<!-- Hibernate -->
+		<!-- ======================================== -->
+
+
+		<!-- ======================================== -->
+		<!-- Spring Framework -->
+		<!-- ======================================== -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- This contains a w3c.dom implementation that suites Spring -->
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+		</dependency>
+		<!-- json parser used for mvc testing -->
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+		</dependency>	
+		<!-- ======================================== -->
+		<!-- Spring Framework -->
+		<!-- ======================================== -->
+
+		<!-- ======================================== -->
+		<!-- JLubricant -->
+		<!-- ======================================== -->
+
+
+		<dependency>
+			<groupId>com.danidemi.jlubricant</groupId>
+			<artifactId>jlubricant-embeddable</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.danidemi.jlubricant</groupId>
+			<artifactId>jlubricant-embeddable-hsql</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.danidemi.jlubricant</groupId>
+			<artifactId>jlubricant-spring-context</artifactId>
+		</dependency>
+
+		<!-- ======================================== -->
+		<!-- JLubricant -->
+		<!-- ======================================== -->
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		
+		<!-- Just the annotations; use this dependency if you want to attach annotations 
+			to classes without connecting them to the code. -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		
+		<!-- databinding; ObjectMapper, JsonNode and related classes are here -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		
+		<!-- ======================================== -->
+		<!-- Test -->
+		<!-- ======================================== -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.3.2</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.htmlunit</groupId>
+			<artifactId>htmlunit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit-dep</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+		</dependency>
+	    <dependency>
+	      <groupId>org.hamcrest</groupId>
+	      <artifactId>hamcrest-integration</artifactId>
+	    </dependency>		
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+
+		<!-- ======================================== -->
+		<!-- Test -->
+		<!-- ======================================== -->
+
+	</dependencies>
+</project>
