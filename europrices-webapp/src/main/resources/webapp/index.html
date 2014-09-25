@@ -7,27 +7,33 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.18/angular-route.min.js"></script>		
 		<script src="/js/europrices.js"></script>		
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+		<link href="/css/style.css" rel="stylesheet" type="text/css" >
 	</head>
-	<body style="font-family: 'Ubuntu', cursive;" >
+	<body>
 		
 		<div ng-view>
 		
 			<div ng-controller="SearchController">
 		
-				<div style="text-align: center; margin: auto auto 4em auto; background-color: blue;">
-					<div style="color: blue; font-size: xx-large; color: yellow;">europrices</div>
-					<div style="font-size: small; color: yellow;">spot the best mobile prices in the eurozone</div>
+				<div id="logo" >
+					<div>europrices</div>
+					<div>spot the best mobile prices in the eurozone</div>
 				</div>
 				
-				<div style="text-align: center; margin: auto;">
+				<div id="search">
 					<form>
 						<input type="search" placeholder="samsung, galaxy..."  ng-model="searchTerms" /><button ng-click="onSearch()">search</button>
 					</form>
 				</div>
 
 
-				<div style="margin: auto;">
-					<table ng-if="productItemsHaveBeenFound()" style="margin: auto;">
+				<div id="results">
+				
+					<div ng-if="productItemsHaveNotBeenFound()">
+						Sorry, no products match your search criteria.
+					</div>
+				
+					<table id="resultTable" ng-if="productItemsHaveBeenFound()">
 						<thead>
 							<tr>
 								<td>Item</td>
@@ -71,7 +77,7 @@
 		
 		
 		
-		<footer style="margin: 4em auto auto auto; text-align: center;">
+		<footer>
 			Brought to you by <a target="_blank" href="http://www.danidemi.com">Studio Danidemi</a>
 		</footer>
 		
