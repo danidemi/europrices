@@ -7,6 +7,10 @@
 @color3: spin(@colorBase, 180);
 @color4: spin(@colorBase, (180 + @colorDistance));
 
+.outline(){
+	border: 1px solid black;
+}
+
 BODY {
 	font-family: 'Ubuntu', cursive;
 	margin: 0;
@@ -29,9 +33,21 @@ BODY {
 	font-size: small; 
 }
 
+#search-box {
+	text-align: center;
+}
+
 #search {
 	text-align: center; 
-	margin: auto;
+	margin: 0;
+	border:0.2em solid darken(@color2, 20%);
+	padding: 0.2em;
+	display: inline-block;
+	border-bottom-left-radius: @border-radius;
+	border-bottom-right-radius: @border-radius;
+	border-top-right-radius: @border-radius;
+	border-top-left-radius: @border-radius;
+	
 }
 
 #search input {
@@ -40,32 +56,128 @@ BODY {
 	margin: 0;
 	padding: 0.2em;
 	font-size: 2em;	
+	border: 0;
 }
 
-#search button {
+select {
+	border-bottom-left-radius: @border-radius;
+	border-top-left-radius: @border-radius;
+	margin: 0;
+	padding: 0.2em;
+	font-size: 2em;	
+	border: 0;
+	background-color: darken(@color2, 20%);
+	color: lighten(@color2, 50%);
+}
+
+#search-clear {
+    margin: 0;
+    font-size: 2em;
+    padding: 0.2em;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 0;
+    background-color: darken(@color2, 20%);
+    color: lighten(@color2, 50%);
+}
+
+#search-launch {
     margin: 0;
     border-top-right-radius: @border-radius;
     border-bottom-right-radius: @border-radius;
+    border: 0;    
     font-size: 2em;
     padding: 0.2em;	
+    background-color: darken(@color2, 20%);
+    color: lighten(@color2, 50%);
 }
 
-#results {
-	margin: 0;
-}
-
-#results #placeholder {
+#resultLang {
+	width: 45em;
 	margin-left: auto; 
-	margin-right: auto;
-	text-align: center;
-	width: 15em;
-	margin-top: 5em;
+	margin-right: auto;	
+	margin-top: 2em;
+	
+	border-bottom-left-radius: @border-radius;
+	border-bottom-right-radius: @border-radius;
+	border-top-right-radius: @border-radius;
+	border-top-left-radius: @border-radius;	
+	border:0.2em solid darken(@color2, 20%);
+	padding: 0.2em;
+	background-color: solid darken(@color2, 20%);
+	text-align: right;
 }
 
 #results #resultTable {
+	//.outline();
+	width: 45em;
 	margin-left: auto; 
 	margin-right: auto;	
-	width: 15em;
+	margin-top: 2em;
+	
+	border-bottom-left-radius: @border-radius;
+	border-bottom-right-radius: @border-radius;
+	border-top-right-radius: @border-radius;
+	border-top-left-radius: @border-radius;	
+	border:0.2em solid darken(@color2, 20%);
+	padding: 0.2em;
+}
+
+#results #placeholder {
+	text-align: center;
+	width: 100%;
+	margin-top: 5em;
+}
+
+TABLE {
+	border-spacing: 0;
+	width: 100%;
+}
+
+TD {
+    margin: 0;	
+}
+
+THEAD TH {
+    background-color: darken(@color2, 20%);
+    color: lighten(@color2, 50%);
+	text-align: left;
+}
+
+THEAD TH:first-child {
+	border-top-left-radius: @border-radius;
+}
+
+THEAD TH:last-child {
+	border-top-right-radius: @border-radius;
+	text-align: center;
+}
+
+TBODY TR:nth-child(even) {
+	background: lighten(@color2, 30%);
+}
+
+TBODY TR:nth-child(odd) {
+	background: lighten(@color2, 30%);
+}
+
+TBODY TR:HOVER {
+	background: @color2;
+	color: lighten(@color2, 40%);
+}
+
+TFOOT TH {
+    background-color: darken(@color2, 20%);
+    color: lighten(@color2, 50%);
+}
+
+TFOOT TH:first-child {
+	border-bottom-left-radius: @border-radius;
+}
+
+TFOOT TH:last-child {
+	border-bottom-right-radius: @border-radius;
+	margin: 0;
 }
 
 

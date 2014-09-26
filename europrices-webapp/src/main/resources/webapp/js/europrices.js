@@ -3,37 +3,38 @@ angular
 	.controller('SearchController', [ '$scope','$http', function($scope, $http) {
 			
 		$scope.foundProductItems = [];
-		$scope.searchTerms;
+		$scope.searchTerms = '';
 		$scope.firstSearchExecuted = false;
 		$scope.showSearchPlaceholder = false;
 		$scope.showSearchResult = false;
 //		var showSearchPlaceholder = false;
 //		var showSearchResult = false;
 		$scope.xxx = 'xxx';
+		$scope.destinationLanguage = 'sss';
 			
 		$scope.languages = [
-		        {name:"aragonés", iso:"an"},
-		        {name:"català", iso:"ca"},
+		        //{name:"aragonés", iso:"an"},
+		        //{name:"català", iso:"ca"},
 		        {name:"Deutsch", iso:"de"},
 		        {name:"eesti keel", iso:"et"},
 		        {name:"English", iso:"en"},
 		        {name:"español", iso:"es"},
-		        {name:"Euskara", iso:"eu"},
-		        {name:"Gaeilge", iso:"ga"},
-		        {name:"galego", iso:"gl"},
+		        //{name:"Euskara", iso:"eu"},
+		        //{name:"Gaeilge", iso:"ga"},
+		        //{name:"galego", iso:"gl"},
 		        {name:"Italiano", iso:"it"},
 		        {name:"latviešu valoda", iso:"lv"},
 		        {name:"le français", iso:"fr"},
-		        {name:"Lëtzebuergesch", iso:"lb"},
+		        //{name:"Lëtzebuergesch", iso:"lb"},
 		        {name:"Malti", iso:"mt"},
 		        {name:"Nederlands", iso:"nl"},
-		        {name:"occitan", iso:"oc"},
+		        //{name:"occitan", iso:"oc"},
 		        {name:"português", iso:"pt"},
 		        {name:"slovenščina", iso:"sl"},
 		        {name:"slovenský jazyk", iso:"sk"},
 		        {name:"suomi", iso:"fi"},
 		        {name:"svenska", iso:"sv"},
-		        {name:"Türkçe", iso:"tr"},
+		        //{name:"Türkçe", iso:"tr"},
 		        {name:"ελληνικά", iso:"el"}
 		];
 			
@@ -46,6 +47,10 @@ angular
 //			//return $scope.showSearchResult;
 //			//return showSearchResult;
 //		}
+		
+		$scope.onClearSearch = function() {
+			$scope.searchTerms = '';
+		}
 			
 		$scope.onSearch = function() {
 			

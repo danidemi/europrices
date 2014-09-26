@@ -20,10 +20,14 @@
 					<div>spot the best mobile prices in the eurozone</div>
 				</div>
 				
-				<div id="search">
-					<form>
-						<input type="search" placeholder="samsung, galaxy..."  ng-model="searchTerms" /><button ng-click="onSearch()">search</button>
-					</form>
+				<div id="search-box">
+					<div id="search">
+						<form>
+							<input type="search" placeholder="samsung, galaxy..."  ng-model="searchTerms" />
+							<button id="search-clear" ng-click="onClearSearch()">clear</button>
+							<button id="search-launch" ng-click="onSearch()">search</button>
+						</form>
+					</div>
 				</div>
 
 
@@ -32,20 +36,22 @@
 					<div id="placeholder" ng-if="showSearchPlaceholder">
 						{{searchPlaceholder}}
 					</div>
+					
+					<div id="resultLang" ng-if="showSearchResult">
+						<select ng-model="destinationLanguage" ng-options="language.name for language in languages">
+							<option value="">original language</option>									
+						</select> 
+						{{destinationLanguage}}
+					</div>
 				
 					<div id="resultTable" ng-if="showSearchResult">
 						<table>
 							<thead>
 								<tr>
-									<td>Item</td>
-									<td>Shop</td>
-									<td>Price</td>
-									<td>
-										Translate in
-										<select ng-model="destinationLanguage" ng-options="language.name for language in languages">
-											<option value="">original language</option>									
-										</select> 
-									</td>
+									<th>Item</th>
+									<th>Shop</th>
+									<th>Price</th>
+									<th>Details</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -64,12 +70,17 @@
 											<a target="_blank" href="http://translate.google.com/translate?js=n&sl=auto&tl={{destinationLanguage.iso}}&u={{item.detailsUrl}}">details</a>({{destinationLanguage.iso}})									
 										</div>
 										<div ng-if="!(destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso)" style="display: inline;">
-											<a target="_blank" href="{{item.detailsUrl}}">details</a>({{item.languageIsoCode}})
-										</div>
-	
+											<a target="_blank" href="{{item.detailsUrl}}">details</a>
+										</div>	
+										{{destinationLanguage}}
 									</td>
 								</tr>
 							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="4">&nbsp;</th>
+								</tr>
+							</tfoot>
 						</table>
 					</div>
 				</div>
