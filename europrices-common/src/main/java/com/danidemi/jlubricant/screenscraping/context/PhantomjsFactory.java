@@ -69,7 +69,7 @@ public class PhantomjsFactory implements ScrapeContextFactory {
 		}
 		
         DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-		capabilities.setCapability("phantomjs.binary.path", pathToPhantomJsExecutable);
+		capabilities.setCapability("phantomjs.binary.path", pathToPhantomJsExecutable.getAbsolutePath());
         if(enableProxy) {
         	Proxy proxy = new Proxy();
         	proxy.setHttpProxy(this.proxyHost + ":" + proxyPort);
@@ -77,8 +77,8 @@ public class PhantomjsFactory implements ScrapeContextFactory {
         }
                 
         final PhantomJSDriver driver 
-        	//= driverTheCommonWay(capabilities);
-        	= driverTheHardWay();
+        	= driverTheCommonWay(capabilities);
+        	//= driverTheHardWay();
         
 
 

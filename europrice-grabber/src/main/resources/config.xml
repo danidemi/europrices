@@ -5,19 +5,17 @@
 <!-- ============================================================================ -->
 <properties>
 	<!-- ${VARIABLE} is resolved also against environment variables! -->
-	<entry key="europrices.phantomjs.proxy.enabled">false</entry>
-	<entry key="europrices.phantomjs.proxy.host">0.0.0.0</entry>
-	<entry key="europrices.phantomjs.proxy.port">0</entry>
+	<entry key="europrices.phantomjs.proxy.enabled">true</entry>
+	<entry key="europrices.phantomjs.proxy.host">10.1.51.10</entry>
+	<entry key="europrices.phantomjs.proxy.port">80</entry>
 	<entry key="europrices.phantomjs.executable">/opt/phantomjs/phantomjs/bin/phantomjs</entry>
 	<entry key="europrices.phantomjs.port">9090</entry>
-<<<<<<< HEAD
+
 	<!--  
 	<entry key="europrices.adminapi.url">http://localhost:8080/app/adminapi/storeProducts</entry>
-	-->
 	<entry key="europrices.adminapi.url">http://europrices-danidemi.rhcloud.com/app/adminapi/storeProducts</entry>
-=======
+	-->
 	<entry key="europrices.adminapi.url">http://localhost:8080/app/adminapi/storeProducts</entry>
->>>>>>> refs/remotes/origin/feat-modules
 		
 	<entry key="europrices.scraping.trigger">trigger1</entry>
 </properties>

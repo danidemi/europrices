@@ -70,10 +70,10 @@
 				<bean class="com.danidemi.europrice.utils.FixedIterator">
 					<property name="scrapers">
 						<list>
+							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.BigShopLv" />
 							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.StockistiScraper" />
 							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.UtuizamobiScrapeAction" />
 							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.OSelectionScrapeAction" />
-							<bean class="com.danidemi.europrice.pricegrabber.screenscraping.shops.BigShopLv" />
 						</list>
 					</property>
 					<property name="requests">
