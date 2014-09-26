@@ -1,0 +1,55 @@
+BODY {
+	font-family: 'Ubuntu', cursive;
+	margin: 0;
+}
+
+#logo {
+	text-align: center; 
+	margin: auto auto 4em auto; 
+	background-color: blue;
+}
+
+#logo DIV:first-child {
+	color: blue; 
+	font-size: xx-large; 
+	color: yellow;
+}
+
+#logo DIV:last-child {
+	font-size: small; 
+	color: yellow;
+}
+
+#search {
+	text-align: center; 
+	margin: auto;
+}
+
+#search input {
+	border-bottom-left-radius: 1em;
+	border-top-left-radius: 1em;
+	margin: 0;
+	padding: 0.2em;
+	font-size: 2em;	
+}
+
+#search button {
+    margin: 0;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+    font-size: 2em;
+    padding: 0.2em;	
+}
+
+#resultTable {
+	margin: auto;
+}
+
+#results {
+	margin: auto;
+}
+
+FOOTER {
+	margin: 4em auto auto auto; 
+	text-align: center;
+}

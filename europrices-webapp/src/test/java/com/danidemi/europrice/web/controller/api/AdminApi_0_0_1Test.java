@@ -53,6 +53,7 @@ public class AdminApi_0_0_1Test {
 		MockHttpServletRequestBuilder body = post("/adminapi/storeProducts")
 		.contentType( MediaType.parseMediaType( "application/json" ))
 		.content(new Json().toJson(asList));
+
 		ResultActions action = mockMvc.perform( body );
 		
 		action.andExpect( status().isOk() );

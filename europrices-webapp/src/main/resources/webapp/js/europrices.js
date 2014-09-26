@@ -3,6 +3,7 @@ angular.module('europrices', []).controller('SearchController',
 			
 			$scope.foundProductItems = [];
 			$scope.searchTerms;
+			$scope.firstSearchExecuted = false;
 			
 			$scope.languages = [
 			        {name:"aragonés", iso:"an"},
@@ -34,7 +35,13 @@ angular.module('europrices', []).controller('SearchController',
 				return $scope.foundProductItems.length > 0;
 			}
 			
+			$scope.productItemsHaveNotBeenFound = function() {
+				return $scope.firstSearchExecuted && $scope.foundProductItems.length == 0;
+			}
+			
 			$scope.onSearch = function() {
+				
+				$scope.firstSearchExecuted = true;
 				
 				$scope.foundProductItems = [];
 				

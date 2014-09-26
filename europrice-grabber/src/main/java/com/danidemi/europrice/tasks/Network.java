@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 
-
-
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;

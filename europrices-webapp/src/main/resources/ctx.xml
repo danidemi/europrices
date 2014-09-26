@@ -25,6 +25,21 @@
 
 
 
+
+
+	<!-- ========================================================== -->
+	<!-- Tasks                                                      -->
+	<!-- ========================================================== -->
+	<task:scheduled-tasks scheduler="myScheduler">
+		<task:scheduled ref="task" method="run" trigger="trigger" />
+	</task:scheduled-tasks>
+	
+	<task:scheduler id="myScheduler" pool-size="10" />	
+
+
+
+
+
 	<!-- ========================================================== -->
 	<!-- Database                                                   -->
 	<!-- ========================================================== -->
@@ -32,6 +47,8 @@
 	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="dbms">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+
+
 
 
 
@@ -69,6 +86,8 @@
 		
 	<bean id="repo" class="com.danidemi.europrice.db.Repository">
 	</bean>
+
+
 
 
 
@@ -111,6 +130,8 @@
 
 
 
+
+
 	<beans profile="test">
 	
 		<alias name="dataSource" alias="dbms"/>
@@ -118,8 +139,6 @@
 		<bean name="trigger" class="com.danidemi.jlubricant.spring.context.trigger.NeverTrigger" />
 
 	</beans>
-	
-	
 	
 	<beans profile="prod">
 
