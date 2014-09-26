@@ -3,11 +3,14 @@ package com.danidemi.jlubricant.embeddable.jetty;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Arrays;
+import java.util.EventListener;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -21,10 +24,14 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.context.AbstractContextLoaderInitializer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
+import com.asual.lesscss.LessOptions;
+import com.asual.lesscss.LessServlet;
 import com.danidemi.jlubricant.embeddable.EmbeddableServer;
 import com.danidemi.jlubricant.embeddable.ServerStartException;
 import com.danidemi.jlubricant.embeddable.ServerStopException;
@@ -105,6 +112,7 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 	@Override
 	public void start() throws ServerStartException {
 		
+		// where in the classpath can be found a web app structure
 		String springResourcePathForWebApp = "webapp";
 		String resourceURI;
 		try {
@@ -152,6 +160,7 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 		
 		
 		webapp.addEventListener(new InitializerListener(this));
+		webapp.addEventListener(new RegisterLessServlet());
 		
 		// Create the root web application context and set it as a servlet
 		// attribute so the dispatcher servlet can find it.
@@ -240,7 +249,15 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 	public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.mainSpringContext = applicationContext;
 	}
-		
+	
+	/**
+	 * A {@link org.springframework.web.WebApplicationInitializer} suited to be used with Jetty.
+	 *
+	 * <p>{@link #createServletApplicationContext()} returns the one specified in the server.</p> 
+	 * <p>{@link #getServletMappings()} return the ones specified in the server.</p>
+	 * 
+	 * @see AbstractDispatcherServletInitializer
+	 */
 	private static class InitializerListener extends AbstractDispatcherServletInitializer implements ServletContextListener {
 
 		private EmbeddableJetty poc;
@@ -250,9 +267,25 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 		}
 
 		@Override
-		public void contextInitialized(ServletContextEvent sce) {
+		protected WebApplicationContext createServletApplicationContext() {
+			if(poc.webApplicationContext == null){
+				throw new IllegalStateException("Web app context not yet ready!");
+			}
+			return poc.webApplicationContext;
+		}
+		
+		@Override
+		protected String[] getServletMappings() {
+			return new String[]{poc.getDispatcherServletSubPath()};
+		}
+		
+	    /**
+	     * Receives notification that the web application initialization process is starting.
+	     */
+		@Override
+		public void contextInitialized(ServletContextEvent event) {
 	        try {
-	            onStartup(sce.getServletContext());
+	            onStartup(event.getServletContext());
 	        } catch (ServletException e) {
 	            logger.error("Failed to initialize web application", e);
 	            System.exit(0);
@@ -264,22 +297,42 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 			// nothing special
 		}
 
-		@Override
-		protected WebApplicationContext createServletApplicationContext() {
-			if(poc.webApplicationContext == null){
-				throw new IllegalStateException("Web app context not yet ready!");
-			}
-			return poc.webApplicationContext;
-		}
 
-		@Override
-		protected String[] getServletMappings() {
-			return new String[]{poc.getDispatcherServletSubPath()};
-		}
-
+		/**
+		 * No roots contexts are needed, so return null.
+		 */
 		@Override
 		protected WebApplicationContext createRootApplicationContext() {
 			return null;
+		}
+		
+	}
+	
+	private class RegisterLessServlet implements ServletContextListener {
+
+		@Override
+		public void contextInitialized(ServletContextEvent sce) {
+			LessServlet lessServlet = new LessServlet();
+			
+			String servletName = "less";
+			ServletContext servletContext = sce.getServletContext();
+			
+			
+			
+			ServletRegistration.Dynamic registration = servletContext.addServlet(servletName, lessServlet);
+			registration.setLoadOnStartup(1);
+			registration.setInitParameter("compress", Boolean.FALSE.toString());
+			registration.setInitParameter("lineNumbers", Boolean.FALSE.toString());
+			registration.setInitParameter("cache", Boolean.FALSE.toString());
+			
+			registration.addMapping("*.css");
+			
+		}
+
+		@Override
+		public void contextDestroyed(ServletContextEvent sce) {
+			// nothing to do
+			
 		}
 		
 	}

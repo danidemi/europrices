@@ -1,3 +1,5 @@
+@border-radius: 1em;
+
 BODY {
 	font-family: 'Ubuntu', cursive;
 	margin: 0;
@@ -26,8 +28,8 @@ BODY {
 }
 
 #search input {
-	border-bottom-left-radius: 1em;
-	border-top-left-radius: 1em;
+	border-bottom-left-radius: @border-radius;
+	border-top-left-radius: @border-radius;
 	margin: 0;
 	padding: 0.2em;
 	font-size: 2em;	
@@ -35,8 +37,8 @@ BODY {
 
 #search button {
     margin: 0;
-    border-top-right-radius: 1em;
-    border-bottom-right-radius: 1em;
+    border-top-right-radius: @border-radius;
+    border-bottom-right-radius: @border-radius;
     font-size: 2em;
     padding: 0.2em;	
 }

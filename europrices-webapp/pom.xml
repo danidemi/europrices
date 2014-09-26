@@ -201,6 +201,11 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.asual.lesscss</groupId>
+			<artifactId>lesscss-servlet</artifactId>
+			<version>1.3.0</version>
+		</dependency>
 
 		<!-- ======================================== -->
 		<!-- Various -->
