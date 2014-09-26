@@ -5,6 +5,11 @@ angular
 		$scope.foundProductItems = [];
 		$scope.searchTerms;
 		$scope.firstSearchExecuted = false;
+		$scope.showSearchPlaceholder = false;
+		$scope.showSearchResult = false;
+//		var showSearchPlaceholder = false;
+//		var showSearchResult = false;
+		$scope.xxx = 'xxx';
 			
 		$scope.languages = [
 		        {name:"aragonés", iso:"an"},
@@ -32,13 +37,15 @@ angular
 		        {name:"ελληνικά", iso:"el"}
 		];
 			
-		$scope.showSearchPlaceholder = function() {
-			return $scope.showSearchPlaceholder;
-		}
-			
-		$scope.showSearchResult = function() {
-			return showSearchResult;
-		}
+//		$scope.showSearchPlaceholder = function() {
+//			//return $scope.showSearchPlaceholder;
+//			//return showSearchPlaceholder;
+//		}
+//			
+//		$scope.showSearchResult = function() {
+//			//return $scope.showSearchResult;
+//			//return showSearchResult;
+//		}
 			
 		$scope.onSearch = function() {
 			
@@ -48,29 +55,33 @@ angular
 			$scope.showSearchPlaceholder = true;
 			$scope.searchPlaceholder = 'Searching...';
 			
-			$scope.foundProductItems = [];
+			$scope.foundProductItems.length = 0;
 			$http
 				.get('/app/api/search?searchTerms=' + $scope.searchTerms)
 				.success(function(data){
+					
+//					$scope.foundProductItems = $scope.foundProductItems.concat(data);		
+					
 					data.forEach(function(item){
 						$scope.foundProductItems.push(item);
+						//window.alert(item);
 					});
+					if($scope.foundProductItems.length > 0) {
+						$scope.showSearchResult = true;
+						$scope.showSearchPlaceholder = false;
+						$scope.searchPlaceholder = '';
+					}else{
+						$scope.showSearchResult = false;
+						$scope.showSearchPlaceholder = true;
+						$scope.searchPlaceholder = 'No products have been found for "' + $scope.searchTerms + '".';
+					}
 				})
 				.error(function(data, status){
-					$scope.searchPlaceholder = 'Sorry, an error occurred.'
+					$scope.searchPlaceholder = 'Sorry, an error occurred.';
 				});
 			
-			if($scope.foundProductItems.length > 0) {
-				$scope.showSearchResult = true;
-				$scope.showSearchPlaceholder = false;
-				$scope.searchPlaceholder = '';
-			}else{
-				$scope.showSearchResult = false;
-				$scope.showSearchPlaceholder = true;
-				$scope.searchPlaceholder = 'No products have been found.';
-			}
 			
-		};
+		}
 			
 	} 
 ]);

@@ -28,48 +28,50 @@
 
 
 				<div id="results">
-				
-					<div id="placeholder" ng-if="showSearchPlaceholder()">
+									
+					<div id="placeholder" ng-if="showSearchPlaceholder">
 						{{searchPlaceholder}}
 					</div>
 				
-					<table id="resultTable" ng-if="showSearchResult()">
-						<thead>
-							<tr>
-								<td>Item</td>
-								<td>Shop</td>
-								<td>Price</td>
-								<td>
-									Translate in
-									<select ng-model="destinationLanguage" ng-options="language.name for language in languages">
-										<option value="">original language</option>									
-									</select> 
-								</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="item in foundProductItems">
-								<td>
-									{{item.name}}
-								</td>
-								<td>
-									{{item.shop.name}}
-								</td>
-								<td>
-									{{item.priceInEuroCent/100 | currency:"€"}}
-								</td>
-								<td>
-									<div ng-if="destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso" style="display: inline;">
-										<a target="_blank" href="http://translate.google.com/translate?js=n&sl=auto&tl={{destinationLanguage.iso}}&u={{item.detailsUrl}}">details</a>({{destinationLanguage.iso}})									
-									</div>
-									<div ng-if="!(destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso)" style="display: inline;">
-										<a target="_blank" href="{{item.detailsUrl}}">details</a>({{item.languageIsoCode}})
-									</div>
-
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<div id="resultTable" ng-if="showSearchResult">
+						<table>
+							<thead>
+								<tr>
+									<td>Item</td>
+									<td>Shop</td>
+									<td>Price</td>
+									<td>
+										Translate in
+										<select ng-model="destinationLanguage" ng-options="language.name for language in languages">
+											<option value="">original language</option>									
+										</select> 
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in foundProductItems">
+									<td>
+										{{item.name}}
+									</td>
+									<td>
+										{{item.shop.name}}
+									</td>
+									<td>
+										{{item.priceInEuroCent/100 | currency:"€"}}
+									</td>
+									<td>
+										<div ng-if="destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso" style="display: inline;">
+											<a target="_blank" href="http://translate.google.com/translate?js=n&sl=auto&tl={{destinationLanguage.iso}}&u={{item.detailsUrl}}">details</a>({{destinationLanguage.iso}})									
+										</div>
+										<div ng-if="!(destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso)" style="display: inline;">
+											<a target="_blank" href="{{item.detailsUrl}}">details</a>({{item.languageIsoCode}})
+										</div>
+	
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 			
