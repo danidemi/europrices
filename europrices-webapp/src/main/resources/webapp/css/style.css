@@ -1,4 +1,11 @@
-@border-radius: 1em;
+@border-radius: 2em;
+
+@colorBase: #4636FF;
+@colorDistance: 90;
+@color1: @colorBase;
+@color2: spin(@colorBase, @colorDistance);
+@color3: spin(@colorBase, 180);
+@color4: spin(@colorBase, (180 + @colorDistance));
 
 BODY {
 	font-family: 'Ubuntu', cursive;
@@ -8,18 +15,18 @@ BODY {
 #logo {
 	text-align: center; 
 	margin: auto auto 4em auto; 
-	background-color: blue;
+	background-color: @color1;
 }
 
 #logo DIV:first-child {
-	color: blue; 
+	color: @color3; 
 	font-size: xx-large; 
 	color: yellow;
 }
 
 #logo DIV:last-child {
+	color: @color3;
 	font-size: small; 
-	color: yellow;
 }
 
 #search {
@@ -43,15 +50,29 @@ BODY {
     padding: 0.2em;	
 }
 
-#resultTable {
-	margin: auto;
+#results {
+	margin: 0;
 }
 
-#results {
-	margin: auto;
+#results #placeholder {
+	margin-left: auto; 
+	margin-right: auto;
+	text-align: center;
+	width: 15em;
+	margin-top: 5em;
 }
+
+#results #resultTable {
+	margin-left: auto; 
+	margin-right: auto;	
+	width: 15em;
+}
+
+
 
 FOOTER {
 	margin: 4em auto auto auto; 
 	text-align: center;
+	background-color: #d0d0d0;
+	color: black;
 }

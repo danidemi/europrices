@@ -29,11 +29,11 @@
 
 				<div id="results">
 				
-					<div ng-if="productItemsHaveNotBeenFound()">
-						Sorry, no products match your search criteria.
+					<div id="placeholder" ng-if="showSearchPlaceholder()">
+						{{searchPlaceholder}}
 					</div>
 				
-					<table id="resultTable" ng-if="productItemsHaveBeenFound()">
+					<table id="resultTable" ng-if="showSearchResult()">
 						<thead>
 							<tr>
 								<td>Item</td>

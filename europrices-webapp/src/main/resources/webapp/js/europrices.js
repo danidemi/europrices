@@ -1,95 +1,76 @@
-angular.module('europrices', []).controller('SearchController',
-		[ '$scope','$http', function($scope, $http) {
+angular
+	.module('europrices', [])
+	.controller('SearchController', [ '$scope','$http', function($scope, $http) {
+			
+		$scope.foundProductItems = [];
+		$scope.searchTerms;
+		$scope.firstSearchExecuted = false;
+			
+		$scope.languages = [
+		        {name:"aragonés", iso:"an"},
+		        {name:"català", iso:"ca"},
+		        {name:"Deutsch", iso:"de"},
+		        {name:"eesti keel", iso:"et"},
+		        {name:"English", iso:"en"},
+		        {name:"español", iso:"es"},
+		        {name:"Euskara", iso:"eu"},
+		        {name:"Gaeilge", iso:"ga"},
+		        {name:"galego", iso:"gl"},
+		        {name:"Italiano", iso:"it"},
+		        {name:"latviešu valoda", iso:"lv"},
+		        {name:"le français", iso:"fr"},
+		        {name:"Lëtzebuergesch", iso:"lb"},
+		        {name:"Malti", iso:"mt"},
+		        {name:"Nederlands", iso:"nl"},
+		        {name:"occitan", iso:"oc"},
+		        {name:"português", iso:"pt"},
+		        {name:"slovenščina", iso:"sl"},
+		        {name:"slovenský jazyk", iso:"sk"},
+		        {name:"suomi", iso:"fi"},
+		        {name:"svenska", iso:"sv"},
+		        {name:"Türkçe", iso:"tr"},
+		        {name:"ελληνικά", iso:"el"}
+		];
+			
+		$scope.showSearchPlaceholder = function() {
+			return $scope.showSearchPlaceholder;
+		}
+			
+		$scope.showSearchResult = function() {
+			return showSearchResult;
+		}
+			
+		$scope.onSearch = function() {
+			
+			$scope.firstSearchExecuted = true;
+			
+			$scope.showSearchResult = false;
+			$scope.showSearchPlaceholder = true;
+			$scope.searchPlaceholder = 'Searching...';
 			
 			$scope.foundProductItems = [];
-			$scope.searchTerms;
-			$scope.firstSearchExecuted = false;
-			
-			$scope.languages = [
-			        {name:"aragonés", iso:"an"},
-			        {name:"català", iso:"ca"},
-			        {name:"Deutsch", iso:"de"},
-			        {name:"eesti keel", iso:"et"},
-			        {name:"English", iso:"en"},
-			        {name:"español", iso:"es"},
-			        {name:"Euskara", iso:"eu"},
-			        {name:"Gaeilge", iso:"ga"},
-			        {name:"galego", iso:"gl"},
-			        {name:"Italiano", iso:"it"},
-			        {name:"latviešu valoda", iso:"lv"},
-			        {name:"le français", iso:"fr"},
-			        {name:"Lëtzebuergesch", iso:"lb"},
-			        {name:"Malti", iso:"mt"},
-			        {name:"Nederlands", iso:"nl"},
-			        {name:"occitan", iso:"oc"},
-			        {name:"português", iso:"pt"},
-			        {name:"slovenščina", iso:"sl"},
-			        {name:"slovenský jazyk", iso:"sk"},
-			        {name:"suomi", iso:"fi"},
-			        {name:"svenska", iso:"sv"},
-			        {name:"Türkçe", iso:"tr"},
-			        {name:"ελληνικά", iso:"el"}
-			];
-			
-			$scope.productItemsHaveBeenFound = function() {
-				return $scope.foundProductItems.length > 0;
-			}
-			
-			$scope.productItemsHaveNotBeenFound = function() {
-				return $scope.firstSearchExecuted && $scope.foundProductItems.length == 0;
-			}
-			
-			$scope.onSearch = function() {
-				
-				$scope.firstSearchExecuted = true;
-				
-				$scope.foundProductItems = [];
-				
-				$http
-					.get('/app/api/search?searchTerms=' + $scope.searchTerms)
-					.success(function(data){
-						data.forEach(function(item){
-							$scope.foundProductItems.push(item);
-						});
-					})
-					.error(function(data, status){
-						alert(status);
+			$http
+				.get('/app/api/search?searchTerms=' + $scope.searchTerms)
+				.success(function(data){
+					data.forEach(function(item){
+						$scope.foundProductItems.push(item);
 					});
-				
-				
-
-			};
+				})
+				.error(function(data, status){
+					$scope.searchPlaceholder = 'Sorry, an error occurred.'
+				});
 			
-			$scope.todos = [ {
-				text : 'learn angular',
-				done : true
-			}, {
-				text : 'build an angular app',
-				done : false
-			} ];
-
-			$scope.oldsearch = function() {
-				$scope.todos.push({
-					text : $scope.todoText,
-					done : false
-				});
-				$scope.todoText = '';
-			};
-
-			$scope.remaining = function() {
-				var count = 0;
-				angular.forEach($scope.todos, function(todo) {
-					count += todo.done ? 0 : 1;
-				});
-				return count;
-			};
-
-			$scope.archive = function() {
-				var oldTodos = $scope.todos;
-				$scope.todos = [];
-				angular.forEach(oldTodos, function(todo) {
-					if (!todo.done)
-						$scope.todos.push(todo);
-				});
-			};
-		} ]);
+			if($scope.foundProductItems.length > 0) {
+				$scope.showSearchResult = true;
+				$scope.showSearchPlaceholder = false;
+				$scope.searchPlaceholder = '';
+			}else{
+				$scope.showSearchResult = false;
+				$scope.showSearchPlaceholder = true;
+				$scope.searchPlaceholder = 'No products have been found.';
+			}
+			
+		};
+			
+	} 
+]);
