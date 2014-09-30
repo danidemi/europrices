@@ -10,7 +10,7 @@ angular
 //		var showSearchPlaceholder = false;
 //		var showSearchResult = false;
 		$scope.xxx = 'xxx';
-		$scope.destinationLanguage = 'sss';
+		
 			
 		$scope.languages = [
 		        //{name:"aragonés", iso:"an"},
@@ -37,6 +37,9 @@ angular
 		        //{name:"Türkçe", iso:"tr"},
 		        {name:"ελληνικά", iso:"el"}
 		];
+		
+		//$scope.destinationLanguage = $scope.languages[2];		
+		$scope.destinationLanguage = $scope.languages[2];
 			
 //		$scope.showSearchPlaceholder = function() {
 //			//return $scope.showSearchPlaceholder;
