@@ -1,5 +1,12 @@
 App
 
+* Developing
+
+	git remote -v
+	openshift	ssh://53f85f24e0b8cd2cb7000125@europrices-danidemi.rhcloud.com/~/git/europrices.git/
+	origin	https://github.com/danidemi/europrices.git
+
+
 * Build
 
 	In base dir
