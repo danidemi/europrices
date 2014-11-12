@@ -7,6 +7,8 @@
 @color3: spin(@colorBase, 180);
 @color4: spin(@colorBase, (180 + @colorDistance));
 
+@width: 45em;
+
 .outline(){
 	border: 1px solid black;
 }
@@ -41,41 +43,31 @@ BODY {
 	text-align: center; 
 	margin: 0;
 	border:0.2em solid darken(@color2, 20%);
-	padding: 0.2em;
+	padding: @border-radius * .2;
 	display: inline-block;
-	border-bottom-left-radius: @border-radius;
-	border-bottom-right-radius: @border-radius;
-	border-top-right-radius: @border-radius;
-	border-top-left-radius: @border-radius;
-	
+	border-bottom-left-radius: @border-radius * 2;
+	border-bottom-right-radius: @border-radius * 2;
+	border-top-right-radius: @border-radius * 2;
+	border-top-left-radius: @border-radius * 2;
 }
+
+
 
 #search input {
-	border-bottom-left-radius: @border-radius;
-	border-top-left-radius: @border-radius;
 	margin: 0;
 	padding: 0.2em;
 	font-size: 2em;	
-	border: 0;
-}
-
-select {
-	border-bottom-left-radius: @border-radius;
-	border-top-left-radius: @border-radius;
-	margin: 0;
-	padding: 0.2em;
-	font-size: 2em;	
-	border: 0;
-	background-color: darken(@color2, 20%);
-	color: lighten(@color2, 50%);
+	border: 0;	
 }
 
 #search-clear {
+	
+	border-bottom-left-radius: @border-radius;
+	border-top-left-radius: @border-radius;
+	
     margin: 0;
     font-size: 2em;
     padding: 0.2em;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
     border: 0;
     background-color: darken(@color2, 20%);
     color: lighten(@color2, 50%);
@@ -92,24 +84,43 @@ select {
     color: lighten(@color2, 50%);
 }
 
+#search-launch:disabled {
+	background-color: darken(@color2, 40%);
+}
+
+#search-clear:disabled {
+	background-color: darken(@color2, 40%);
+}
+
 #resultLang {
 	width: 45em;
 	margin-left: auto; 
 	margin-right: auto;	
 	margin-top: 2em;
 	
-	border-bottom-left-radius: @border-radius;
-	border-bottom-right-radius: @border-radius;
 	border-top-right-radius: @border-radius;
 	border-top-left-radius: @border-radius;	
+	border-bottom-left-radius: @border-radius;
+	border-bottom-right-radius: @border-radius;
 	border:0.2em solid darken(@color2, 20%);
 	padding: 0.2em;
 	background-color: solid darken(@color2, 20%);
 	text-align: right;
+	
+	select {
+		border-bottom-right-radius: @border-radius * 2;
+		border-top-right-radius: @border-radius * 2;		
+		margin: 0;
+		padding: .2em * 2;
+		font-size: 2em;	
+		border: 0;
+		background-color: darken(@color2, 20%);
+		color: lighten(@color2, 50%);
+	}
 }
 
 #results #resultTable {
-	//.outline();
+	.outline();
 	width: 45em;
 	margin-left: auto; 
 	margin-right: auto;	
@@ -117,8 +128,8 @@ select {
 	
 	border-bottom-left-radius: @border-radius;
 	border-bottom-right-radius: @border-radius;
-	border-top-right-radius: @border-radius;
-	border-top-left-radius: @border-radius;	
+	// border-top-right-radius: @border-radius;
+	// border-top-left-radius: @border-radius;	
 	border:0.2em solid darken(@color2, 20%);
 	padding: 0.2em;
 }
@@ -145,11 +156,11 @@ THEAD TH {
 }
 
 THEAD TH:first-child {
-	border-top-left-radius: @border-radius;
+	//border-top-left-radius: @border-radius;
 }
 
 THEAD TH:last-child {
-	border-top-right-radius: @border-radius;
+	//border-top-right-radius: @border-radius;
 	text-align: center;
 }
 

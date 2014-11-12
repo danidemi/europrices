@@ -2,16 +2,16 @@
 <html lang="en" ng-app="europrices">
 	<head>
 		<meta charset="UTF-8"> 
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.18/angular.min.js"></script>
- 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.18/angular-resource.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.18/angular-route.min.js"></script>		
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+ 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-resource.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>		
 		<script src="/js/europrices.js"></script>		
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 		<link href="/css/style.css" rel="stylesheet" type="text/css" >
 	</head>
 	<body>
 		
-		<div ng-view>
+		<div ng-app="europrices">
 		
 			<div ng-controller="SearchController">
 		
@@ -19,13 +19,13 @@
 					<div>europrices</div>
 					<div>spot the best mobile prices in the eurozone</div>
 				</div>
-				
+
 				<div id="search-box">
 					<div id="search">
 						<form>
+							<button id="search-clear" ng-click="onClearSearch()" ng-disabled="searchTerms.length<3">clear</button>
 							<input type="search" placeholder="samsung, galaxy..."  ng-model="searchTerms" />
-							<button id="search-clear" ng-click="onClearSearch()">clear</button>
-							<button id="search-launch" ng-click="onSearch()">search</button>
+							<button id="search-launch" ng-click="onSearch()" ng-disabled="searchTerms.length<3">search</button>
 						</form>
 					</div>
 				</div>
@@ -37,18 +37,17 @@
 						{{searchPlaceholder}}
 					</div>
 					
-					<div id="resultLang" ng-if="showSearchResult">
-						<select ng-model="destinationLanguage" ng-options="language.name for language in languages">
+					<div id="resultLang" ng-show="showSearchResult">
+						Read product details in <select ng-model="destinationLanguage" ng-options="language as language.name for language in languages">
 							<option value="">original language</option>									
-						</select> 
-						{{destinationLanguage}}
+						</select>					 
 					</div>
-				
+					
 					<div id="resultTable" ng-if="showSearchResult">
 						<table>
 							<thead>
 								<tr>
-									<th>Item</th>
+									<th>Product</th>
 									<th>Shop</th>
 									<th>Price</th>
 									<th>Details</th>
@@ -67,12 +66,11 @@
 									</td>
 									<td>
 										<div ng-if="destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso" style="display: inline;">
-											<a target="_blank" href="http://translate.google.com/translate?js=n&sl=auto&tl={{destinationLanguage.iso}}&u={{item.detailsUrl}}">details</a>({{destinationLanguage.iso}})									
+											<a target="_blank" href="http://translate.google.com/translate?js=n&sl=auto&tl={{destinationLanguage.iso}}&u={{item.detailsUrl}}">details</a>									
 										</div>
 										<div ng-if="!(destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso)" style="display: inline;">
 											<a target="_blank" href="{{item.detailsUrl}}">details</a>
 										</div>	
-										{{destinationLanguage}}
 									</td>
 								</tr>
 							</tbody>
