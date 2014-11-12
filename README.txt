@@ -33,6 +33,10 @@ App
 
 OpenShift
 
+* Action Hooks
+
+	The script needs to be executable; run the chmod x <scriptname> command to ensure this.
+
 * RedHat Console (rhc)
 
 	rhc setup 
@@ -47,4 +51,8 @@ OpenShift
 * Once logged
 
 	$OPENSHIFT_DATA_DIR
+	
+* References
+
+	DIY cartridge: https://developers.openshift.com/en/diy-overview.html
 		
