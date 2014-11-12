@@ -2,10 +2,35 @@ App
 
 * Developing
 
-	git remote -v
-	openshift	ssh://53f85f24e0b8cd2cb7000125@europrices-danidemi.rhcloud.com/~/git/europrices.git/
+** GIT
+
+	Just to avoid put the password every time
+
+	$ git config --global credential.helper cache
+
+	$ git remote -v
+	openshift	ssh://53f85f24e0b8cd2cb7000125@europrigices-danidemi.rhcloud.com/~/git/europrices.git/
 	origin	https://github.com/danidemi/europrices.git
 
+	remove a local branch
+	
+	$ git branch -D openshift-master
+
+	remove a remote branch
+
+	$ git push origin --delete serverfix
+
+	or in general...
+
+	$ git push <remote> --delete <remote_branch>
+
+	To push a local branch to a remote that is not the local's origin...
+
+	$ git push openshift master
+
+	Or more in general
+
+	$ git push <remote> <local-branch>
 
 * Build
 
@@ -16,7 +41,10 @@ App
 	mvn clean install assembly:single
 	
 * Deploy
-	$OPENSHIFT_DATA_DIR
+
+	$OPENSHIFT_DATA_DIR - Where things can be placed
+
+	$OPENSHIFT_DEPLOYMENTS_DIR/current/repo/ - Where the current deployed version is
 	
 * Run
 
