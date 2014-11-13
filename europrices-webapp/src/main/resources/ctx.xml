@@ -123,6 +123,25 @@
 
 
 
+	<bean id="socialTwitter" class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+		<property name="connectionFactories">
+			<list>
+				<bean class="org.springframework.social.twitter.connect.TwitterConnectionFactory">
+					<constructor-arg value="consumer-key" />
+					<constructor-arg value="consumer-secret" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository" depends-on="flyway">
+		<constructor-arg value="dataSource" />
+		<constructor-arg ref="socialTwitter" />
+		<constructor-arg>Encryptors.noOpText</constructor-arg>
+		<property name="tablePrefix" value="spring_social" />
+	</bean>
+
+
 
 
 	<beans profile="test">

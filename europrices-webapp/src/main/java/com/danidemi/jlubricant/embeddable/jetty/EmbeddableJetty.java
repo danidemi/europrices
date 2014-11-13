@@ -6,11 +6,10 @@ import java.util.Arrays;
 import java.util.EventListener;
 import java.util.List;
 
-import javax.servlet.ServletContext;
+import javax.servlet.Servlet;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -31,7 +30,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
 import com.asual.lesscss.LessOptions;
-import com.asual.lesscss.LessServlet;
 import com.danidemi.jlubricant.embeddable.EmbeddableServer;
 import com.danidemi.jlubricant.embeddable.ServerStartException;
 import com.danidemi.jlubricant.embeddable.ServerStopException;
@@ -160,7 +158,7 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 		
 		
 		webapp.addEventListener(new InitializerListener(this));
-		webapp.addEventListener(new RegisterLessServlet());
+		webapp.addEventListener(new RegisterLessServlet(this));
 		
 		// Create the root web application context and set it as a servlet
 		// attribute so the dispatcher servlet can find it.
@@ -304,35 +302,6 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 		@Override
 		protected WebApplicationContext createRootApplicationContext() {
 			return null;
-		}
-		
-	}
-	
-	private class RegisterLessServlet implements ServletContextListener {
-
-		@Override
-		public void contextInitialized(ServletContextEvent sce) {
-			LessServlet lessServlet = new LessServlet();
-			
-			String servletName = "less";
-			ServletContext servletContext = sce.getServletContext();
-			
-			
-			
-			ServletRegistration.Dynamic registration = servletContext.addServlet(servletName, lessServlet);
-			registration.setLoadOnStartup(1);
-			registration.setInitParameter("compress", Boolean.FALSE.toString());
-			registration.setInitParameter("lineNumbers", Boolean.FALSE.toString());
-			registration.setInitParameter("cache", Boolean.FALSE.toString());
-			
-			registration.addMapping("*.css");
-			
-		}
-
-		@Override
-		public void contextDestroyed(ServletContextEvent sce) {
-			// nothing to do
-			
 		}
 		
 	}
