@@ -1,3 +1,2 @@
 #!/bin/bash
-cd $OPENSHIFT_DATA_DIR
-nohup java -cp "$OPENSHIFT_DATA_DIR/lib/*:$OPENSHIFT_DATA_DIR/conf" com.danidemi.europrice.EuroPricesWebApp prod &> /dev/null &
+nohup java -cp "$OPENSHIFT_DATA_DIR/europrices/lib/*:$OPENSHIFT_DATA_DIR/europrices/conf" com.danidemi.europrice.EuroPricesWebApp prod &> /dev/null &

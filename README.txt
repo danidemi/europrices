@@ -16,7 +16,12 @@ App
 	mvn clean install assembly:single
 	
 * Deploy
+
 	$OPENSHIFT_DATA_DIR
+	$OPENSHIFT_DEPLOYMENTS_DIR
+	
+	cd $OPENSHIFT_DEPLOYMENTS_DIR/app-deployments/current/repo/europrices-webapp/src/main/scripts/
+	
 	
 * Run
 
@@ -54,6 +59,10 @@ OpenShift
 		
 	rhc ssh <app_name>
 		Access the "app" through ssh.
+		
+* Web Console
+
+	https://openshift.redhat.com/app/login?then=%2Fapp%2Fconsole
 		
 * Once logged
 
