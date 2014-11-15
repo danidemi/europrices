@@ -54,6 +54,9 @@ App
 	$ scp target/europrice-webapp-1.0-SNAPSHOT-openshift.tar.gz 53f85f24e0b8cd2cb7000125@europrices-danidemi.rhcloud.com:app-root/data
 	$ rhc app start europrices
 	
+	$ ssh 53f85f24e0b8cd2cb7000125@europrices-danidemi.rhcloud.com
+	$ ~/app-deployments/current/repo/.openshift/action_hooks/start
+	
 * Run
 
 ** WebApp
