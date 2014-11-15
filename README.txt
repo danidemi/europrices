@@ -59,6 +59,21 @@ App
 	
 	$ cd $OPENSHIFT_DEPLOYMENTS_DIR/current/repo/
 	
+	Or you could run this
+	==============================
+cd $OPENSHIFT_DEPLOYMENTS_DIR/current/repo/
+mvn --global-settings $OPENSHIFT_DATA_DIR/mysettings.xml clean install -DskipTests=true
+cd $(ls -a | grep webapp)
+mvn --global-settings $OPENSHIFT_DATA_DIR/mysettings.xml assembly:single
+ARCHIVE=$(ls target | grep .tar.gz)
+mv target/$ARCHIVE $OPENSHIFT_DATA_DIR
+cd $OPENSHIFT_DATA_DIR
+rm -rf $OPENSHIFT_DATA_DIR/europrices
+tar -xvf $ARCHIVE
+rm $ARCHIVE
+cd $OPENSHIFT_DEPLOYMENTS_DIR/current/repo/
+	==============================
+	
 * Run
 
 ** WebApp
