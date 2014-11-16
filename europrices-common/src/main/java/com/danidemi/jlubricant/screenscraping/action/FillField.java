@@ -14,7 +14,7 @@ import com.danidemi.jlubricant.screenscraping.context.ElementCardinalityExceptio
 import com.danidemi.jlubricant.screenscraping.context.ScrapeContext;
 
 /**
- *
+ * Fill a given text field with a specified content.
  * @author daniele
  */
 public class FillField implements ScrapeAction {
@@ -23,6 +23,14 @@ public class FillField implements ScrapeAction {
     private String text;
     
     private EnforceLifecycleSupport support = new EnforceLifecycleSupport(this);
+        
+    public void setFieldSelector(By fieldSelector) {
+        this.fieldSelector = fieldSelector;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }    
     
 	@Override
 	public void startScraping() {
@@ -51,15 +59,5 @@ public class FillField implements ScrapeAction {
 	public void endScraping() {
 		support.endScraping();
 	}
-    
-    public void setFieldSelector(By fieldSelector) {
-        this.fieldSelector = fieldSelector;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-    
-    
-    
+       
 }

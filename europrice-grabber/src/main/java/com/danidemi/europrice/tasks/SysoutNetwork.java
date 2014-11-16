@@ -2,7 +2,6 @@ package com.danidemi.europrice.tasks;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -22,42 +21,22 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Network extends JsonNetwork {
+public class SysoutNetwork extends JsonNetwork {
 	
-	private static final Logger log = LoggerFactory.getLogger(Network.class);
+	private static final Logger log = LoggerFactory.getLogger(SysoutNetwork.class);
 
 	private String storeProductUri;
 	
-	public Network() {
+	public SysoutNetwork() {
 	}
-
-	@Override
+	
 	public synchronized void storeNewProducts(List<ScrapedProduct> productsToStore) throws JsonGenerationException, JsonMappingException, IOException {
 						
 		String json = map(productsToStore);
-		
-		CloseableHttpClient httpClient;
-		httpClient = HttpClientBuilder.create().build();
-		
-		HttpPost post = new HttpPost(storeProductUri);
-		post.setHeader("Content-Type", "application/json");
-		HttpEntity entity = new StringEntity(json);
-		post.setEntity(entity);
-		
-		HttpContext ctx = new BasicHttpContext();
-		CloseableHttpResponse response = httpClient.execute(post, ctx);
-		
-		if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){
-			log.error("Status [{}] has been reported while saving {}", response.getStatusLine().getStatusCode(), json);
-		}
-		
-		response.close();
-		
+		System.out.println("==========================");
+		System.out.println(json);
+		System.out.println("==========================");
+				
 	}
-
-	public void setStoreProductsUri(String uri) {
-		this.storeProductUri = uri;
-	}
-
 		
 }
