@@ -48,7 +48,7 @@ App
 	
 	from local...
 	
-	$ mvn clean install assembly:single -Popenshift
+	$ mvn clean install assembly:single -Popenshift -Dspecific (specific is to remove the default 'development' project used by default in Eclipse)
 	$ rhc app stop europrices
 	$ rhc scp europrices upload target/europrice-webapp-1.0-SNAPSHOT-openshift.tar.gz app-root/data
 	$ scp target/europrice-webapp-1.0-SNAPSHOT-openshift.tar.gz 53f85f24e0b8cd2cb7000125@europrices-danidemi.rhcloud.com:app-root/data
