@@ -51,7 +51,7 @@ table {
 }
 
 footer {
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	font-size: 1em;
 	margin: auto;

@@ -1,3 +1,7 @@
+/*
+This directive allows us to pass a function in on an enter key to do what we want.
+ */
+
 angular
 	.module('europrices', [])
 	.controller('SearchController', [ '$scope','$http', function($scope, $http) {
