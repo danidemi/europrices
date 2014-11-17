@@ -1,0 +1,17 @@
+#!/bin/bash
+BASEDIR=$OPENSHIFT_DEPLOYMENTS_DIR/current/repo/
+cd $BASEDIR
+mvn --global-settings $BASEDIR/.openshift/mvn-settings.xml help:active-profiles clean install -DskipTests=true -Popenshift -Dspecific
+cd $(ls -a | grep webapp)
+mvn --global-settings $BASEDIR/.openshift/mvn-settings.xml help:active-profiles install assembly:single -DskipTests=true -Popenshift -Dspecific
+echo "=== *xml* files in jar ==="
+unzip -l $(find . -iname *.jar) | grep xml
+echo "=== *xml* files in tar ==="
+tar -ztvf $(find . -iname *.tar.gz) | grep xml
+ARCHIVE=$(ls target | grep .tar.gz)
+mv target/$ARCHIVE $OPENSHIFT_DATA_DIR
+cd $OPENSHIFT_DATA_DIR
+rm -rf $OPENSHIFT_DATA_DIR/europrices
+tar -xvf $ARCHIVE
+rm $ARCHIVE
+cd $OPENSHIFT_DEPLOYMENTS_DIR/current/repo/

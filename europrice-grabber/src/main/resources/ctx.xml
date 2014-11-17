@@ -50,9 +50,12 @@
 			<bean class="com.danidemi.europrice.tasks.NetworkCallback">
 				<property name="bufferSize" value="20" />
 				<property name="network">
+					<!--  
 					<bean class="com.danidemi.europrice.tasks.Network">
 						<property name="storeProductsUri" value="${europrices.adminapi.url}" />
 					</bean>
+					-->
+					<bean class="com.danidemi.europrice.tasks.SysoutNetwork" />
 				</property>
 			</bean>
 		</property>

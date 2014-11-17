@@ -1,201 +1,63 @@
-@border-radius: 2em;
+@colorBase: #DDD;
 
-@colorBase: #4636FF;
-@colorDistance: 90;
-@color1: @colorBase;
-@color2: spin(@colorBase, @colorDistance);
-@color3: spin(@colorBase, 180);
-@color4: spin(@colorBase, (180 + @colorDistance));
-
-@width: 45em;
-
-.outline(){
-	border: 1px solid black;
-}
-
-BODY {
-	font-family: 'Ubuntu', cursive;
+body {
 	margin: 0;
+	border: none;
 }
 
-#logo {
-	text-align: center; 
-	margin: auto auto 4em auto; 
-	background-color: @color1;
+DIV#logo {
+	background-color: @colorBase;
+	color: blue;
+	padding: 1em;
+	font-size: 1em;
+	padding: 1em;
+	height: 2em;	
 }
 
-#logo DIV:first-child {
-	color: @color3; 
-	font-size: xx-large; 
-	color: yellow;
+DIV#logo DIV:FIRST-CHILD {
+	float: left;
+	font-size: 2em;
+	margin-right: 0.2em;
+	text-transform: capitalize;
+	font-weight: bolder;
 }
 
-#logo DIV:last-child {
-	color: @color3;
-	font-size: small; 
+DIV#logo DIV:LAST-CHILD {
+	float: left;
+	margin-right: 0.2em;
 }
 
 #search-box {
+	margin: 2em auto 2em auto;
 	text-align: center;
 }
 
-#search {
-	text-align: center; 
-	margin: 0;
-	border:0.2em solid darken(@color2, 20%);
-	padding: @border-radius * .2;
-	display: inline-block;
-	border-bottom-left-radius: @border-radius * 2;
-	border-bottom-right-radius: @border-radius * 2;
-	border-top-right-radius: @border-radius * 2;
-	border-top-left-radius: @border-radius * 2;
-}
-
-
-
-#search input {
-	margin: 0;
-	padding: 0.2em;
-	font-size: 2em;	
-	border: 0;	
-}
-
-#search-clear {
-	
-	border-bottom-left-radius: @border-radius;
-	border-top-left-radius: @border-radius;
-	
-    margin: 0;
-    font-size: 2em;
-    padding: 0.2em;
-    border: 0;
-    background-color: darken(@color2, 20%);
-    color: lighten(@color2, 50%);
-}
-
-#search-launch {
-    margin: 0;
-    border-top-right-radius: @border-radius;
-    border-bottom-right-radius: @border-radius;
-    border: 0;    
-    font-size: 2em;
-    padding: 0.2em;	
-    background-color: darken(@color2, 20%);
-    color: lighten(@color2, 50%);
-}
-
-#search-launch:disabled {
-	background-color: darken(@color2, 40%);
-}
-
-#search-clear:disabled {
-	background-color: darken(@color2, 40%);
+#results {
+	width: 70%;	
+	margin-right: auto;
+	margin-left: auto;
 }
 
 #resultLang {
-	width: 45em;
-	margin-left: auto; 
-	margin-right: auto;	
-	margin-top: 2em;
-	
-	border-top-right-radius: @border-radius;
-	border-top-left-radius: @border-radius;	
-	border-bottom-left-radius: @border-radius;
-	border-bottom-right-radius: @border-radius;
-	border:0.2em solid darken(@color2, 20%);
-	padding: 0.2em;
-	background-color: solid darken(@color2, 20%);
 	text-align: right;
-	
-	select {
-		border-bottom-right-radius: @border-radius * 2;
-		border-top-right-radius: @border-radius * 2;		
-		margin: 0;
-		padding: .2em * 2;
-		font-size: 2em;	
-		border: 0;
-		background-color: darken(@color2, 20%);
-		color: lighten(@color2, 50%);
-	}
 }
 
-#results #resultTable {
-	.outline();
-	width: 45em;
-	margin-left: auto; 
-	margin-right: auto;	
-	margin-top: 2em;
-	
-	border-bottom-left-radius: @border-radius;
-	border-bottom-right-radius: @border-radius;
-	// border-top-right-radius: @border-radius;
-	// border-top-left-radius: @border-radius;	
-	border:0.2em solid darken(@color2, 20%);
-	padding: 0.2em;
-}
-
-#results #placeholder {
-	text-align: center;
-	width: 100%;
-	margin-top: 5em;
-}
-
-TABLE {
-	border-spacing: 0;
-	width: 100%;
-}
-
-TD {
-    margin: 0;	
-}
-
-THEAD TH {
-    background-color: darken(@color2, 20%);
-    color: lighten(@color2, 50%);
+th {
 	text-align: left;
 }
 
-THEAD TH:first-child {
-	//border-top-left-radius: @border-radius;
+table {
+	width: 100%;	
 }
 
-THEAD TH:last-child {
-	//border-top-right-radius: @border-radius;
+footer {
+	position: absolute;
+	bottom: 0;
+	font-size: 1em;
+	margin: auto;
 	text-align: center;
+	width:100%;
+	background-color: @colorBase;
+	padding: 1em;
 }
 
-TBODY TR:nth-child(even) {
-	background: lighten(@color2, 30%);
-}
-
-TBODY TR:nth-child(odd) {
-	background: lighten(@color2, 30%);
-}
-
-TBODY TR:HOVER {
-	background: @color2;
-	color: lighten(@color2, 40%);
-}
-
-TFOOT TH {
-    background-color: darken(@color2, 20%);
-    color: lighten(@color2, 50%);
-}
-
-TFOOT TH:first-child {
-	border-bottom-left-radius: @border-radius;
-}
-
-TFOOT TH:last-child {
-	border-bottom-right-radius: @border-radius;
-	margin: 0;
-}
-
-
-
-FOOTER {
-	margin: 4em auto auto auto; 
-	text-align: center;
-	background-color: #d0d0d0;
-	color: black;
-}

@@ -16,7 +16,7 @@ import com.danidemi.jlubricant.screenscraping.context.ScrapeContext;
  * A list of actions executed one after the other.
  * @author daniele
  */
-public class SequenceAction implements ScrapeAction {
+public class Sequence implements ScrapeAction {
 		
     private List<ScrapeAction> actions = new ArrayList<>();
  
@@ -43,7 +43,7 @@ public class SequenceAction implements ScrapeAction {
         actions.add( action );
     }
     
-	public final SequenceAction then(ScrapeAction sa){
+	public final Sequence then(ScrapeAction sa){
 		this.add(sa);
 		return this;
 	}    

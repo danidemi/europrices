@@ -2,16 +2,16 @@ package com.danidemi.jlubricant.screenscraping.action;
 
 import com.danidemi.jlubricant.screenscraping.context.ScrapeContext;
 
-
 /**
- * A support class that helps in veryfing that the action lifecycle is respected by the caller
+ * A support class that helps in veryfing that the action lifecycle is respected by the caller.
+ * Not really a {@link ScrapeAction} to be used.
  * @author danidemi
- *
  */
 class EnforceLifecycleSupport implements ScrapeAction {
 
-	private boolean isStarted;
+	/** The actual action. */
 	private ScrapeAction master;
+	private boolean isStarted;
 	
 	public EnforceLifecycleSupport(ScrapeAction master) {
 		this.isStarted = false;

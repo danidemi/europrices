@@ -9,7 +9,7 @@ import com.danidemi.europrice.pricegrabber.screenscraping.action.ScrapedProductC
 public class NetworkCallback implements ScrapedProductCallback {
 
 	private ArrayList<ScrapedProduct> products;
-	private Network network;
+	private JsonNetwork network;
 	private int bufferSize;
 	
 	public NetworkCallback() {
@@ -50,7 +50,7 @@ public class NetworkCallback implements ScrapedProductCallback {
 		this.bufferSize = bufferSize;
 	}
 	
-	public void setNetwork(Network network) {
+	public void setNetwork(JsonNetwork network) {
 		this.network = network;
 	}
 }

@@ -16,12 +16,12 @@ import com.danidemi.jlubricant.screenscraping.context.ScrapeContext;
  */
 public class Search implements ScrapeAction {
 
-    private SequenceAction actionList;
+    private Sequence actionList;
     private final FillField fillField;
     private final ItemClick click;
 
     public Search() {
-        actionList = new SequenceAction();
+        actionList = new Sequence();
         fillField = new FillField();
         actionList.add(fillField);
         click = new ItemClick();

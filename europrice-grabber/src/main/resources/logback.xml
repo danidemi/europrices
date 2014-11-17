@@ -10,11 +10,11 @@
 		</encoder>
 	</appender>
 	
-	<root level="DEBUG">
+	<root level="INFO">
 		<appender-ref ref="console" />
 	</root>
 	
-	<logger name="com.danidemi.europrice" level="DEBUG" />
+	<logger name="com.danidemi.europrice" level="INFO" />
 	<!--  
 	<logger name="com.danidemi.jlubricant.embeddable.hsql" level="WARN" />
 	<logger name="com.danidemi.europrice.screenscraping.ScrapeContext" level="INFO" />
