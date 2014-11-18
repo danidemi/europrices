@@ -2,9 +2,23 @@
 This directive allows us to pass a function in on an enter key to do what we want.
  */
 
-angular
-	.module('europrices', [])
-	.controller('SearchController', [ '$scope','$http', function($scope, $http) {
+var module = angular.module('europrices', []);
+
+module.directive('myEnterpress', function () {
+	return function (scope, element, attrs) {
+		element.bind("keydown keypress", function (event) {
+			if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.myEnterpress);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+
+module.controller('SearchController', [ '$scope','$http', function($scope, $http) {
 			
 		$scope.foundProductItems = [];
 		$scope.searchTerms = '';
@@ -60,6 +74,8 @@ angular
 		}
 			
 		$scope.onSearch = function() {
+			
+			if($scope.searchTerms.length < 3) return;
 			
 			$scope.firstSearchExecuted = true;
 			
