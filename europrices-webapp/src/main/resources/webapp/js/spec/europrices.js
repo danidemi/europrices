@@ -3,6 +3,7 @@
 describe("Europrices", function() {
 	
     var scope, controller;
+
 		
 //    beforeEach(function () {
 //        module('europrices');
@@ -31,7 +32,14 @@ describe("Europrices", function() {
 //        $controller('SearchController', {'$rootScope' : $rootScope, '$scope': $scope});
 //    }));	
 	
-    beforeEach( inject() );
+//    beforeEach( inject(function($controller){
+//    	
+//    }) );
+    var _$rootScope_ = null;
+    var _$controller_ = null;
+    alert(_$rootScope_);
+    alert(_$controller_);
+    beforeEach( inject( scope, controller ) );
     
 	it("contains spec with an expectation", function() {
     		expect(true).toBe(true);
