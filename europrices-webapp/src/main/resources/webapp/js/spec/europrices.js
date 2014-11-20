@@ -35,11 +35,14 @@ describe("Europrices", function() {
 //    beforeEach( inject(function($controller){
 //    	
 //    }) );
-    var _$rootScope_ = null;
-    var _$controller_ = null;
-    alert(_$rootScope_);
-    alert(_$controller_);
-    beforeEach( inject( scope, controller ) );
+//    var _$rootScope_ = null;
+//    var _$controller_ = null;
+//    alert(_$rootScope_);
+//    alert(_$controller_);
+    beforeEach( inject( function($controller, $rootScope){
+    	console.log("hello");
+    	var controller = $controller('SearchController', {'$scope' : $rootScope });
+    } ) );
     
 	it("contains spec with an expectation", function() {
     		expect(true).toBe(true);
