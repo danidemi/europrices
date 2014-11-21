@@ -2,9 +2,9 @@
 This directive allows us to pass a function in on an enter key to do what we want.
  */
 
-var myApp = angular.module('europrices', []);
+var europricesMod = angular.module('europricesMod', []);
 
-myApp.directive('myEnterpress', function () {
+europricesMod.directive('myEnterpress', function () {
 	return function (scope, element, attrs) {
 		element.bind("keydown keypress", function (event) {
 			if(event.which === 13) {
@@ -18,7 +18,7 @@ myApp.directive('myEnterpress', function () {
 });
 
 
-myApp.controller('SearchController', [ '$scope','$http', function($scope, $http) {
+europricesMod.controller('SearchController', [ '$scope','$http', function($scope, $http) {
 			
 		$scope.foundProductItems = [];
 		$scope.searchTerms = '';

@@ -1,9 +1,6 @@
 'use strict';
 
 describe("Europrices", function() {
-	
-    var scope, controller;
-
 		
 //    beforeEach(function () {
 //        module('europrices');
@@ -39,9 +36,18 @@ describe("Europrices", function() {
 //    var _$controller_ = null;
 //    alert(_$rootScope_);
 //    alert(_$controller_);
-    beforeEach( inject( function($controller, $rootScope){
+    
+	var $scope, $controller, controller;
+	
+	beforeEach( module('europricesMod') );
+	
+    beforeEach( inject( function(_$controller_, _$rootScope_){
+    	$scope = _$rootScope_;
+    	$controller = _$controller_;
     	console.log("hello");
-    	var controller = $controller('SearchController', {'$scope' : $rootScope });
+    	//var controller = $controller('SearchController', {'$scope' : $rootScope });
+    	//var controller = $controller('SearchController');
+    	controller = $controller('SearchController', {'$rootScope' : _$rootScope_, '$scope': $scope});
     } ) );
     
 	it("contains spec with an expectation", function() {
@@ -50,4 +56,14 @@ describe("Europrices", function() {
   	it("and the opposite", function() {
     		expect(true).not.toBe(false);
   	});
+  	it("should start with empty search", function(){
+  		expect($scope.searchTerms).toBe("");
+  	});
+  	it("should reset search term", function(){
+  		$scope.searchTerms = "Nokia";
+  		expect($scope.searchTerms).toBe("Nokia");
+  		$scope.onSearch();
+  		$scope.onClearSearch();
+  		expect($scope.searchTerms).toBe("");
+  	});  	
 });
