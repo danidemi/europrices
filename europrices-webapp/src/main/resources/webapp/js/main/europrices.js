@@ -59,8 +59,6 @@ europricesMod.factory('epApi', ['$http', function($http){
 	
 }]);
 
-
-//europricesMod.controller('SearchController', [ '$scope','$http','languages', 'epApi', function($scope, $http, languages, epApi) {
 europricesMod.controller('SearchController', [ '$scope','languages', 'epApi', function($scope, languages, epApi) {
 			
 		$scope.foundProductItems = [];
@@ -90,7 +88,6 @@ europricesMod.controller('SearchController', [ '$scope','languages', 'epApi', fu
 			
 			$scope.foundProductItems.length = 0;
 			epApi
-				//.get('/app/api/search?searchTerms=' + $scope.searchTerms)
 				.getProducts($scope.searchTerms)
 				.success(function(data){
 										
