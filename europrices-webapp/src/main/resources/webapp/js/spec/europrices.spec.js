@@ -25,7 +25,7 @@ describe("Europrices", function() {
 	
 	afterEach(function() {
 		$httpBackend.verifyNoOutstandingExpectation();
-		$httpBackend.verifyNoOutstandingRequest();
+		$httpBackend.verifyNoOutstandingRequest(); 
 	});
     
 	it("contains spec with an expectation", function() {
