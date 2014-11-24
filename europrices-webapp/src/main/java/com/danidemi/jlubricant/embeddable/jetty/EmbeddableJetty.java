@@ -47,7 +47,7 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 
 	private Server server;
 	private ApplicationContext mainSpringContext;
-	private GenericWebApplicationContext webApplicationContext;
+	GenericWebApplicationContext webApplicationContext;
 	private int httpPort = 8080;
 	private int idleTimeout = 30000;
 	private boolean dirAllowed = true;
@@ -151,16 +151,17 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 		}
 		
 		webapp.setContextPath(webappContextPath);
-		/* Disable directory listings if no index.html is found. */
 		
 		webapp.setWar(resourceURI);
 		
+		// Disable directory listings if no index.html is found.
 		webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed",
 				String.valueOf(dirAllowed));
 		
 		
 		webapp.addEventListener(new InitializerListener(this));
 		webapp.addEventListener(new RegisterLessServlet());
+		webapp.addEventListener(new SecurityEnable(this));
 		
 		// Create the root web application context and set it as a servlet
 		// attribute so the dispatcher servlet can find it.
@@ -260,23 +261,23 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 	 */
 	private static class InitializerListener extends AbstractDispatcherServletInitializer implements ServletContextListener {
 
-		private EmbeddableJetty poc;
+		private EmbeddableJetty jetty;
 
-		public InitializerListener(EmbeddableJetty pocStandardWebApp) {
-			this.poc = pocStandardWebApp;
+		public InitializerListener(EmbeddableJetty jetty) {
+			this.jetty = jetty;
 		}
 
 		@Override
 		protected WebApplicationContext createServletApplicationContext() {
-			if(poc.webApplicationContext == null){
+			if(jetty.webApplicationContext == null){
 				throw new IllegalStateException("Web app context not yet ready!");
 			}
-			return poc.webApplicationContext;
+			return jetty.webApplicationContext;
 		}
 		
 		@Override
 		protected String[] getServletMappings() {
-			return new String[]{poc.getDispatcherServletSubPath()};
+			return new String[]{jetty.getDispatcherServletSubPath()};
 		}
 		
 	    /**
