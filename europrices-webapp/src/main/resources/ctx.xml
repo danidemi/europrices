@@ -98,16 +98,53 @@
 	<context:component-scan base-package="com.danidemi.europrice.web.controller" />
 	<mvc:annotation-driven />
 	
-	<security:http>
+	<security:http use-expressions="true">
+ 		<!-- Enables Spring Security CSRF protection 
+		<security:csrf/>
+ 		-->
+		
+		 <!-- Configures the form login -->
+		<security:form-login
+			login-page="/login.html"
+			login-processing-url="/login/authenticate"
+			authentication-failure-url="/login.html?error=bad_credentials"
+			username-parameter="username"
+			password-parameter="password"/>
+			
+		<!-- Configures the logout function -->
+		<security:logout
+			logout-url="/logout"
+			logout-success-url="/admin/index.html"
+			delete-cookies="JESSIONID"/>
+			
+		<!-- Anyone can access these urls -->
+		<security:intercept-url pattern="/auth/**" access="permitAll"/>
+		<security:intercept-url pattern="/login.html" access="permitAll"/>
+		<security:intercept-url pattern="/signin/**" access="permitAll"/>
+		<security:intercept-url pattern="/signup/**" access="permitAll"/>
+		<security:intercept-url pattern="/user/register/**" access="permitAll"/>
+		
+		<!-- The rest of our application is protected. -->
+		<!--  
 		<security:intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+		-->
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_USER')"/>
+		
+		<!-- Adds social authentication filter to the Spring Security filter chain. -->
+		<security:custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER" />
+			
+		
 		<!--  
 		<security:form-login />
-		-->
 		<security:openid-login  />
+		<security:custom-filter ref="socialAuthenticationFilter" />
 		<security:logout />
+		-->
 	</security:http>
 	
-	<security:authentication-manager>
+
+	
+	<security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider>
 			<security:user-service>
 				<!--  
@@ -117,6 +154,30 @@
 			</security:user-service>
 		</security:authentication-provider>
 	</security:authentication-manager>
+
+	<!-- Configures the social authentication filter which integrates Spring 
+		Social with Spring Security. -->
+	<bean id="socialAuthenticationFilter" class="org.springframework.social.security.SocialAuthenticationFilter">
+		<constructor-arg index="0" ref="authenticationManager" />
+		<constructor-arg index="1" ref="socialIdSource" />
+		<constructor-arg index="2" ref="socialUsersConnectionRepository" />
+		<constructor-arg index="3" ref="socialConnectionFactoryLocator" />
+		<!-- Sets the url of the registration form. -->
+		<property name="signupUrl" value="/user/register" />
+	</bean>
+
+	<!-- This bean determines the account ID of the user. The example application 
+		uses the username as the account ID. -->
+	<bean id="socialIdSource"
+		class="org.springframework.social.security.AuthenticationNameUserIdSource" />
+		
+	<bean id="socialUsersConnectionRepository" class="org.springframework.social.connect.mem.InMemoryUsersConnectionRepository" >
+		<constructor-arg ref="socialConnectionFactoryLocator" />
+	</bean>
+	
+	<bean id="socialConnectionFactoryLocator" class="org.springframework.social.security.SocialAuthenticationServiceRegistry" />
+		
+		
 
 
 

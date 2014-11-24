@@ -241,6 +241,44 @@
 			<!-- ======================================== -->
 			<!-- Spring Security                          -->
 			<!-- ======================================== -->
+			
+			
+			
+			
+			
+			<!-- ======================================== -->
+			<!-- Spring Social                            -->
+			<!-- ======================================== -->
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-core</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-config</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-security</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>			
+			
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-twitter</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
+			<!-- ======================================== -->
+			<!-- Spring Social                            -->
+			<!-- ======================================== -->
+			
+
+
+
 
 			<!-- ======================================== -->
 			<!-- JLubricant -->
