@@ -100,14 +100,20 @@
 	
 	<security:http>
 		<security:intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+		<!--  
 		<security:form-login />
+		-->
+		<security:openid-login  />
 		<security:logout />
 	</security:http>
 	
 	<security:authentication-manager>
 		<security:authentication-provider>
 			<security:user-service>
+				<!--  
 				<security:user name="admin" password="admin" authorities="ROLE_ADMIN"/>
+				-->
+				<security:user name="http://plus.google.com/107223835396055530546" authorities="ROLE_ADMIN"/>				
 			</security:user-service>
 		</security:authentication-provider>
 	</security:authentication-manager>
