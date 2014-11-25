@@ -93,17 +93,62 @@
 
 	<!-- ========================================================== -->
 	<!-- WEB MVC                                                    -->
+	<!-- login-processing-url="/security-sign-in/authenticate" -->
 	<!-- ========================================================== -->
 	<context:annotation-config />
 	<context:component-scan base-package="com.danidemi.europrice.web.controller" />
 	<mvc:annotation-driven />
 	
-	<security:http use-expressions="true">
- 		<!-- Enables Spring Security CSRF protection 
+	<security:http>
+		<security:intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
+		<security:custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER" />
+		<security:form-login 
+			login-page="/security-sign-in.html" 
+			authentication-failure-url="/security-sign-in.html?param.error=bad_credentials" />
+		<security:logout logout-url="/security-sign-out.html"/>
+	</security:http>
+	
+	<bean id="socialAuthenticationFilter" class="org.springframework.social.security.SocialAuthenticationFilter">
+		<constructor-arg index="0" ref="socialAuthenticationManager" />
+		<constructor-arg index="1" ref="socialIdSource" />
+		<constructor-arg index="2" ref="socialRepository" />
+		<constructor-arg index="3" ref="socialConnectionFactoryLocator" /> 
+	</bean>
+	
+	<bean id="socialIdSource" class="org.springframework.social.security.AuthenticationNameUserIdSource" />
+	
+	<security:authentication-manager alias="socialAuthenticationManager">
+		<security:authentication-provider ref="socialAuthenticationProvider" />
+	</security:authentication-manager>
+	
+	<bean id="socialAuthenticationProvider" class="org.springframework.social.security.SocialAuthenticationProvider">
+		<constructor-arg ref="socialRepository" />
+		<constructor-arg><null/></constructor-arg>
+	</bean>
+	
+	<bean id="socialRepository" class="org.springframework.social.connect.mem.InMemoryUsersConnectionRepository">
+		<constructor-arg ref="socialConnectionFactoryLocator" />
+	</bean>
+	
+	<bean id="socialConnectionFactoryLocator" class="org.springframework.social.security.SocialAuthenticationServiceRegistry" >
+		<property name="authenticationServices">
+			<list>
+				<bean class="org.springframework.social.twitter.security.TwitterAuthenticationService">
+					<constructor-arg value="e7SmpLiBf9reCNU1UaFCVZbrS" />
+					<constructor-arg value="kL1Jos7PtNde6l52CW2NVNTh8iImb46tP5gKRuGihRa7uNnKD3" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+
+		<!-- 
+	<security:http use-expressions="false">
+ 		Enables Spring Security CSRF protection 
 		<security:csrf/>
  		-->
 		
-		 <!-- Configures the form login -->
+		 <!-- Configures the form login 
 		<security:form-login
 			login-page="/login.html"
 			login-processing-url="/login/authenticate"
@@ -111,27 +156,30 @@
 			username-parameter="username"
 			password-parameter="password"/>
 			
-		<!-- Configures the logout function -->
+		 -->
+		<!-- Configures the logout function 
 		<security:logout
 			logout-url="/logout"
 			logout-success-url="/admin/index.html"
 			delete-cookies="JESSIONID"/>
+		-->
 			
-		<!-- Anyone can access these urls -->
+		<!-- Anyone can access these urls 
 		<security:intercept-url pattern="/auth/**" access="permitAll"/>
 		<security:intercept-url pattern="/login.html" access="permitAll"/>
 		<security:intercept-url pattern="/signin/**" access="permitAll"/>
 		<security:intercept-url pattern="/signup/**" access="permitAll"/>
 		<security:intercept-url pattern="/user/register/**" access="permitAll"/>
-		
-		<!-- The rest of our application is protected. -->
-		<!--  
-		<security:intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
 		-->
-		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_USER')"/>
 		
-		<!-- Adds social authentication filter to the Spring Security filter chain. -->
+		<!-- The rest of our application is protected. 
+		<security:intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_USER')"/>
+		-->
+		
+		<!-- Adds social authentication filter to the Spring Security filter chain. 
 		<security:custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER" />
+		-->
 			
 		
 		<!--  
@@ -139,35 +187,54 @@
 		<security:openid-login  />
 		<security:custom-filter ref="socialAuthenticationFilter" />
 		<security:logout />
-		-->
 	</security:http>
+		-->
 	
 
 	
+		<!--  
 	<security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider>
 			<security:user-service>
-				<!--  
 				<security:user name="admin" password="admin" authorities="ROLE_ADMIN"/>
-				-->
 				<security:user name="http://plus.google.com/107223835396055530546" authorities="ROLE_ADMIN"/>				
 			</security:user-service>
 		</security:authentication-provider>
+		<security:authentication-provider>
+			<security:user-service id=""></security:user-service>
+		</security:authentication-provider>
 	</security:authentication-manager>
+	
+	<bean id="socialAuthenticationProvider" class="org.springframework.social.security.SocialAuthenticationProvider">
+	</bean>
+	
+	<bean id="connectionFactoryLocator" class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+	    <property name="connectionFactories">
+	        <list>
+	            <bean class="org.springframework.social.twitter.connect.TwitterConnectionFactory">
+	                <constructor-arg value="${twitter.consumerKey}" />
+	                <constructor-arg value="${twitter.consumerSecret}" />				
+	            </bean>
+	        </list>
+	    </property>
+	</bean>
+				-->
 
 	<!-- Configures the social authentication filter which integrates Spring 
-		Social with Spring Security. -->
+		Social with Spring Security. 
 	<bean id="socialAuthenticationFilter" class="org.springframework.social.security.SocialAuthenticationFilter">
 		<constructor-arg index="0" ref="authenticationManager" />
 		<constructor-arg index="1" ref="socialIdSource" />
 		<constructor-arg index="2" ref="socialUsersConnectionRepository" />
 		<constructor-arg index="3" ref="socialConnectionFactoryLocator" />
-		<!-- Sets the url of the registration form. -->
+		 Sets the url of the registration form. 
 		<property name="signupUrl" value="/user/register" />
 	</bean>
+		-->
+
 
 	<!-- This bean determines the account ID of the user. The example application 
-		uses the username as the account ID. -->
+		uses the username as the account ID. 
 	<bean id="socialIdSource"
 		class="org.springframework.social.security.AuthenticationNameUserIdSource" />
 		
@@ -176,6 +243,7 @@
 	</bean>
 	
 	<bean id="socialConnectionFactoryLocator" class="org.springframework.social.security.SocialAuthenticationServiceRegistry" />
+		-->
 		
 		
 

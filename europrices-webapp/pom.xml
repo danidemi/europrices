@@ -200,7 +200,13 @@
 		<dependency>
 			<groupId>org.springframework.social</groupId>
 			<artifactId>spring-social-security</artifactId>
-		</dependency>			
+		</dependency>	
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.6</version>
+		</dependency>
 		<!-- ======================================== -->
 		<!-- Spring Social                            -->
 		<!-- ======================================== -->
