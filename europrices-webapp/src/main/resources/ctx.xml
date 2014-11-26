@@ -113,6 +113,7 @@
 		<constructor-arg index="1" ref="socialIdSource" />
 		<constructor-arg index="2" ref="socialRepository" />
 		<constructor-arg index="3" ref="socialConnectionFactoryLocator" /> 
+		<property name="signupUrl" value="/security-sign-up.html" />
 	</bean>
 	
 	<bean id="socialIdSource" class="org.springframework.social.security.AuthenticationNameUserIdSource" />
@@ -126,8 +127,25 @@
 		<constructor-arg><null/></constructor-arg>
 	</bean>
 	
+	<!--  
 	<bean id="socialRepository" class="org.springframework.social.connect.mem.InMemoryUsersConnectionRepository">
 		<constructor-arg ref="socialConnectionFactoryLocator" />
+	</bean>
+	-->
+	
+	<bean id="socialRepository" class="org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository">
+		<constructor-arg ref="dataSource"/>
+		<constructor-arg ref="socialConnectionFactoryLocator" />
+		<constructor-arg>
+			<bean class="org.springframework.security.crypto.encrypt.HexEncodingTextEncryptor">
+				<constructor-arg>
+					<bean class="org.springframework.security.crypto.encrypt.AesBytesEncryptor">
+						<constructor-arg value="aes-password" />
+						<constructor-arg value="ABCD1234" />
+					</bean>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
 	</bean>
 	
 	<bean id="socialConnectionFactoryLocator" class="org.springframework.social.security.SocialAuthenticationServiceRegistry" >
