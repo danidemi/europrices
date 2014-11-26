@@ -17,16 +17,16 @@
 	</root>
 	
 	<logger name="org.springframework.security" level="ALL" />
-	<logger name="org.springframework.social" level="ALL" />
-	<logger name="org.apache.http" level="ALL" />
-	<logger name="com.danidemi.jlubricant.embeddable.hsql" level="INFO" />
-	<!--  
+	<logger name="org.springframework.social" level="INFO" />
+	<logger name="org.apache.http" level="ERROR" />
+	<logger name="com.danidemi.jlubricant.embeddable.hsql" level="ERROR" />
+
 	<logger name="com.danidemi.europrice.jetty" level="WARN" />
 	<logger name="com.danidemi.europrice.screenscraping.ScrapeContext" level="INFO" />
 	
 	<logger name="org.springframework" level="WARN" />
-	<logger name="org.springframework.web" level="WARN" />
-	<logger name="org.springframework.web.servlet.DispatcherServlet" level="WARN" />
+	<logger name="org.springframework.web" level="DEBUG" />
+	<logger name="org.springframework.web.servlet.DispatcherServlet" level="DEBUG" />
 	
 	<logger name="org.eclipse.jetty" level="WARN" />
 	
@@ -35,6 +35,6 @@
 	<logger name="org.hibernate" level="WARN" />
 	<logger name="org.hibernate.SQL" level="ALL" />
 	<logger name="org.hibernate.type" level="ALL" />	
-	-->
+
 	
 </configuration>
