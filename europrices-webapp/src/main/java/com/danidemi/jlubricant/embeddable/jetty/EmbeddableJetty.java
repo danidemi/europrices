@@ -2,17 +2,16 @@ package com.danidemi.jlubricant.embeddable.jetty;
 
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EventListener;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
 
 import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
@@ -31,7 +30,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
 import com.asual.lesscss.LessOptions;
-import com.asual.lesscss.LessServlet;
 import com.danidemi.jlubricant.embeddable.EmbeddableServer;
 import com.danidemi.jlubricant.embeddable.ServerStartException;
 import com.danidemi.jlubricant.embeddable.ServerStopException;
@@ -51,46 +49,25 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 	private int httpPort = 8080;
 	private int idleTimeout = 30000;
 	private boolean dirAllowed = true;
-	private String[] virtualHosts = null;
-	private String webappContextPath = "/";
-	private String dispatcherServletSubPath = "/";
+
 
 	private Thread jettyThread;
 
 	private String host;
 	
-	
-	/**
-	 * The paths that will be taken in charge by Spring's DispatcherServlet.
-	 * Values as {@code /appa/*} or {@code /} are ok. 
-	 * @param dispatcherServletSubPath
-	 */
-	public void setDispatcherServletSubPath(String dispatcherServletSubPath) {
-		this.dispatcherServletSubPath = dispatcherServletSubPath;
-	}
-	
-	public String getDispatcherServletSubPath() {
-		return dispatcherServletSubPath;
-	}
-	
-	/**
-	 * The context path the default web app will be published under.
-	 * Values as "/" or "/app" are accepted.
-	 */
-	public void setWebappContextPath(String webappContextPath) {
-		this.webappContextPath = webappContextPath;
-	}
-	
-	public void setVirtualHosts(List<String> virtualHosts) {
-		this.virtualHosts = virtualHosts.toArray( new String[virtualHosts.size()] );
-	}
-	
-	public void setVirtualHost(String virtualHost) {
-		this.setVirtualHosts( Arrays.asList( new String[]{virtualHost} ) );
-	}
-	
+	private List<Feature> features = new ArrayList<>();
+		
 	public void setHost(String host) {
 		this.host = host;
+	}
+	
+	public void addFeature(Feature f){
+		this.features.add( f );
+	}
+	
+	public void setFeatures(List<Feature> features){
+		this.features.clear();
+		this.features.addAll( features );
 	}
 		
 	public boolean isDirAllowed() {
@@ -111,15 +88,7 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 	
 	@Override
 	public void start() throws ServerStartException {
-		
-		// where in the classpath can be found a web app structure
-		String springResourcePathForWebApp = "webapp";
-		String resourceURI;
-		try {
-			resourceURI = new ClassPathResource(springResourcePathForWebApp).getURI().toString();
-		} catch (IOException e) {
-			throw new ServerStartException("Unable to find web app files at resource '" + springResourcePathForWebApp + "'", e);
-		}
+
 		
 		server = new Server();
 		
@@ -144,35 +113,43 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 //		http2.setPort(9090);
 //		http2.setIdleTimeout(30000);
 		
-		WebAppContext webapp = new WebAppContext();
+//		WebAppContext webapp = new WebAppContext();
+//		
+//		if(virtualHosts!=null){
+//			webapp.setVirtualHosts(virtualHosts);		
+//		}
+//		
+//		webapp.setContextPath(webappContextPath);
+//		
+//		webapp.setWar(resourceURI);
+//		
+//		// Disable directory listings if no index.html is found.
+//		webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed",
+//				String.valueOf(dirAllowed));
 		
-		if(virtualHosts!=null){
-			webapp.setVirtualHosts(virtualHosts);		
+		
+		//webapp.addEventListener(new InitializerListener(this));
+		//webapp.addEventListener(new RegisterLessServlet());
+		//webapp.addEventListener(new SecurityEnable(this));
+		
+		for (Feature feature : features) {
+			log.info("Installing feature " + feature);
+			feature.install(this);
 		}
 		
-		webapp.setContextPath(webappContextPath);
+//		// Create the root web application context and set it as a servlet
+//		// attribute so the dispatcher servlet can find it.
+//		webApplicationContext = new GenericWebApplicationContext();
+//		webApplicationContext.setParent(mainSpringContext);
+//		webApplicationContext.refresh();
+//		webapp.setAttribute(
+//				WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,
+//				webApplicationContext);
 		
-		webapp.setWar(resourceURI);
-		
-		// Disable directory listings if no index.html is found.
-		webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed",
-				String.valueOf(dirAllowed));
+
 		
 		
-		webapp.addEventListener(new InitializerListener(this));
-		webapp.addEventListener(new RegisterLessServlet());
-		webapp.addEventListener(new SecurityEnable(this));
 		
-		// Create the root web application context and set it as a servlet
-		// attribute so the dispatcher servlet can find it.
-		webApplicationContext = new GenericWebApplicationContext();
-		webApplicationContext.setParent(mainSpringContext);
-		webApplicationContext.refresh();
-		webapp.setAttribute(
-				WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,
-				webApplicationContext);
-		
-		server.setHandler(webapp);
 		server.setConnectors(new Connector[] { http });
 		
 		try {
@@ -251,91 +228,14 @@ public class EmbeddableJetty implements ApplicationContextAware, EmbeddableServe
 		this.mainSpringContext = applicationContext;
 	}
 	
-	/**
-	 * A {@link org.springframework.web.WebApplicationInitializer} suited to be used with Jetty.
-	 *
-	 * <p>{@link #createServletApplicationContext()} returns the one specified in the server.</p> 
-	 * <p>{@link #getServletMappings()} return the ones specified in the server.</p>
-	 * 
-	 * @see AbstractDispatcherServletInitializer
-	 */
-	private static class InitializerListener extends AbstractDispatcherServletInitializer implements ServletContextListener {
 
-		private EmbeddableJetty jetty;
-
-		public InitializerListener(EmbeddableJetty jetty) {
-			this.jetty = jetty;
-		}
-
-		@Override
-		protected WebApplicationContext createServletApplicationContext() {
-			if(jetty.webApplicationContext == null){
-				throw new IllegalStateException("Web app context not yet ready!");
-			}
-			return jetty.webApplicationContext;
-		}
-		
-		@Override
-		protected String[] getServletMappings() {
-			return new String[]{jetty.getDispatcherServletSubPath()};
-		}
-		
-	    /**
-	     * Receives notification that the web application initialization process is starting.
-	     */
-		@Override
-		public void contextInitialized(ServletContextEvent event) {
-	        try {
-	            onStartup(event.getServletContext());
-	        } catch (ServletException e) {
-	            logger.error("Failed to initialize web application", e);
-	            System.exit(0);
-	        }
-		}
-
-		@Override
-		public void contextDestroyed(ServletContextEvent sce) {
-			// nothing special
-		}
-
-
-		/**
-		 * No roots contexts are needed, so return null.
-		 */
-		@Override
-		protected WebApplicationContext createRootApplicationContext() {
-			return null;
-		}
-		
+	
+	public void setHandler(WebAppContext webapp) {
+		server.setHandler(webapp);
 	}
 	
-	private class RegisterLessServlet implements ServletContextListener {
-
-		@Override
-		public void contextInitialized(ServletContextEvent sce) {
-			LessServlet lessServlet = new LessServlet();
-			
-			String servletName = "less";
-			ServletContext servletContext = sce.getServletContext();
-			
-			
-			
-			ServletRegistration.Dynamic registration = servletContext.addServlet(servletName, lessServlet);
-			registration.setLoadOnStartup(1);
-			registration.setInitParameter("compress", Boolean.FALSE.toString());
-			registration.setInitParameter("lineNumbers", Boolean.FALSE.toString());
-			registration.setInitParameter("cache", Boolean.FALSE.toString());
-			
-			registration.addMapping("*.css");
-			
-		}
-
-		@Override
-		public void contextDestroyed(ServletContextEvent sce) {
-			// nothing to do
-			
-		}
-		
+	public WebAppContext getHandler(){
+		return (WebAppContext) server.getHandler();
 	}
 
 }

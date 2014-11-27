@@ -15,16 +15,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
-public class SecurityEnable implements ServletContextListener {
+public class SpringSecurityFeature implements ServletContextListener, Feature {
 	
-	private EmbeddableJetty jetty;
-	
-	public SecurityEnable(EmbeddableJetty jetty) {
+	public SpringSecurityFeature() {
 		super();
-		this.jetty = jetty;
+	}
+	
+	@Override
+	public void install(EmbeddableJetty embeddableJetty) {
+		embeddableJetty.getHandler().addEventListener(this);
 	}
 
-	
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext servletContext = sce.getServletContext();
 		EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST);

@@ -99,14 +99,24 @@
 	<context:component-scan base-package="com.danidemi.europrice.web.controller" />
 	<mvc:annotation-driven />
 	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:messages/messages" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	
 	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!--  
 	    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		-->
+		<property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView"/>
+		
 	    <property name="prefix" value="/jsp/"/>
 	    <property name="suffix" value=".jsp"/>
 	    <property name="order" value="1" />
 	</bean>
 	
 	<security:http>
+		<security:intercept-url pattern="/app/admin/**" access="ROLE_ADMIN"/>
 		<security:intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
 		<security:custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER" />
 		<security:form-login 
@@ -278,15 +288,33 @@
 	<!-- Web                                                        -->
 	<!-- ========================================================== -->
 	<bean name="js" class="com.danidemi.jlubricant.embeddable.jetty.EmbeddableJetty" init-method="start" destroy-method="stop">
+		<!--  
 		<property name="dirAllowed" value="${europrices.http.dirAllowed}" />
 		<property name="dispatcherServletSubPath" value="/app/*" />
+		-->
 		<property name="httpPort" value="${europrices.http.port}" />
 		<property name="host" value="${europrices.http.host}" />
 		<!--  
 		<property name="virtualHosts"><null /></property> 
 		-->
-		<!--  value="${europrices.http.virtualHosts}" />  -->
+		<!--  
+		value="${europrices.http.virtualHosts}" />  
 		<property name="webappContextPath" value="/" />
+		-->
+		<property name="features">
+			<list>
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.WebAppFeature">
+					<constructor-arg value="${europrices.http.virtualHosts}" />
+					<constructor-arg value="/" />
+					<constructor-arg value="${europrices.http.dirAllowed}" />
+				</bean>
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringSecurityFeature" />
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.LessFeature" />
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringDispatcherServletFeature">
+					<constructor-arg value="/app/*" />
+				</bean>
+			</list>
+		</property>
 	</bean>
 	
 	

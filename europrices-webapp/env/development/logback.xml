@@ -23,6 +23,7 @@
 
 	<logger name="com.danidemi.europrice.jetty" level="WARN" />
 	<logger name="com.danidemi.europrice.screenscraping.ScrapeContext" level="INFO" />
+	<logger name="com.danidemi.jlubricant.embeddable.jetty" level="INFO" />
 	
 	<logger name="org.springframework" level="WARN" />
 	<logger name="org.springframework.web" level="DEBUG" />
@@ -32,9 +33,9 @@
 	
 	<logger name="org.flywaydb" level="WARN" />
 	
-	<logger name="org.hibernate" level="WARN" />
-	<logger name="org.hibernate.SQL" level="ALL" />
-	<logger name="org.hibernate.type" level="ALL" />	
+	<logger name="org.hibernate" level="ERROR" />
+	<logger name="org.hibernate.SQL" level="ERROR" />
+	<logger name="org.hibernate.type" level="ERROR" />	
 
 	
 </configuration>
