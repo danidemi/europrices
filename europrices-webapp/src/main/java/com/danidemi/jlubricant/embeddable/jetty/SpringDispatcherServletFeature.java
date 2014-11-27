@@ -107,7 +107,7 @@ public class SpringDispatcherServletFeature implements Feature, ApplicationConte
 			}
 		}
 		
-		@Override
+		
 	    public void onStartup(ServletContext container) {
 	        XmlWebApplicationContext appContext = new XmlWebApplicationContext();
 	        appContext.setBeanName("fakeEmptyContext");
@@ -144,7 +144,9 @@ public class SpringDispatcherServletFeature implements Feature, ApplicationConte
 	        dispatcher.addMapping(SpringDispatcherServletFeature.this.dispatcherServletSubPath);
 	        
 	      }
-		
+	    
+
+				
 		@Override
 		protected WebApplicationContext createServletApplicationContext() {
 			XmlWebApplicationContext wac = new XmlWebApplicationContext();
@@ -157,7 +159,7 @@ public class SpringDispatcherServletFeature implements Feature, ApplicationConte
 			wac.setParent(springCtxInWhichJettyRuns);
 			
 			return wac;
-		}
+		}		
 		
 		@Override
 		protected String[] getServletMappings() {
@@ -171,9 +173,7 @@ public class SpringDispatcherServletFeature implements Feature, ApplicationConte
 		}
 
 
-		/**
-		 * No roots contexts are needed, so return null.
-		 */
+
 		@Override
 		protected WebApplicationContext createRootApplicationContext() {
 //			if(springCtxInWhichJettyRuns == null){
@@ -183,7 +183,11 @@ public class SpringDispatcherServletFeature implements Feature, ApplicationConte
 //			wac.setParent(springCtxInWhichJettyRuns);
 //			wac.setServletContext(this.servletContext);
 //			return wac;
+
 			return null;
+			
+			
+			
 		}
 		
 	}

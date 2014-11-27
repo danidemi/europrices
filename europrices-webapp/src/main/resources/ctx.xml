@@ -308,6 +308,7 @@
 					<constructor-arg value="/" />
 					<constructor-arg value="${europrices.http.dirAllowed}" />
 				</bean>
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringFeature" />
 				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringSecurityFeature" />
 				<bean class="com.danidemi.jlubricant.embeddable.jetty.LessFeature" />
 				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringDispatcherServletFeature">
