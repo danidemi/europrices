@@ -24,7 +24,7 @@ public class SpringFeature implements Feature, ApplicationContextAware {
 
 		wac = new XmlWebApplicationContext();
 		wac.setParent( applicationContext );
-		wac.set
+		wac.setConfigLocation(SpringUtils.fakeEmptyContext());
 	}
 
 }

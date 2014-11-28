@@ -112,11 +112,7 @@ public class SpringDispatcherServletFeature implements Feature, ApplicationConte
 	        XmlWebApplicationContext appContext = new XmlWebApplicationContext();
 	        appContext.setBeanName("fakeEmptyContext");
 	        //appContext.setConfigLocation("/WEB-INF/spring/dispatcher-config.xml");
-	        String fakeEmptyContext = 
-	        		"classpath:" + 
-	        		SpringDispatcherServletFeature.this.getClass().getPackage().getName().replace(".", "/") +
-	        		"/" + SpringDispatcherServletFeature.this.getClass().getSimpleName() 
-	        		+ ".xml";
+	        String fakeEmptyContext = SpringUtils.fakeEmptyContext();
 	        appContext.setParent(springCtxInWhichJettyRuns);
 	        
 //	        Object bean = springCtxInWhichJettyRuns.getBean("messageSource");
