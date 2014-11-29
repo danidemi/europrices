@@ -2,6 +2,8 @@ package com.danidemi.europrice.web.controller;
 
 import java.security.Principal;
 
+import javax.servlet.ServletRequest;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,9 @@ public class IndexController {
     	SecurityContext context = SecurityContextHolder.getContext();
 		Authentication otherAuthentication = context.getAuthentication();
     	System.out.println(otherAuthentication);
+    	Object thePrincipal = otherAuthentication.getPrincipal();
+    	System.out.println(thePrincipal);
+    	System.out.println(thePrincipal.getClass());
         return "index";
     }
 	

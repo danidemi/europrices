@@ -89,7 +89,15 @@
 	<!-- ========================================================== -->
 	<context:annotation-config />
 	<context:component-scan base-package="com.danidemi.europrice.web.controller" />
-	<mvc:annotation-driven />
+	
+	
+	<mvc:annotation-driven>
+		<!--  
+        <mvc:argument-resolvers>
+            <bean class="org.springframework.security.web.bind.support.AuthenticationPrincipalArgumentResolver" />
+        </mvc:argument-resolvers>
+		-->
+	</mvc:annotation-driven>
 	
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="classpath:messages/messages" />
@@ -116,6 +124,15 @@
 			authentication-failure-url="/security-sign-in.html?param.error=bad_credentials" />
 		<security:logout logout-url="/security-sign-out.html"/>
 	</security:http>
+	
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="dataSource" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+	
+	
 	
 	<!--  
 	<security:http>
@@ -183,6 +200,8 @@
 			</list>
 		</property>
 	</bean>
+	
+	
 	
 
 		<!-- 
