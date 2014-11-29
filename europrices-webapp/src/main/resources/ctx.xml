@@ -107,6 +107,17 @@
 	    <property name="order" value="1" />
 	</bean>
 	
+	<security:debug />
+	
+	<security:http pattern="/app/**">
+		<security:anonymous enabled="true" username="anonymousUser" /><!-- ROLE_ANONYMOUS -->
+		<security:form-login 
+			login-page="/security-sign-in.html" 
+			authentication-failure-url="/security-sign-in.html?param.error=bad_credentials" />
+		<security:logout logout-url="/security-sign-out.html"/>
+	</security:http>
+	
+	<!--  
 	<security:http>
 		<security:intercept-url pattern="/app/admin/**" access="ROLE_ADMIN"/>
 		<security:intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
@@ -116,6 +127,7 @@
 			authentication-failure-url="/security-sign-in.html?param.error=bad_credentials" />
 		<security:logout logout-url="/security-sign-out.html"/>
 	</security:http>
+	-->
 	
 	<bean id="socialAuthenticationFilter" class="org.springframework.social.security.SocialAuthenticationFilter">
 		<constructor-arg index="0" ref="socialAuthenticationManager" />
