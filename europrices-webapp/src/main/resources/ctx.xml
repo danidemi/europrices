@@ -28,12 +28,13 @@
         http://www.springframework.org/schema/security/spring-security.xsd       
         ">
 
-	<context:property-placeholder order="1" location="classpath:config.xml" />
 	<!-- 
 		'secrets' is expected to be provided from the command line via -D.
 		This way there is no need to share secrets on a public scm.
 	-->        
-	<context:property-placeholder order="2" location="${secrets}" />
+	<context:property-placeholder order="1" location="${secrets}" ignore-resource-not-found="false" ignore-unresolvable="true"/>
+	<context:property-placeholder order="2" location="classpath:config.xml" ignore-resource-not-found="false" ignore-unresolvable="false"/>
+
 
 	<!-- ========================================================== -->
 	<!-- Database                                                   -->
@@ -162,6 +163,10 @@
 				<bean class="org.springframework.social.twitter.security.TwitterAuthenticationService">
 					<constructor-arg value="${europrices.secrets.twitter.api.key}" />
 					<constructor-arg value="${europrices.secrets.twitter.api.secret}" />
+				</bean>
+				<bean class="org.springframework.social.facebook.security.FacebookAuthenticationService">
+					<constructor-arg value="${europrices.secrets.facebook.api.appId}" />
+					<constructor-arg value="${europrices.secrets.facebook.api.appSecret}" />					
 				</bean>
 			</list>
 		</property>
