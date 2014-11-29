@@ -25,4 +25,6 @@
 	<entry key="europrices.db.path">/var/misc/europrices/db</entry>
 	
 	<entry key="europrices.scraping.trigger">triggerN</entry>
+	
+	<entry key="europrices.secrets.location">classpath:secrets.xml</entry>
 </properties>

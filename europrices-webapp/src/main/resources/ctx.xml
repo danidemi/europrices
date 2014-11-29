@@ -28,17 +28,12 @@
         http://www.springframework.org/schema/security/spring-security.xsd       
         ">
 
-	<context:property-placeholder location="classpath:config.xml" />        
-
-
-
-
-
-
-
-
-
-
+	<context:property-placeholder order="1" location="classpath:config.xml" />
+	<!-- 
+		'secrets' is expected to be provided from the command line via -D.
+		This way there is no need to share secrets on a public scm.
+	-->        
+	<context:property-placeholder order="2" location="${secrets}" />
 
 	<!-- ========================================================== -->
 	<!-- Database                                                   -->
@@ -47,10 +42,6 @@
 	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="dbms">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-
-
-
-
 
 	<!-- ========================================================== -->
 	<!-- ORM & Model                                                -->
@@ -169,8 +160,8 @@
 		<property name="authenticationServices">
 			<list>
 				<bean class="org.springframework.social.twitter.security.TwitterAuthenticationService">
-					<constructor-arg value="e7SmpLiBf9reCNU1UaFCVZbrS" />
-					<constructor-arg value="kL1Jos7PtNde6l52CW2NVNTh8iImb46tP5gKRuGihRa7uNnKD3" />
+					<constructor-arg value="${europrices.secrets.twitter.api.key}" />
+					<constructor-arg value="${europrices.secrets.twitter.api.secret}" />
 				</bean>
 			</list>
 		</property>
