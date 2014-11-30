@@ -43,16 +43,8 @@
 
 				<div id="search-box">
 					<div id="search">
-						<!--
-						<button id="search-clear" ng-click="onClearSearch()" ng-disabled="searchTerms.length<3">clear</button>
-						<input type="search" placeholder="samsung, galaxy..."  ng-model="searchTerms" ng-keypress="onSearch()" />
-						-->
 						<input type="search" placeholder="samsung, galaxy..."  ng-model="searchTerms" my-enterpress="onSearch()" />
 						<button id="search-launch" ng-click="onSearch()" ng-disabled="searchTerms.length<3">search</button>
-						<!--
-						<form>
-						</form>
-						-->
 					</div>
 				</div>
 
