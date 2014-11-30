@@ -11,4 +11,13 @@ public class SpringUtils {
         return fakeEmptyContext;
 	}
 	
+	public static String fakeEmptyRootContext(){
+        String fakeEmptyContext = 
+        		"classpath:" + 
+        				SpringUtils.class.getName().replace(".", "/") +
+        		"." + "emptyrootcontext" 
+        		+ ".xml";
+        return fakeEmptyContext;
+	}	
+	
 }

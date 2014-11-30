@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html >
 <html lang="en" ng-app="europricesMod">
 	<head>
@@ -24,6 +25,21 @@
 					<div>europrices</div>
 					<div>spot the best mobile prices in the eurozone</div>
 				</div>
+				
+				<div>
+					<sec:authorize access="isAnonymous()">
+						<a href="/app/account/signin">Sign In</a>
+						|
+						<a href="/app/account/signup">Sign Up</a>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+						<sec:authentication property="principal.username" />
+						|
+						<a href="/j_spring_security_logout">Sign Out</a>
+					</sec:authorize> 
+				</div>
+				
+
 
 				<div id="search-box">
 					<div id="search">
