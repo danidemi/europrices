@@ -145,23 +145,48 @@
 	
 		<!-- tries to authorize through username / password -->
 		<security:authentication-provider>
-			<security:jdbc-user-service data-source-ref="dataSource" />
+				
+			<!-- this is a default jdbc based DAO 
+			-->
+			<!--  
+			<security:jdbc-user-service data-source-ref="dataSource"/>
+			-->
+						
 			<security:user-service>
 				<security:user name="demo" password="demo" authorities="ROLE_USER" disabled="false" locked="false"/>
 			</security:user-service>
 		</security:authentication-provider>
 		
+		<!-- tries to authorize through social login 
+		<security:authentication-provider ref="securityDbAuthenticationProvider" />
+		-->
+		
+		<security:authentication-provider ref="securityDbAuthenticationProvider" />
+		
 		<!-- tries to authorize through social login -->
 		<security:authentication-provider ref="socialAuthenticationProvider" />
 		
 	</security:authentication-manager>
+	
+	<!--  
+	-->
+	<bean id="securityDbAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService" ref="securityDbAuthenticationManager" />
+	</bean>
+	
+	<bean id="securityDbAuthenticationManager" class="org.springframework.security.provisioning.JdbcUserDetailsManager">
+		<property name="dataSource" ref="dataSource" />
+		<property name="enableAuthorities" value="true" />
+		<property name="enableGroups" value="false" />
+		<property name="rolePrefix" value="" />
+	</bean>
 
 	<!--  
 	<security:authentication-manager alias="socialAuthenticationManager">
 	</security:authentication-manager>	
 	-->	
 	
-	
+
 	
 	
 	<!--  
