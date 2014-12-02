@@ -161,7 +161,7 @@
 		<security:authentication-provider ref="securityDbAuthenticationProvider" />
 		-->
 		
-		<security:authentication-provider ref="securityDbAuthenticationProvider" />
+		<security:authentication-provider ref="securityDbAuthenticationProvider"/>
 		
 		<!-- tries to authorize through social login -->
 		<security:authentication-provider ref="socialAuthenticationProvider" />
@@ -176,13 +176,14 @@
 	</bean>
 	
 	
+	<!--  
 	<bean id="securityDbAuthenticationManager" class="org.springframework.security.provisioning.JdbcUserDetailsManager">
 		<property name="dataSource" ref="dataSource" />
 		<property name="enableAuthorities" value="true" />
 		<property name="enableGroups" value="false" />
 		<property name="rolePrefix" value="" />
 	</bean>
-	<!--  
+	-->
 	<bean id="securityDbAuthenticationManager" class="com.danidemi.europrice.web.controller.MyJdbcUserDetailsManager">
 		<property name="dataSource" ref="dataSource" />
 		<property name="enableAuthorities" value="true" />
@@ -190,7 +191,6 @@
 		<property name="rolePrefix" value="" />
 		<property name="passwordEncoder" ref="securityPasswordEncoder" />
 	</bean>	
-	-->
 	
 	<bean id="securityPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 	</bean>

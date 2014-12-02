@@ -1,16 +1,14 @@
 package com.danidemi.europrice.web.controller;
 
-import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.Collection;
 
-import org.apache.commons.lang3.SerializationUtils;
-import org.apache.http.client.utils.CloneUtils;
+import org.bouncycastle.util.test.FixedSecureRandom;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
-
-import com.google.inject.ImplementedBy;
 
 public class MyJdbcUserDetailsManager extends JdbcUserDetailsManager {
 
@@ -70,6 +68,15 @@ public class MyJdbcUserDetailsManager extends JdbcUserDetailsManager {
 		}
 
 		
+	}
+	
+	public static void main(String[] args) {
+		SecureRandom sr = new SecureRandom();
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(4, sr);
+		System.out.println( bCryptPasswordEncoder.encode("rawPassword") );
+		System.out.println( bCryptPasswordEncoder.encode("a") );
+		System.out.println( bCryptPasswordEncoder.encode("$2a$10$Yj7aL2pDLet5m5pWlNLlpuNH8YeDXyWDq5Z4d1CzFQaAlAkWz/9xm") );
+		System.out.println( bCryptPasswordEncoder.encode("$2a$10$Yj7aL2pDLet5m5pWlNLlpuNH8YeDXyWDq5Z4d1CzFQaAlAkWz/9xm").length() );
 	}
 	
 }

@@ -19,7 +19,7 @@
 	<logger name="org.springframework.security" level="INFO" />
 	<logger name="org.springframework.social" level="WARN" />
 	<logger name="org.apache.http" level="ERROR" />
-	<logger name="com.danidemi.jlubricant.embeddable.hsql" level="WARN" />
+	<logger name="com.danidemi.jlubricant.embeddable.hsql" level="DEBUG" />
 
 	<logger name="com.danidemi.europrice.jetty" level="WARN" />
 	<logger name="com.danidemi.europrice.screenscraping.ScrapeContext" level="WARN" />
