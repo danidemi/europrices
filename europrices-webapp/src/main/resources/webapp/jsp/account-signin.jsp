@@ -25,5 +25,8 @@
 			<ul> o j_spring_security_check</ul>
 		</div>
 		
+		<p><a href="/auth/twitter">sign in with twitter</a></p>
+		<p><a href="/auth/facebook">sign in with facebook</a></p>		
+		
 	</body>
 </html>

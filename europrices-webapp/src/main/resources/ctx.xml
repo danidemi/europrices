@@ -121,6 +121,7 @@
 		<!--  
 		<security:intercept-url pattern=""/>
 		-->
+		<security:custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER" />
 		<security:form-login 
 			default-target-url="/app/index"
 			login-page="/app/account/signin" 
@@ -157,7 +158,7 @@
 			</security:user-service>
 		</security:authentication-provider>
 		
-		<!-- tries to authorize through social login 
+		<!-- tries to authorize through db 
 		<security:authentication-provider ref="securityDbAuthenticationProvider" />
 		-->
 		
@@ -222,7 +223,7 @@
 		<constructor-arg index="1" ref="socialIdSource" />
 		<constructor-arg index="2" ref="socialRepository" />
 		<constructor-arg index="3" ref="socialConnectionFactoryLocator" /> 
-		<property name="signupUrl" value="/security-sign-up.html" />
+		<property name="signupUrl" value="/app/account/socialsignin" />
 	</bean>
 	
 	<bean id="socialIdSource" class="org.springframework.social.security.AuthenticationNameUserIdSource" />
