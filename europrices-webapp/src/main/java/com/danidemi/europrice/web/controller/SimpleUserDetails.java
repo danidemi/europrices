@@ -1,14 +1,19 @@
 package com.danidemi.europrice.web.controller;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.SerializationUtils;
+import org.eclipse.jetty.util.security.Password;
+import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class SimpleUserDetails implements UserDetails {
+public class SimpleUserDetails implements UserDetails, Cloneable, Serializable {
 	
 	private static final long serialVersionUID = 8032672037374790746L;
 	
@@ -102,6 +107,23 @@ public class SimpleUserDetails implements UserDetails {
 	
 	public static GrantedAuthority createSimpleGrantedAuthority(String authority){
 		return new SimpleGrantedAuthority(authority);
+	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return SerializationUtils.clone(this);
+	}
+	
+	public SimpleUserDetails applyPasswordEncoding(SaltSource saltSource, PasswordEncoder passwordEncoder){
+		SimpleUserDetails result;
+		try {
+			result = (SimpleUserDetails) this.clone();
+		} catch (CloneNotSupportedException e) {
+			// should really not happen
+			throw new RuntimeException(e);
+		}
+		result.setPassword( passwordEncoder.encode(this.getPassword()) );
+		return this;
 	}
 
 }

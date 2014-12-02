@@ -172,7 +172,9 @@
 	-->
 	<bean id="securityDbAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
 		<property name="userDetailsService" ref="securityDbAuthenticationManager" />
+		<property name="passwordEncoder" ref="securityPasswordEncoder" />
 	</bean>
+	
 	
 	<bean id="securityDbAuthenticationManager" class="org.springframework.security.provisioning.JdbcUserDetailsManager">
 		<property name="dataSource" ref="dataSource" />
@@ -180,6 +182,20 @@
 		<property name="enableGroups" value="false" />
 		<property name="rolePrefix" value="" />
 	</bean>
+	<!--  
+	<bean id="securityDbAuthenticationManager" class="com.danidemi.europrice.web.controller.MyJdbcUserDetailsManager">
+		<property name="dataSource" ref="dataSource" />
+		<property name="enableAuthorities" value="true" />
+		<property name="enableGroups" value="false" />
+		<property name="rolePrefix" value="" />
+		<property name="passwordEncoder" ref="securityPasswordEncoder" />
+	</bean>	
+	-->
+	
+	<bean id="securityPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	</bean>
+	
+
 
 	<!--  
 	<security:authentication-manager alias="socialAuthenticationManager">
