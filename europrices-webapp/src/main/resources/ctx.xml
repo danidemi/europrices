@@ -257,9 +257,20 @@
  	database. The supporting schema is defined in JdbcUsersConnectionRepository.sql. 	
 	-->
 	<bean id="socialRepository" class="org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository">
+
+		<!-- DataSource --> 
 		<constructor-arg ref="dataSource"/>
+
+		<!-- ConnectionFactoryLocator -->
 		<constructor-arg ref="socialConnectionFactoryLocator" />
+
+		<!-- TextEncryptor textEncryptor -->
 		<constructor-arg>
+			<bean class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="queryableText">
+				<!-- password --><constructor-arg value="aes-password" />
+				<!-- 16 exh char string salt --><constructor-arg value="30313233343536F4" />
+			</bean>
+			<!--  
 			<bean class="org.springframework.security.crypto.encrypt.HexEncodingTextEncryptor">
 				<constructor-arg>
 					<bean class="org.springframework.security.crypto.encrypt.AesBytesEncryptor">
@@ -268,7 +279,9 @@
 					</bean>
 				</constructor-arg>
 			</bean>
+			-->
 		</constructor-arg>
+		<property name="tablePrefix" value="" />
 	</bean>
 	
 	<!-- 
