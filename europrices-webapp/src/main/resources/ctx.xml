@@ -9,6 +9,7 @@
 	xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -25,7 +26,9 @@
 		http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd 
         http://www.springframework.org/schema/security
-        http://www.springframework.org/schema/security/spring-security.xsd       
+        http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd
         ">
 
 	<!-- 
@@ -89,6 +92,10 @@
 	<!-- ========================================================== -->
 	<context:annotation-config />
 	<context:component-scan base-package="com.danidemi.europrice.web.controller" />
+	
+	<!-- This allow the Connect Controller to be discovered 
+	<context:component-scan base-package="org.springframework.social.connect.web" />
+	-->
 	
 	
 	<mvc:annotation-driven>
@@ -196,6 +203,10 @@
 	<bean id="securityPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 	</bean>
 	
+	<bean id="socialConnectController" class="org.springframework.social.connect.web.ConnectController">
+	</bean>
+	
+
 
 
 	<!--  
@@ -239,6 +250,12 @@
 	</bean>
 	-->
 	
+
+	
+	<!--  
+	UsersConnectionRepository that uses the JDBC API to persist connection data to a relational 
+ 	database. The supporting schema is defined in JdbcUsersConnectionRepository.sql. 	
+	-->
 	<bean id="socialRepository" class="org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository">
 		<constructor-arg ref="dataSource"/>
 		<constructor-arg ref="socialConnectionFactoryLocator" />
@@ -252,6 +269,15 @@
 				</constructor-arg>
 			</bean>
 		</constructor-arg>
+	</bean>
+	
+	<!-- 
+	This is a request scoped bean that is the repository that can be used to access a specific user social connections.
+	The user is the one contained in the request: request.userPrincipal.name
+	-->
+	<bean id="socialUserConnectionRepository" factory-method="createConnectionRepository" factory-bean="socialRepository" scope="request">
+	    <constructor-arg value="#{request.userPrincipal.name}" />
+	    <aop:scoped-proxy proxy-target-class="false" />
 	</bean>
 	
 	<bean id="socialConnectionFactoryLocator" class="org.springframework.social.security.SocialAuthenticationServiceRegistry" >

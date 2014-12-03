@@ -35,6 +35,10 @@
 					<sec:authorize access="isAuthenticated()">
 						<sec:authentication property="principal.username" />
 						|
+						<a href="/app/connect/twitter" >Connect Twitter</a>
+						|
+						<a href="/app/connect/facebook" >Connect Facebook</a>
+						|
 						<a href="/j_spring_security_logout">Sign Out</a>
 					</sec:authorize> 
 				</div>

@@ -1,17 +1,14 @@
 package com.danidemi.jlubricant.embeddable.jetty;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.security.access.expression.SecurityExpressionHandler;
-import org.springframework.security.web.access.expression.WebSecurityExpressionHandler;
 import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestScope;
+import org.springframework.web.context.request.SessionScope;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 public class SpringFeature implements Feature, ApplicationContextAware {
@@ -50,6 +47,12 @@ public class SpringFeature implements Feature, ApplicationContextAware {
 		};
 		wac.setParent( applicationContext );
 		wac.setConfigLocation(SpringUtils.fakeEmptyRootContext());
+		
+		if(!(applicationContext instanceof ConfigurableApplicationContext)){
+			throw new IllegalArgumentException("applicationContext cannot be casted to ConfigurableApplicationContext, impossible to register needed scopes.");
+		}
+		((ConfigurableApplicationContext)applicationContext).getBeanFactory().registerScope("request", new RequestScope());
+		((ConfigurableApplicationContext)applicationContext).getBeanFactory().registerScope("session", new SessionScope());
 				
 	}
 	
