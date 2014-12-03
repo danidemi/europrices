@@ -356,6 +356,29 @@
 		<!-- ======================================== -->
 		<!-- Logging -->
 		<!-- ======================================== -->
+
+		<!-- ======================================== -->
+		<!-- This is needed as light replacement of encryptors -->
+		<!-- ======================================== -->
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt-spring31</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.2</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpg-jdk15on</artifactId>
+			<version>1.51</version>
+		</dependency>		
+		<!-- ======================================== -->
+		<!-- This is needed as light replacement of encryptors -->
+		<!-- ======================================== -->		
+
 	</dependencies>
 
 	<build>
