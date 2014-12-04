@@ -1,4 +1,4 @@
-package com.danidemi.europrice.web.controller;
+package com.danidemi.jlubricant.springframework.security.crypto.encrypt;
 
 import static java.lang.String.format;
 
@@ -28,8 +28,8 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 /**
  * Encriptors returned by {@link Encryptors} could be easily misconfigured, if
- * for instance the keys are of the wrong lenght. It could happen that the
- * misconfiguration error occurs only at runtime, and if the exception thrown is
+ * for instance the keys are of the wrong length or if Java Cryptography Extension is not properly intalled. 
+ * It could happen that the misconfiguration error occurs only at runtime, and if the exception thrown is
  * not at least made clear, you could easily overlook it. This decorator run a
  * series of quick tests upon instantiation to check that the encryptors works
  * correctly.

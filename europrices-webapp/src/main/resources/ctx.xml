@@ -266,7 +266,7 @@
 
 		<!-- TextEncryptor textEncryptor -->
 		<constructor-arg>
-			<bean class="com.danidemi.europrice.web.controller.VerifiedTextEncryptor">
+			<bean class="com.danidemi.jlubricant.springframework.security.crypto.encrypt.VerifiedTextEncryptor">
 				<constructor-arg>
 					<!--  
 					<bean class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="queryableText">
@@ -274,7 +274,12 @@
 						<!- - 16 exh char string salt - -><constructor-arg value="30313233343536F4" />
 					</bean>
 					-->
+					<!--  
 					<bean class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="noOpText">
+					</bean>
+					-->
+					<bean class="com.danidemi.jlubricant.springframework.security.crypto.encrypt.TinyAESTextEncryptor">
+						<constructor-arg value="0123456776543210"/>
 					</bean>
 				</constructor-arg>
 			</bean>
