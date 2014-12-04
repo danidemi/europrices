@@ -33,6 +33,10 @@
 						<a href="/app/account/signup">Sign Up</a>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
+						<% String imageUrl = (String)request.getAttribute("imageUrl");
+						if(imageUrl!=null){ %>
+						<img alt="profile" src="<%= imageUrl %>"/>
+						<% } %>
 						<sec:authentication property="principal.username" />
 						|
 						<a href="/app/connect/twitter" >Connect Twitter</a>
