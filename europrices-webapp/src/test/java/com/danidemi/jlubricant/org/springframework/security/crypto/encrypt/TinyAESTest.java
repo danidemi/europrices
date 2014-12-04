@@ -1,4 +1,4 @@
-package com.danidemi.jlubricant.springframework.security.crypto.encrypt;
+package com.danidemi.jlubricant.org.springframework.security.crypto.encrypt;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import com.danidemi.jlubricant.org.springframework.security.crypto.encrypt.TinyAES;
 import com.google.common.base.Charsets;
 
 

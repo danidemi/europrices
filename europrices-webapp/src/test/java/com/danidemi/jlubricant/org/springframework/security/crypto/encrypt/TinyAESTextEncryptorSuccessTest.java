@@ -1,4 +1,4 @@
-package com.danidemi.jlubricant.springframework.security.crypto.encrypt;
+package com.danidemi.jlubricant.org.springframework.security.crypto.encrypt;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import com.danidemi.jlubricant.org.springframework.security.crypto.encrypt.TinyAESTextEncryptor;
 
 @RunWith(Parameterized.class)
 public class TinyAESTextEncryptorSuccessTest {

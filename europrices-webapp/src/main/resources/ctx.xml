@@ -192,7 +192,7 @@
 		<property name="rolePrefix" value="" />
 	</bean>
 	-->
-	<bean id="securityDbAuthenticationManager" class="com.danidemi.europrice.web.controller.MyJdbcUserDetailsManager">
+	<bean id="securityDbAuthenticationManager" class="com.danidemi.jlubricant.org.springframework.security.provisioning.JdbcUserDetailsManager">
 		<property name="dataSource" ref="dataSource" />
 		<property name="enableAuthorities" value="true" />
 		<property name="enableGroups" value="false" />
@@ -266,7 +266,7 @@
 
 		<!-- TextEncryptor textEncryptor -->
 		<constructor-arg>
-			<bean class="com.danidemi.jlubricant.springframework.security.crypto.encrypt.VerifiedTextEncryptor">
+			<bean class="com.danidemi.jlubricant.org.springframework.security.crypto.encrypt.VerifiedTextEncryptor">
 				<constructor-arg>
 					<!--  
 					<bean class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="queryableText">
@@ -278,7 +278,7 @@
 					<bean class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="noOpText">
 					</bean>
 					-->
-					<bean class="com.danidemi.jlubricant.springframework.security.crypto.encrypt.TinyAESTextEncryptor">
+					<bean class="com.danidemi.jlubricant.org.springframework.security.crypto.encrypt.TinyAESTextEncryptor">
 						<constructor-arg value="0123456776543210"/>
 					</bean>
 				</constructor-arg>

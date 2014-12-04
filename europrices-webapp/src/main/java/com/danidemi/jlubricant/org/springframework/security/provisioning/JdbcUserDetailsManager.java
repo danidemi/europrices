@@ -1,16 +1,14 @@
-package com.danidemi.europrice.web.controller;
+package com.danidemi.jlubricant.org.springframework.security.provisioning;
 
 import java.security.SecureRandom;
 import java.util.Collection;
 
-import org.bouncycastle.util.test.FixedSecureRandom;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
-public class MyJdbcUserDetailsManager extends JdbcUserDetailsManager {
+public class JdbcUserDetailsManager extends org.springframework.security.provisioning.JdbcUserDetailsManager {
 
 	private PasswordEncoder passwordEncoder;
 	
@@ -43,7 +41,7 @@ public class MyJdbcUserDetailsManager extends JdbcUserDetailsManager {
 
 		public String getPassword() {
 			String originalPassword = delegate.getPassword();
-			String encodedPassword = MyJdbcUserDetailsManager.this.passwordEncoder.encode(originalPassword);
+			String encodedPassword = JdbcUserDetailsManager.this.passwordEncoder.encode(originalPassword);
 			return encodedPassword;
 		}
 

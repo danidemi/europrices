@@ -1,4 +1,4 @@
-package com.danidemi.jlubricant.springframework.security.crypto.encrypt;
+package com.danidemi.jlubricant.org.springframework.security.crypto.encrypt;
 
 import org.apache.commons.io.Charsets;
 import org.springframework.security.crypto.codec.Base64;
