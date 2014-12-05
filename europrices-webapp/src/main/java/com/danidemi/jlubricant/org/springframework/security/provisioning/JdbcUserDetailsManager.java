@@ -8,6 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * An type of {@link org.springframework.security.provisioning.JdbcUserDetailsManager} that supports 
+ * password encoding.
+ */
 public class JdbcUserDetailsManager extends org.springframework.security.provisioning.JdbcUserDetailsManager {
 
 	private PasswordEncoder passwordEncoder;

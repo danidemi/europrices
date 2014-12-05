@@ -192,6 +192,9 @@
 		<property name="rolePrefix" value="" />
 	</bean>
 	-->
+	
+	<!-- This version just supports security users -->
+	<!--  
 	<bean id="securityDbAuthenticationManager" class="com.danidemi.jlubricant.org.springframework.security.provisioning.JdbcUserDetailsManager">
 		<property name="dataSource" ref="dataSource" />
 		<property name="enableAuthorities" value="true" />
@@ -199,6 +202,16 @@
 		<property name="rolePrefix" value="" />
 		<property name="passwordEncoder" ref="securityPasswordEncoder" />
 	</bean>	
+	-->
+	
+	<!-- This version also supports social users -->
+	<bean id="securityDbAuthenticationManager" class="com.danidemi.jlubricant.org.springframework.social.security.SocialUserDetailsService">
+		<property name="dataSource" ref="dataSource" />
+		<property name="enableAuthorities" value="true" />
+		<property name="enableGroups" value="false" />
+		<property name="rolePrefix" value="" />
+		<property name="passwordEncoder" ref="securityPasswordEncoder" />
+	</bean>		
 	
 	<bean id="securityPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 	</bean>
@@ -241,7 +254,7 @@
 		
 	<bean id="socialAuthenticationProvider" class="org.springframework.social.security.SocialAuthenticationProvider">
 		<constructor-arg ref="socialRepository" />
-		<constructor-arg><null/></constructor-arg>
+		<constructor-arg ref="securityDbAuthenticationManager" />
 	</bean>
 	
 	<!--  
