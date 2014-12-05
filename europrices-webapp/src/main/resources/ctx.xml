@@ -308,6 +308,11 @@
 			-->
 		</constructor-arg>
 		<property name="tablePrefix" value="" />
+		<property name="connectionSignUp">
+			<bean class="com.danidemi.europrice.web.controller.SimpleConnectionSignUp">
+				<constructor-arg ref="securityDbAuthenticationManager" />
+			</bean>
+		</property>
 	</bean>
 	
 	<!-- 

@@ -24,22 +24,6 @@ public class SocialUserDetailsService extends JdbcUserDetailsManager implements 
 	@Override
 	public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException, DataAccessException {
 		
-//		SELECT u.USERNAME,
-//	       u.PASSWORD,
-//	       u.ENABLED
-//				 c.USERID,
-//	       c.PROVIDERID,
-//	       c.PROVIDERUSERID,
-//	       c.RANK,
-//	       c.DISPLAYNAME,
-//	       c.PROFILEURL,
-//	       c.IMAGEURL,
-//	       c.ACCESSTOKEN,
-//	       c.SECRET,
-//	       c.REFRESHTOKEN,
-//	       c.EXPIRETIME
-//	FROM USERCONNECTION c JOIN USERS u ON c.USERID = u.USERNAME
-//	;
 		UserDetails securityUserDetails = super.loadUserByUsername(userId);
 		if(securityUserDetails==null) throw new UsernameNotFoundException( format("user with id '%s' not found.", userId ));
 		return new SocialUser(
