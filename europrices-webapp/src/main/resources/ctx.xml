@@ -477,7 +477,15 @@
 				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringSecurityFeature" />
 				<bean class="com.danidemi.jlubricant.embeddable.jetty.LessFeature" />
 				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringDispatcherServletFeature">
+					<!--  
 					<constructor-arg value="/app/*" />
+					-->
+					<constructor-arg>
+						<array>
+							<value>/app/*</value>
+							<value>/index.html</value>
+						</array>
+					</constructor-arg>					
 				</bean>
 			</list>
 		</property>

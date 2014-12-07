@@ -26,7 +26,7 @@ public class IndexController {
 	//@Autowired private ConnectionRepository socialConnectionRepo;
 	@Autowired private UsersConnectionRepository socialUsersRepo;
 
-    @RequestMapping(value="/index", method=RequestMethod.GET)
+    @RequestMapping(value="/index.html", method=RequestMethod.GET)
     public String root(Model model, Principal principalFromUnannotatedArgument, Authentication authenticationFromArgument, @AuthenticationPrincipal Principal principalFromAnnotatedArgument) {
 
     	SecurityContext context = SecurityContextHolder.getContext();

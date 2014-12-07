@@ -22,7 +22,7 @@ import org.springframework.web.servlet.support.AbstractDispatcherServletInitiali
 
 public class SpringDispatcherServletFeature implements Feature, ApplicationContextAware {
 
-	private String dispatcherServletSubPath = "/";
+	private String[] dispatcherServletSubPath = {"/"};
 	private ConfigurableApplicationContext springCtxInWhichJettyRuns;
 	
 	/**
@@ -32,15 +32,25 @@ public class SpringDispatcherServletFeature implements Feature, ApplicationConte
 	 */
 	public SpringDispatcherServletFeature(String dispatcherServletSubPath) {
 		super();
-		this.dispatcherServletSubPath = dispatcherServletSubPath;
+		this.dispatcherServletSubPath = new String[]{dispatcherServletSubPath};
 	}
+	
+	/**
+	 * The paths that will be taken in charge by Spring's DispatcherServlet.
+	 * Values as {@code /appa/*} or {@code /} are ok. 
+	 * @param dispatcherServletSubPath
+	 */
+	public SpringDispatcherServletFeature(String[] dispatcherServletSubPath) {
+		super();
+		this.dispatcherServletSubPath = dispatcherServletSubPath;
+	}	
 
 	@Override
 	public String toString() {
 		return String.format("SpringMVC Dispatcher Servlet at '%1$s'", dispatcherServletSubPath); 
 	}
 		
-	public String getDispatcherServletSubPath() {
+	public String[] getDispatcherServletSubPath() {
 		return dispatcherServletSubPath;
 	}
 	
@@ -159,7 +169,7 @@ public class SpringDispatcherServletFeature implements Feature, ApplicationConte
 		
 		@Override
 		protected String[] getServletMappings() {
-			return new String[]{dispatcherServletSubPath};
+			return dispatcherServletSubPath;
 		}
 		
 
