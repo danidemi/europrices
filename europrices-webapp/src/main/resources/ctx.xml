@@ -117,7 +117,7 @@
 	    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
 		-->
 		
-	    <property name="prefix" value="/jsp/"/>
+	    <property name="prefix" value="/WEB-INF/jsp/"/>
 	    <property name="suffix" value=".jsp"/>
 	    <property name="order" value="1" />
 	</bean>
@@ -446,7 +446,7 @@
 		-->
 		
 		
-
+	<mvc:default-servlet-handler />
 
 
 	<!-- ========================================================== -->

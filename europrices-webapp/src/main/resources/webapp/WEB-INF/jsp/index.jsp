@@ -16,7 +16,6 @@
 		<link href="/css/style.css" rel="stylesheet" type="text/css" >
 	</head>
 	<body>
-		
 		<div ng-app="europricesMod">
 		
 			<div ng-controller="SearchController">
