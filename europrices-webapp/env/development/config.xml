@@ -27,4 +27,6 @@
 	<entry key="europrices.scraping.trigger">triggerN</entry>
 	
 	<entry key="europrices.secrets.location">classpath:secrets.xml</entry>
+	
+	<entry key="secrets">XXX</entry>	
 </properties>

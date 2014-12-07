@@ -35,8 +35,9 @@
 		'secrets' is expected to be provided from the command line via -D.
 		This way there is no need to share secrets on a public scm.
 	-->        
-	<context:property-placeholder order="1" location="${secrets}" ignore-resource-not-found="false" ignore-unresolvable="true"/>
-	<context:property-placeholder order="2" location="classpath:config.xml" ignore-resource-not-found="false" ignore-unresolvable="false"/>
+	<context:property-placeholder order="1" location="classpath:preconfig.xml" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+	<context:property-placeholder order="2" location="${secrets}" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+	<context:property-placeholder order="3" location="classpath:config.xml" ignore-resource-not-found="false" ignore-unresolvable="false"/>
 
 	<import resource="ctx-security.xml"/>
 	<import resource="ctx-web.xml"/>

@@ -3,6 +3,7 @@ package com.danidemi.europrice.web.controller.api;
 import java.util.Arrays;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class Api_0_0_1Test {
     @Autowired ProductItemRepository itemRepository;
     
     MockMvc mockMvc;
+    
 
     @Before
     public void setup() {
