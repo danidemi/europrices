@@ -2,6 +2,10 @@ package com.danidemi.europrice.web.controller.api;
 
 import java.util.Arrays;
 
+import javax.transaction.Transactional;
+
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,11 +20,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.danidemi.europrice.db.FavouriteRepository;
 import com.danidemi.europrice.db.ProductItem;
 import com.danidemi.europrice.db.ProductItemRepository;
 import com.danidemi.europrice.db.Shop;
 import com.danidemi.europrice.db.ShopRepository;
 import com.danidemi.europrice.utils.Utils.Language;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,26 +37,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class Api_0_0_1Test {
 
-    @Autowired WebApplicationContext wac;
-
+    private static boolean fixtureDone = false;
+	@Autowired WebApplicationContext wac;
     @Autowired ShopRepository shopRepository;
     @Autowired ProductItemRepository itemRepository;
+    @Autowired FavouriteRepository favouriteRepository;
     
     MockMvc mockMvc;
     
-
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
+    
+
 
     @Test
     public void shouldSearchForTerm() throws Exception {
-    	
-    	fixture();
-    	
-    	
-    	
     	
         this.mockMvc.perform(get("/api/search?searchTerms=compact")
         	.accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
@@ -61,8 +64,37 @@ public class Api_0_0_1Test {
             .andExpect(jsonPath("$.[2].priceInEuroCent").value(100_00))
             .andExpect(jsonPath("$.[3].priceInEuroCent").value(110_00));
     }
-
-	private void fixture() {
+    
+    @Test
+    public void shouldToggleFavourite() throws Exception{
+    	    	
+    	this.mockMvc
+    			.perform(
+    					post("/api/toggleFavourite")
+						.accept(MediaType.APPLICATION_JSON_VALUE)
+						.content( "{productId:123}" )
+				)
+    			.andExpect( status().isOk() )
+    			.andExpect(jsonPath("$").value(true));
+    	
+    	this.mockMvc
+		.perform(
+				post("/api/toggleFavourite")
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.content( "{productId:123}" )
+		)
+		.andExpect( status().isOk() )
+		.andExpect(jsonPath("$").value(false));    	
+    	
+    }
+    
+    @Before
+	public void fixture() {
+    	
+    	if(fixtureDone) return;
+    	
+    	fixtureDone  = true;
+		
 		{
     	Shop shop = new Shop();
     	shop.setName("telefonini.it");

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.danidemi.europrice.db.Favourite;
+import com.danidemi.europrice.db.FavouriteRepository;
 import com.danidemi.europrice.db.ProductItem;
 import com.danidemi.europrice.db.ProductItemRepository;
 import com.danidemi.europrice.db.Search;
@@ -33,6 +35,7 @@ public class Api_0_0_1 {
 	@Autowired ShopRepository shopRepo;
 	@Autowired ProductItemRepository productItemRep;
 	@Autowired SearchRepository searchRepository;
+	@Autowired FavouriteRepository favouriteRepository;
 	
 	private SearchTermSplitter splitter = new SearchTermSplitter();
 		
@@ -40,6 +43,27 @@ public class Api_0_0_1 {
 	@ResponseBody
 	public String version() {
 		return "v0.0.001";
+	}
+	
+	@Transactional
+	@RequestMapping(value="/toggleFavourite", method=RequestMethod.POST)
+	@ResponseBody
+	public boolean toggleFavourite(  ) {
+		
+		String favouriteId = null;
+		String userId = null;
+		
+		boolean newStatus;
+		List<Favourite> findByFavouriteIdAndUserId = favouriteRepository.findByFavouriteIdAndUserId(favouriteId, userId);
+		if( org.apache.commons.collections4.CollectionUtils.isEmpty( findByFavouriteIdAndUserId )){
+			Favourite newFavourite = new Favourite(favouriteId, userId);
+			favouriteRepository.save( newFavourite );
+			newStatus = true;
+		}else{
+			favouriteRepository.delete( findByFavouriteIdAndUserId );
+			newStatus = false;
+		}
+		return newStatus;
 	}
 	
 	@Transactional

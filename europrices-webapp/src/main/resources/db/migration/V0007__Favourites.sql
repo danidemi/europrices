@@ -1,0 +1,5 @@
+CREATE TABLE Favourite (
+	id BIGINT IDENTITY PRIMARY KEY,
+	favouriteId VARCHAR(128),
+	userId VARCHAR(50)
+);
