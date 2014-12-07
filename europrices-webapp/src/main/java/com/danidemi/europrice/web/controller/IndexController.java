@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -23,21 +24,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class IndexController {
 	
-	//@Autowired private ConnectionRepository socialConnectionRepo;
 	@Autowired private UsersConnectionRepository socialUsersRepo;
 
-    @RequestMapping(value="/index.html", method=RequestMethod.GET)
+    @RequestMapping(value={"/index"}, method=RequestMethod.GET)
     public String root(Model model, Principal principalFromUnannotatedArgument, Authentication authenticationFromArgument, @AuthenticationPrincipal Principal principalFromAnnotatedArgument) {
 
     	SecurityContext context = SecurityContextHolder.getContext();
-    	Authentication authenticationFromContext = context.getAuthentication();
-    	Object principalFromContext = authenticationFromContext.getPrincipal();
+    	Authentication authenticationFromContext = null;
+    	Object principalFromContext = null;
+    	if(context !=null){
+    		authenticationFromContext = context.getAuthentication();
+    		if(authenticationFromContext!=null){
+    			principalFromContext = authenticationFromContext.getPrincipal();    			
+    		}
+    	}
     	
     	if(authenticationFromArgument!=null && authenticationFromArgument.isAuthenticated()){
     		
     		List<Connection<?>> connections = new ArrayList<Connection<?>>( );
     		ConnectionRepository socialConnectionRepo = socialUsersRepo.createConnectionRepository( authenticationFromArgument.getName() );
+    		String displayName = null;
     		if(socialConnectionRepo!=null){
+    			
     			
     			Connection<?> socialConnection = null;
     			
@@ -51,10 +59,15 @@ public class IndexController {
     			
     			if(!connections.isEmpty()){
     				socialConnection = connections.iterator().next();
-    				model.addAttribute("imageUrl", socialConnection.getImageUrl());    				
+    				model.addAttribute("imageUrl", socialConnection.getImageUrl());    
+    				displayName = socialConnection.getDisplayName();
     			}
     			
     		}
+    		
+    		displayName = StringUtils.isEmpty(displayName) ? authenticationFromArgument.getName() : displayName;
+    		
+    		model.addAttribute("socialDisplayName", displayName);
     	}
     	
 

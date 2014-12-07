@@ -1,10 +1,17 @@
 package com.danidemi.jlubricant.embeddable.jetty;
 
+import static java.lang.String.format;
+
+import java.util.Set;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRegistration;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.taglibs.standard.lang.jstl.ArraySuffix;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -147,7 +154,15 @@ public class SpringDispatcherServletFeature implements Feature, ApplicationConte
 	        ServletRegistration.Dynamic dispatcher =
 	          container.addServlet("dispatcher", new DispatcherServlet(appContext));
 	        dispatcher.setLoadOnStartup(1);
-	        dispatcher.addMapping(SpringDispatcherServletFeature.this.dispatcherServletSubPath);
+	        String[] dispatcherServletSubPath2 = SpringDispatcherServletFeature.this.dispatcherServletSubPath;
+	        if(!ArrayUtils.isEmpty(dispatcherServletSubPath2)){
+	        	for (String string : dispatcherServletSubPath2) {
+	        		Set<String> alreadyExitingMappings = dispatcher.addMapping(string);
+	        		if(CollectionUtils.isNotEmpty(alreadyExitingMappings)){
+	        			throw new IllegalStateException(format("Mappings '%s' was already assigned to another servlet.", alreadyExitingMappings));
+	        		}
+				}
+	        }
 	        
 	      }
 	    

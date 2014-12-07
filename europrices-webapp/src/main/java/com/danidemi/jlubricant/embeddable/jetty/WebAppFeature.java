@@ -12,6 +12,7 @@ public class WebAppFeature implements Feature {
 	private String webappContextPath = "/";
 	private char[] dirAllowed;
 	private String springResourcePathForWebApp = "webapp";
+	private String[] welcomeFiles;
 	
 	public WebAppFeature(String[] virtualHosts, String webappContextPath,
 			char[] dirAllowed) {
@@ -19,6 +20,11 @@ public class WebAppFeature implements Feature {
 		this.virtualHosts = virtualHosts;
 		this.webappContextPath = webappContextPath;
 		this.dirAllowed = dirAllowed;
+		this.welcomeFiles = null;
+	}
+	
+	public void setWelcomeFiles(String[] welcomeFiles) {
+		this.welcomeFiles = welcomeFiles;
 	}
 	
 	@Override
@@ -64,6 +70,9 @@ public class WebAppFeature implements Feature {
 		// Disable directory listings if no index.html is found.
 		webapp.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed",
 				String.valueOf(dirAllowed));
+		if(welcomeFiles!=null){
+			webapp.setWelcomeFiles(welcomeFiles);			
+		}
 		
 		embeddableJetty.setHandler(webapp);		
 

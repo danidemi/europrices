@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        ">
+
+	<mvc:default-servlet-handler />
+
+
+	<!-- ========================================================== -->
+	<!-- Web                                                        -->
+	<!-- ========================================================== -->
+	<bean name="js" class="com.danidemi.jlubricant.embeddable.jetty.EmbeddableJetty" init-method="start" destroy-method="stop">
+		<!--  
+		<property name="dirAllowed" value="${europrices.http.dirAllowed}" />
+		<property name="dispatcherServletSubPath" value="/app/*" />
+		-->
+		<property name="httpPort" value="${europrices.http.port}" />
+		<property name="host" value="${europrices.http.host}" />
+		<!--  
+		<property name="virtualHosts"><null /></property> 
+		-->
+		<!--  
+		value="${europrices.http.virtualHosts}" />  
+		<property name="webappContextPath" value="/" />
+		-->
+		<property name="features">
+			<list>
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.WebAppFeature">
+					<constructor-arg value="${europrices.http.virtualHosts}" /><!-- virtualHosts  -->
+					<constructor-arg value="/" />
+					<constructor-arg value="${europrices.http.dirAllowed}" />
+					<property name="welcomeFiles" value="/app/index" />
+				</bean>
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringFeature" />
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringSecurityFeature" />
+				<!--  
+				-->
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.LessFeature" />
+				<bean class="com.danidemi.jlubricant.embeddable.jetty.SpringDispatcherServletFeature">
+					<!--  
+					<constructor-arg value="/app/*" />
+					-->
+					<!--  
+					<constructor-arg>
+						<array>
+							<value>/app/*</value>
+							<value>/index.html</value>
+							<value>/</value>
+						</array>
+					</constructor-arg>					
+					-->
+					<!--  
+					<constructor-arg>
+						<array>
+							<value>/*</value>
+						</array>
+					</constructor-arg>					
+					-->
+					<constructor-arg>
+						<array>
+							<value>/app/*</value>
+						</array>
+					</constructor-arg>					
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- ========================================================== -->
+	<!-- WEB MVC                                                    -->
+	<!-- login-processing-url="/security-sign-in/authenticate" -->
+	<!-- ========================================================== -->
+	<context:component-scan base-package="com.danidemi.europrice.web.controller" />
+	
+	
+	<mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <bean class="org.springframework.security.web.bind.support.AuthenticationPrincipalArgumentResolver" />
+        </mvc:argument-resolvers>
+	</mvc:annotation-driven>
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView"/>
+		<!--  
+	    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		-->		
+	    <property name="prefix" value="/WEB-INF/jsp/"/>
+	    <property name="suffix" value=".jsp"/>
+	    <property name="order" value="1" />
+	</bean>
+
+	
+</beans>

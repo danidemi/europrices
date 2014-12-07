@@ -25,23 +25,23 @@
 					<div>spot the best mobile prices in the eurozone</div>
 				</div>
 				
-				<div>
+				<div id="social">
 					<sec:authorize access="isAnonymous()">
-						<a href="/app/account/signin">Sign In</a>
-						|
-						<a href="/app/account/signup">Sign Up</a>
+						<a href="/auth/twitter">Sign In With Twitter</a>
+						<a href="/auth/facebook">Sign In With Facebook</a>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
+						
 						<% String imageUrl = (String)request.getAttribute("imageUrl");
 						if(imageUrl!=null){ %>
 						<img alt="profile" src="<%= imageUrl %>"/>
 						<% } %>
-						<sec:authentication property="principal.username" />
-						|
-						<a href="/app/connect/twitter" >Connect Twitter</a>
-						|
-						<a href="/app/connect/facebook" >Connect Facebook</a>
-						|
+						
+						<% String socialDisplayName = (String)request.getAttribute("socialDisplayName");
+						if(socialDisplayName!=null){ %>
+							<%=socialDisplayName%>
+						<% } %>						
+
 						<a href="/j_spring_security_logout">Sign Out</a>
 					</sec:authorize> 
 				</div>

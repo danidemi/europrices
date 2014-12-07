@@ -54,6 +54,9 @@ public class AccountController {
 		return "index";
 	}
 	
+	/**
+	 * Invoked after an authentication attempt through a social provider-
+	 */
 	@RequestMapping(value="/socialsignin", method=RequestMethod.GET)
 	public String socialSignIn(HttpServletRequest req){
 		

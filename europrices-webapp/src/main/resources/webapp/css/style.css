@@ -71,3 +71,10 @@ footer {
 	padding: 1em;
 }
 
+#social {
+	position: absolute;
+	right: 0;
+	top: 0;
+	
+}
+
