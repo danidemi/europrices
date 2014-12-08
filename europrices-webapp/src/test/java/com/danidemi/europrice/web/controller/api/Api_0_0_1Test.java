@@ -1,7 +1,9 @@
 package com.danidemi.europrice.web.controller.api;
 
 import java.util.Arrays;
+import java.util.Collection;
 
+import javax.print.attribute.standard.MediaSize.Engineering;
 import javax.transaction.Transactional;
 
 import org.junit.After;
@@ -12,6 +14,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.social.security.SocialUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,12 +26,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.danidemi.europrice.db.Favourite;
 import com.danidemi.europrice.db.FavouriteRepository;
 import com.danidemi.europrice.db.ProductItem;
 import com.danidemi.europrice.db.ProductItemRepository;
 import com.danidemi.europrice.db.Shop;
 import com.danidemi.europrice.db.ShopRepository;
 import com.danidemi.europrice.utils.Utils.Language;
+import com.danidemi.jlubricant.org.springframework.social.security.SocialUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,6 +50,7 @@ public class Api_0_0_1Test {
     @Autowired ShopRepository shopRepository;
     @Autowired ProductItemRepository itemRepository;
     @Autowired FavouriteRepository favouriteRepository;
+    @Autowired SocialUserDetailsService userRepository;
     
     MockMvc mockMvc;
     
@@ -60,10 +69,27 @@ public class Api_0_0_1Test {
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$.[0].priceInEuroCent").value(90_00))
+            .andExpect(jsonPath("$.[0].isFavourite").value(false))
             .andExpect(jsonPath("$.[1].priceInEuroCent").value(91_00))
+            .andExpect(jsonPath("$.[1].isFavourite").value(false))
             .andExpect(jsonPath("$.[2].priceInEuroCent").value(100_00))
-            .andExpect(jsonPath("$.[3].priceInEuroCent").value(110_00));
+            .andExpect(jsonPath("$.[2].isFavourite").value(false))
+            .andExpect(jsonPath("$.[3].priceInEuroCent").value(110_00))
+            .andExpect(jsonPath("$.[3].isFavourite").value(false));
+        
     }
+    
+    @Test
+    public void shouldSearchForTermByUser() throws Exception {
+    	
+        this.mockMvc.perform(get("/api/search?searchTerms=enginola&user=u1")
+        	.accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"))
+            .andExpect(jsonPath("$.[0].priceInEuroCent").value(77_00))
+            .andExpect(jsonPath("$.[0].isFavourite").value(true));
+        
+    }    
     
     @Test
     public void shouldToggleFavourite() throws Exception{
@@ -90,10 +116,14 @@ public class Api_0_0_1Test {
     
     @Before
 	public void fixture() {
-    	
+//    	select distinct item.*, (fav.FAVOURITEID IS NOT NULL) as IS_FAVOURITE from PRODUCTITEM item left join FAVOURITE fav on item.ID = fav.FAVOURITEID left join USERS u on fav.USERID = u.USERNAME
+//    			where (u.USERNAME IS NULL) OR (u.USERNAME='facebook:10205411082539753')
+//    			order by item.ID
     	if(fixtureDone) return;
     	
     	fixtureDone  = true;
+    	
+    	ProductItem enginolaPreviux = null;
 		
 		{
     	Shop shop = new Shop();
@@ -149,13 +179,24 @@ public class Api_0_0_1Test {
 	    	Shop shop = new Shop();
 	    	shop.setName("moviles.es");
 	    		    	
-	    	ProductItem enginolaPreviux = shop.newProductItem();
+	    	enginolaPreviux = shop.newProductItem();
 	    	enginolaPreviux.withKeywordsIn("enginola previux");
 	    	enginolaPreviux.setDetailsURL("http://url7");
 	    	enginolaPreviux.setPriceInCent(77_00L);
 	    	enginolaPreviux.setLanguage(Language.it);
-			itemRepository.save(Arrays.asList(enginolaPreviux));
-    	}    	
+	    	enginolaPreviux = itemRepository.save(enginolaPreviux);
+    	}    
+    	
+    	{
+    		userRepository.createUser( new SocialUser("u1", "u1", Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))) );
+    		userRepository.createUser( new SocialUser("u2", "u2", Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))) );
+    	}
+    	
+    	{
+    		favouriteRepository.save( new Favourite(enginolaPreviux.getId(), "u1") );
+    		favouriteRepository.save( new Favourite(enginolaPreviux.getId(), "u2") );
+    	}
+
 	}
 	
 }

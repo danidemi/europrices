@@ -22,6 +22,10 @@ public class Favourite implements Serializable {
 		this.userId = userId;
 	}
 	
+	public Favourite(Long favouriteId, String userId) {
+		this(favouriteId.toString(), userId);
+	}
+	
 	public Favourite() {
 		super();
 	}

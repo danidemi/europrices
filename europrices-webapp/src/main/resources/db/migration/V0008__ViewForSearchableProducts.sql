@@ -1,0 +1,1 @@
+CREATE VIEW SEARCHABLE_PRODUCT_ITEM AS select distinct item.*, (fav.FAVOURITEID IS NOT NULL) as IS_FAVOURITE, u.USERNAME from PRODUCTITEM item left join FAVOURITE fav on item.ID = fav.FAVOURITEID left join USERS u on fav.USERID = u.USERNAME;
