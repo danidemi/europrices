@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface SearchResultProductItemRepositoryCustom {
 
-	List<SearchResultProductItem> findProductItemsByKeyword(String string);
+	List<SearchResultProductItem> findProductItemsByKeyword(String string, String userId);
 
-	List<SearchResultProductItem> findProductItemsByKeywords(String[] keywords);
+	List<SearchResultProductItem> findProductItemsByKeywords(String[] keywords, String userId);
 	
-	List<SearchResultProductItem> findProductItemsByKeywords(List<String> terms);	
+	List<SearchResultProductItem> findProductItemsByKeywords(List<String> terms, String userId);	
 		
 }
