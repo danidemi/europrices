@@ -1,4 +1,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<% 
+String socialDisplayName = (String)request.getAttribute("socialDisplayName");
+String imageUrl = (String)request.getAttribute("imageUrl");
+%>
 <!doctype html >
 <html lang="en" ng-app="europricesMod">
 	<head>
@@ -26,19 +30,18 @@
 				</div>
 				
 				<div id="social">
+					is logged = {{isUserLogged}}
 					<sec:authorize access="isAnonymous()">
 						<a href="/auth/twitter">Sign In With Twitter</a>
 						<a href="/auth/facebook">Sign In With Facebook</a>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 						
-						<% String imageUrl = (String)request.getAttribute("imageUrl");
-						if(imageUrl!=null){ %>
-						<img alt="profile" src="<%= imageUrl %>"/>
+						<% if(imageUrl!=null){ %>
+							<img alt="profile" src="<%= imageUrl %>"/>
 						<% } %>
 						
-						<% String socialDisplayName = (String)request.getAttribute("socialDisplayName");
-						if(socialDisplayName!=null){ %>
+						<% if(socialDisplayName!=null){ %>
 							<%=socialDisplayName%>
 						<% } %>						
 
@@ -54,6 +57,10 @@
 						<button id="search-launch" ng-click="onSearch()" ng-disabled="searchTerms.length<3">search</button>
 					</div>
 				</div>
+				
+				<div>
+					EPFAV <ep-fav></ep-fav>
+				</div>		
 
 
 				<div id="results">
@@ -75,6 +82,7 @@
 									<th>Product</th>
 									<th>Shop</th>
 									<th>Price</th>
+									<th>Fav</th>
 									<th>Details</th>
 								</tr>
 							</thead>
@@ -87,8 +95,11 @@
 										{{item.shop.name}}
 									</td>
 									<td>
-										{{item.priceInEuroCent/100 | currency:"€"}}
+										{{item.priceInEuroCent/100 | currency:"&euro;"}}
 									</td>
+									<td>
+										{{item.favourite}}
+									</td>									
 									<td>
 										<div ng-if="destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso" style="display: inline;">
 											<a target="_blank" href="http://translate.google.com/translate?js=n&sl=auto&tl={{destinationLanguage.iso}}&u={{item.detailsUrl}}">details</a>									
@@ -116,6 +127,8 @@
 		<footer>
 			Brought to you by <a target="_blank" href="http://www.danidemi.com">Studio Danidemi</a>
 		</footer>
+		
+		<input type="hidden" id="loggedUserId" value="<%=socialDisplayName%>" />
 		
 	</body>
 </html>

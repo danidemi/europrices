@@ -7,8 +7,10 @@
 	<!-- ${VARIABLE} is resolved also against environment variables! -->
 	<entry key="secrets.ignoreMissing">true</entry>
 	<entry key="secrets">XXX</entry>
+	<!--  
 	<entry key="europrices.secrets.twitter.api.key">XXX</entry>
 	<entry key="europrices.secrets.twitter.api.secret">XXX</entry>
 	<entry key="europrices.secrets.facebook.api.appSecret">XXX</entry>
 	<entry key="europrices.secrets.facebook.api.appId">XXX</entry>
+	-->
 </properties>
