@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.danidemi.europrice.db.ProductItem;
-import com.danidemi.europrice.db.ProductItemRepository;
-import com.danidemi.europrice.db.Shop;
-import com.danidemi.europrice.db.ShopRepository;
+import com.danidemi.europrice.db.model.ProductItem;
+import com.danidemi.europrice.db.model.Shop;
+import com.danidemi.europrice.db.repository.ProductItemRepository;
+import com.danidemi.europrice.db.repository.ShopRepository;
 import com.danidemi.europrice.pricegrabber.screenscraping.action.ScrapedProductCallback;
 import com.danidemi.europrice.pricegrabber.screenscraping.action.ScrapedProduct;
 import com.danidemi.europrice.utils.Utils;

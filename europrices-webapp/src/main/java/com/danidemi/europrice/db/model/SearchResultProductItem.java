@@ -1,4 +1,4 @@
-package com.danidemi.europrice.db;
+package com.danidemi.europrice.db.model;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -31,31 +31,21 @@ import com.google.common.annotations.VisibleForTesting;
 /** A product as a search result triggered by a user. */
 @Entity
 @Table(name="SEARCH_RESULT_PRODUCT_ITEM")
-public class SearchResultProductItem implements Serializable {
+public class SearchResultProductItem implements Serializable, IProductItem, Favouritable {
 
-	private static final long serialVersionUID = 4502929914718657671L;
+	private static final long serialVersionUID = -5281431782994678243L;
 	private Shop shop;
 	private String detailsUrl;
 	private Long id;
 	private String keywordsBundle;
 	private Long priceInCent;
-	private Language language;
+	private Language language;	
 	private boolean isFavourite;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
 		return id;
-	}
-	
-	@Basic(optional = false)
-	@Column(name="IS_FAVOURITE")
-	public boolean isFavourite() {
-		return isFavourite;
-	}
-	
-	public void setFavourite(boolean isFavourite) {
-		this.isFavourite = isFavourite;
 	}
 
 	public void setId(Long id) {
@@ -161,7 +151,7 @@ public class SearchResultProductItem implements Serializable {
 	}
 
 	@Transient
-	URL getDetailsURLAsURL() {
+	public URL getDetailsURLAsURL() {
 		URL url = null;
 		try {
 			url = new URL(getDetailsURL());
@@ -174,6 +164,23 @@ public class SearchResultProductItem implements Serializable {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).toString();
+	}
+	
+	@Override
+	@Basic(optional = false)
+	@Column(name="IS_FAVOURITE")
+	public boolean isFavourite() {
+		return isFavourite;
+	}
+	
+	public void setFavourite(boolean isFavourite) {
+		this.isFavourite = isFavourite;
+	}
+
+	@Override
+	@Transient
+	public boolean getFavourite() {
+		return isFavourite;
 	}
 
 }

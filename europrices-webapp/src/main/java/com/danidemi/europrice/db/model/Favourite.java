@@ -1,4 +1,4 @@
-package com.danidemi.europrice.db;
+package com.danidemi.europrice.db.model;
 
 import java.io.Serializable;
 

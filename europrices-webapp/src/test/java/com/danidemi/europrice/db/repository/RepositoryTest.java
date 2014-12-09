@@ -1,9 +1,8 @@
-package com.danidemi.europrice.db;
+package com.danidemi.europrice.db.repository;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -16,6 +15,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
+import com.danidemi.europrice.db.model.ProductItem;
+import com.danidemi.europrice.db.model.Shop;
 import com.danidemi.europrice.utils.Utils.Language;
 
 @RunWith(SpringJUnit4ClassRunner.class)

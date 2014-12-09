@@ -82,8 +82,10 @@
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 		
+	<!--  
 	<bean id="repo" class="com.danidemi.europrice.db.Repository">
 	</bean>
+	-->
 
 
 

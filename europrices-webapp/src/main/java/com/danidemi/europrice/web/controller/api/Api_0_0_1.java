@@ -19,13 +19,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.danidemi.europrice.db.Favourite;
-import com.danidemi.europrice.db.FavouriteRepository;
-import com.danidemi.europrice.db.ProductItem;
-import com.danidemi.europrice.db.ProductItemRepository;
-import com.danidemi.europrice.db.Search;
-import com.danidemi.europrice.db.SearchRepository;
-import com.danidemi.europrice.db.ShopRepository;
+import com.danidemi.europrice.db.model.Favourite;
+import com.danidemi.europrice.db.model.IProductItem;
+import com.danidemi.europrice.db.model.ProductItem;
+import com.danidemi.europrice.db.model.Search;
+import com.danidemi.europrice.db.repository.FavouriteRepository;
+import com.danidemi.europrice.db.repository.ProductItemRepository;
+import com.danidemi.europrice.db.repository.SearchRepository;
+import com.danidemi.europrice.db.repository.SearchResultProductItemRepositoryImpl;
+import com.danidemi.europrice.db.repository.ShopRepository;
 import com.danidemi.europrice.utils.Utils;
 
 @Controller
@@ -36,6 +38,7 @@ public class Api_0_0_1 {
 	@Autowired ProductItemRepository productItemRep;
 	@Autowired SearchRepository searchRepository;
 	@Autowired FavouriteRepository favouriteRepository;
+	@Autowired SearchResultProductItemRepositoryImpl searchResultProductItemRepository;
 	
 	private SearchTermSplitter splitter = new SearchTermSplitter();
 		
@@ -75,7 +78,9 @@ public class Api_0_0_1 {
 		
 		RelevancyScorer scorer = new RelevancyScorer(terms);
 		
-		List<ProductItem> findProductItemsByKeywords = productItemRep.findProductItemsByKeywords(terms);
+		//List<? extends IProductItem> findProductItemsByKeywords = productItemRep.findProductItemsByKeywords(terms);
+		List<? extends IProductItem> findProductItemsByKeywords = searchResultProductItemRepository.findProductItemsByKeywords(terms, null);
+		
 		
 		List<ResourceProductItemWithRelevancy> map = map(findProductItemsByKeywords, scorer);
 		
@@ -113,7 +118,7 @@ public class Api_0_0_1 {
 		return map;
 	}
 	
-	private List<ResourceProductItemWithRelevancy> map(List<ProductItem> findProductItemsByKeyword2, final RelevancyScorer scorer) {
+	private List<ResourceProductItemWithRelevancy> map(List<? extends IProductItem> findProductItemsByKeyword2, final RelevancyScorer scorer) {
 		
 		// TODO: back to j1.8
 //		List<ResourceProductItemWithRelevancy> collect = findProductItemsByKeyword2
@@ -125,7 +130,7 @@ public class Api_0_0_1 {
 			
 			@Override
 			public Object transform(Object arg0) {
-				return new ResourceProductItemWithRelevancy((ProductItem) arg0, scorer);
+				return new ResourceProductItemWithRelevancy((IProductItem) arg0, scorer);
 			}
 		} );
 		

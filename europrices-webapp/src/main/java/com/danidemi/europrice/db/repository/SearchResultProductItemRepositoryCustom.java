@@ -1,6 +1,8 @@
-package com.danidemi.europrice.db;
+package com.danidemi.europrice.db.repository;
 
 import java.util.List;
+
+import com.danidemi.europrice.db.model.SearchResultProductItem;
 
 public interface SearchResultProductItemRepositoryCustom {
 

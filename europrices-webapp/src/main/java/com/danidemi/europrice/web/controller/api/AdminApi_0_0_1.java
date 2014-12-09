@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.danidemi.europrice.db.ProductItemRepository;
-import com.danidemi.europrice.db.SearchRepository;
-import com.danidemi.europrice.db.ShopRepository;
+import com.danidemi.europrice.db.repository.ProductItemRepository;
+import com.danidemi.europrice.db.repository.SearchRepository;
+import com.danidemi.europrice.db.repository.ShopRepository;
 import com.danidemi.europrice.pricegrabber.screenscraping.action.ScrapedProduct;
 import com.danidemi.europrice.pricegrabber.screenscraping.action.ScrapedProductCallback;
 

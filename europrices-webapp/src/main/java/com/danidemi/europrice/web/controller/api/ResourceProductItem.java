@@ -1,10 +1,12 @@
 package com.danidemi.europrice.web.controller.api;
 
+import com.danidemi.europrice.db.model.IProductItem;
+
 public class ResourceProductItem {
 	
-	private com.danidemi.europrice.db.ProductItem dbProductItem;
+	protected IProductItem dbProductItem;
 
-	public ResourceProductItem(com.danidemi.europrice.db.ProductItem dbProductItem) {
+	public ResourceProductItem(IProductItem dbProductItem) {
 		this.dbProductItem = dbProductItem;
 	}
 	

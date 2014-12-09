@@ -1,4 +1,4 @@
-package com.danidemi.europrice.db;
+package com.danidemi.europrice.db.repository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import com.danidemi.europrice.db.model.ProductItem;
 
 public class Repository {
 

@@ -18,9 +18,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.danidemi.europrice.db.ProductItemRepository;
-import com.danidemi.europrice.db.SearchRepository;
-import com.danidemi.europrice.db.ShopRepository;
+import com.danidemi.europrice.db.repository.ProductItemRepository;
+import com.danidemi.europrice.db.repository.SearchRepository;
+import com.danidemi.europrice.db.repository.ShopRepository;
 import com.danidemi.europrice.pricegrabber.screenscraping.action.ScrapedProduct;
 import com.danidemi.europrice.pricegrabber.screenscraping.action.ScrapedProductCallback;
 import com.danidemi.europrice.utils.Json;

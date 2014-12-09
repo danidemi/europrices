@@ -1,6 +1,6 @@
 package com.danidemi.europrice.web.controller.api;
 
-import com.danidemi.europrice.db.Shop;
+import com.danidemi.europrice.db.model.Shop;
 
 public class ResourceShop {
 

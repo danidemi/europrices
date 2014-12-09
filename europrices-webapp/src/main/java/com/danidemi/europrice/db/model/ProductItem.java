@@ -1,4 +1,4 @@
-package com.danidemi.europrice.db;
+package com.danidemi.europrice.db.model;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -28,7 +28,7 @@ import com.danidemi.europrice.utils.Utils.Language;
 
 /** A product from an online shop. */
 @Entity
-public class ProductItem implements Serializable {
+public class ProductItem implements Serializable, IProductItem {
 
 	private static final long serialVersionUID = 4502929914718657671L;
 	private Shop shop;
@@ -38,6 +38,7 @@ public class ProductItem implements Serializable {
 	private Long priceInCent;
 	private Language language;
 
+	@Override
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
@@ -48,6 +49,7 @@ public class ProductItem implements Serializable {
 		this.id = id;
 	}
 
+	@Override
 	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
 	public Shop getShop() {
 		return shop;
@@ -57,6 +59,7 @@ public class ProductItem implements Serializable {
 		this.shop = shop;
 	}
 
+	@Override
 	@Basic(optional = false)
 	@Column(unique=true, nullable=false)
 	public String getDetailsURL() {
@@ -83,11 +86,13 @@ public class ProductItem implements Serializable {
 		this.priceInCent = priceInCent;
 	}
 
+	@Override
 	@Column(nullable = false, scale = 12, precision = 0)
 	public Long getPriceInCent() {
 		return priceInCent;
 	}
 
+	@Override
 	@Column(nullable = false, length = 1024)
 	public String getKeywordsBundle() {
 		return keywordsBundle;
@@ -102,6 +107,7 @@ public class ProductItem implements Serializable {
 		this.language = language;
 	}
 	
+	@Override
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	public Language getLanguage() {
@@ -139,6 +145,7 @@ public class ProductItem implements Serializable {
 		
 	}
 	
+	@Override
 	@Transient
 	public String getShortDescription() {
 		
@@ -146,7 +153,9 @@ public class ProductItem implements Serializable {
 		return trim;
 	}
 
+	@Override
 	@Transient
+	public
 	URL getDetailsURLAsURL() {
 		URL url = null;
 		try {

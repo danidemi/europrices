@@ -26,12 +26,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.danidemi.europrice.db.Favourite;
-import com.danidemi.europrice.db.FavouriteRepository;
-import com.danidemi.europrice.db.ProductItem;
-import com.danidemi.europrice.db.ProductItemRepository;
-import com.danidemi.europrice.db.Shop;
-import com.danidemi.europrice.db.ShopRepository;
+import com.danidemi.europrice.db.model.Favourite;
+import com.danidemi.europrice.db.model.ProductItem;
+import com.danidemi.europrice.db.model.Shop;
+import com.danidemi.europrice.db.repository.FavouriteRepository;
+import com.danidemi.europrice.db.repository.ProductItemRepository;
+import com.danidemi.europrice.db.repository.ShopRepository;
 import com.danidemi.europrice.utils.Utils.Language;
 import com.danidemi.jlubricant.org.springframework.social.security.SocialUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,13 +69,13 @@ public class Api_0_0_1Test {
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$.[0].priceInEuroCent").value(90_00))
-            .andExpect(jsonPath("$.[0].isFavourite").value(false))
+            .andExpect(jsonPath("$.[0].favourite").value(false))
             .andExpect(jsonPath("$.[1].priceInEuroCent").value(91_00))
-            .andExpect(jsonPath("$.[1].isFavourite").value(false))
+            .andExpect(jsonPath("$.[1].favourite").value(false))
             .andExpect(jsonPath("$.[2].priceInEuroCent").value(100_00))
-            .andExpect(jsonPath("$.[2].isFavourite").value(false))
+            .andExpect(jsonPath("$.[2].favourite").value(false))
             .andExpect(jsonPath("$.[3].priceInEuroCent").value(110_00))
-            .andExpect(jsonPath("$.[3].isFavourite").value(false));
+            .andExpect(jsonPath("$.[3].favourite").value(false));
         
     }
     
@@ -86,8 +86,11 @@ public class Api_0_0_1Test {
         	.accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").exists())
             .andExpect(jsonPath("$.[0].priceInEuroCent").value(77_00))
-            .andExpect(jsonPath("$.[0].isFavourite").value(true));
+            .andExpect(jsonPath("$.[0].priceInEuroCent").value(77_00))
+            .andExpect(jsonPath("$.[0].favourite").value(true));
         
     }    
     

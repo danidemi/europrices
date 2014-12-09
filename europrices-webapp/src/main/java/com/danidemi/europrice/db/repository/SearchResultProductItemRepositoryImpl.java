@@ -1,4 +1,4 @@
-package com.danidemi.europrice.db;
+package com.danidemi.europrice.db.repository;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,6 +8,8 @@ import java.util.TreeSet;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import com.danidemi.europrice.db.model.SearchResultProductItem;
 
 
 public class SearchResultProductItemRepositoryImpl implements SearchResultProductItemRepositoryCustom {
@@ -29,10 +31,24 @@ public class SearchResultProductItemRepositoryImpl implements SearchResultProduc
 		
 		TreeSet<SearchResultProductItem> result = null;
 		for (String keyword : keywords) {
-			Query query = emf.createQuery(
-					"from SearchResultProductItem as p " + 
-					"where p.keywordsBundle like :keywords and (p.userId == null or p.userId == :userId) ");
-			query.setParameter("keywords", "|%" + keyword + "%|");
+			
+			Query query;
+			if(userId != null){
+				query = emf.createQuery(
+						"from SearchResultProductItem as p " + 
+						"where p.keywordsBundle like :keywords and (p.userId IS NULL or p.userId = :userId) ");
+				
+				
+				query.setParameter("keywords", "|%" + keyword + "%|");
+				query.setParameter("userId", userId);				
+			}else{
+				query = emf.createQuery(
+						"from SearchResultProductItem as p " + 
+						"where p.keywordsBundle like :keywords");
+				
+				
+				query.setParameter("keywords", "|%" + keyword + "%|");
+			}
 			List<SearchResultProductItem> resultList = query.getResultList();
 			if(resultList!=null){
 				if(result == null){

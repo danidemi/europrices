@@ -1,6 +1,8 @@
-package com.danidemi.europrice.db;
+package com.danidemi.europrice.db.model;
 
 import org.junit.Test;
+
+import com.danidemi.europrice.db.model.ProductItem;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
