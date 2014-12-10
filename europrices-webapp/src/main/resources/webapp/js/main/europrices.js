@@ -13,14 +13,33 @@ europricesMod.directive('myEnterpress', function () {
     };
 });
 
-europricesMod.directive('epFav', function(){
-	// - scope is an Angular scope object.
-	// - element is the jqLite-wrapped element that this directive matches.
-	// - attrs is a hash object with key-value pairs of normalized attribute names and their corresponding attribute values.
-	return function (scope, element, attrs) {
-		element.append('<span>HEART</span>');
-	}
-});
+//// <div ep-fav></div>
+//europricesMod.directive('epFav', function(){ 
+//	return {
+//		restrict: 	'AE', //E = element, A = attribute, C = class, M = comment 
+//		template: 	'<div>heart</div>',
+//		scope: 		{ startAs: '@' },
+//		link: function (scope, element, attrs) { 
+//			element.bind("click", function(event){
+//				var nextFavourited;
+//				if(scope.favourited === undefined){
+//					//nextFavourited = false;
+//					nextFavourited = (startAs === 'true');
+//				}else{
+//					nextFavourited = !scope.favourited;					
+//				}
+//				
+//				if(nextFavourited){
+//					element.addClass("favourited");
+//				}else{
+//					element.removeClass("favourited");
+//				}
+//				
+//				scope.favourited = nextFavourited;
+//			});
+//		}
+//	}
+//});
 
 /** "languages" service, providing all langages a product form can be translated to. */
 europricesMod.factory('languages', function(){
@@ -60,6 +79,10 @@ europricesMod.factory('epApi', ['$http', function($http){
 		$http.getProducts = function(searchText){
 			return $http.get('/app/api/search?searchTerms=' + searchText);
 		}
+		
+		$http.toggleFavourite = function(favouriteId, userId){
+			return $http.post('/app/api/toggleFavourite?favouriteId=' + favouriteId + '&userId=' + userId);
+		}
 				
 		return $http;
 		
@@ -82,7 +105,7 @@ europricesMod.factory('epUser', [function(){
 			if (typeof loggedUser !== 'undefined' && loggedUser!=null) {
 				return loggedUser.value;
 			}else{
-				return null
+				return null;
 			}
 		}
 		
@@ -113,6 +136,28 @@ europricesMod.controller('SearchController', [ '$scope','languages', 'epApi', 'e
 				
 		$scope.destinationLanguage = $scope.languages[2];
 		$scope.isUserLogged = epUser.isUserLogged();
+		
+		$scope.onFavouriteToggle = function(item) {
+			
+			//item.favourite = !item.favourite;
+			
+			var userId = epUser.getLoggedUserId();
+			var favouriteId = item.id;
+			
+			if(userId === null) {
+				alert("Sign In To Manage Your Favs.")
+				return;
+			}
+			
+			epApi
+				.toggleFavourite(favouriteId, userId)
+				.success(function(data){
+					item.favourite = (data === 'true');
+				})
+				.error(function(e){
+					alert("an error occurred");
+				});
+		}
 							
 		$scope.onClearSearch = function() {
 			$scope.searchTerms = '';

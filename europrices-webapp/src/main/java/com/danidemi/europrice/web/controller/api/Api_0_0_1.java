@@ -51,11 +51,8 @@ public class Api_0_0_1 {
 	@Transactional
 	@RequestMapping(value="/toggleFavourite", method=RequestMethod.POST)
 	@ResponseBody
-	public boolean toggleFavourite(  ) {
-		
-		String favouriteId = null;
-		String userId = null;
-		
+	public boolean toggleFavourite( @RequestParam String favouriteId, @RequestParam String userId ) {
+				
 		boolean newStatus;
 		List<Favourite> findByFavouriteIdAndUserId = favouriteRepository.findByFavouriteIdAndUserId(favouriteId, userId);
 		if( org.apache.commons.collections4.CollectionUtils.isEmpty( findByFavouriteIdAndUserId )){

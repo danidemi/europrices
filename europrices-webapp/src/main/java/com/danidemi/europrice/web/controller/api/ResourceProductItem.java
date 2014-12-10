@@ -29,5 +29,9 @@ public class ResourceProductItem {
 	public String getLanguageIsoCode() {
 		return dbProductItem.getLanguage().name();
 	}
+
+	public Long getId() {
+		return dbProductItem.getId();
+	}
 	
 }

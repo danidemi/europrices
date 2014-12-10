@@ -1,5 +1,9 @@
 @colorBase: #DDD;
 
+.favourited {
+	color: red;
+}
+
 body {
 	margin: 0;
 	border: none;

@@ -32,9 +32,10 @@
 	
 	<logger name="org.flywaydb" level="WARN" />
 	
-	<logger name="org.hibernate" level="ERROR" />
-	<logger name="org.hibernate.SQL" level="ERROR" />
-	<logger name="org.hibernate.type" level="ERROR" />	
+	<logger name="org.hibernate" level="WARN" />
+	<logger name="org.hibernate.SQL" level="ALL" />
+	<logger name="org.hibernate.type" level="ALL" />	
+	<logger name="org.hibernate.jpa" level="WARN" />
 
 	
 </configuration>

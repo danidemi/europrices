@@ -58,10 +58,6 @@ String imageUrl = (String)request.getAttribute("imageUrl");
 					</div>
 				</div>
 				
-				<div>
-					EPFAV <ep-fav></ep-fav>
-				</div>		
-
 
 				<div id="results">
 									
@@ -98,7 +94,10 @@ String imageUrl = (String)request.getAttribute("imageUrl");
 										{{item.priceInEuroCent/100 | currency:"&euro;"}}
 									</td>
 									<td>
-										{{item.favourite}}
+										<div ng-click="onFavouriteToggle(item)" ng-class="{favourited: item.favourite}">{{item.favourite}}</div>
+										<!--  
+										<ep-fav startAs="{{item.favourite}}"></ep-fav>
+										-->
 									</td>									
 									<td>
 										<div ng-if="destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso" style="display: inline;">
