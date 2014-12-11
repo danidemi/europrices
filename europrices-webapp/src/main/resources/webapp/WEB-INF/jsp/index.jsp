@@ -30,11 +30,10 @@ String username = (String)request.getAttribute("username");
 					<div>spot the best mobile prices in the eurozone</div>
 				</div>
 				
-				<div id="social">
-					is logged = {{isUserLogged}}
+				<div id="social" style="margin-right: 0.5em; margin-top: 0.5em;">
 					<sec:authorize access="isAnonymous()">
-						<a href="/auth/twitter">Sign In With Twitter</a>
-						<a href="/auth/facebook">Sign In With Facebook</a>
+						Sign In<br/>
+						<a href="/auth/twitter">Twitter</a> | <a href="/auth/facebook">Facebook</a>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 						
@@ -42,11 +41,14 @@ String username = (String)request.getAttribute("username");
 							<img alt="profile" src="<%= imageUrl %>"/>
 						<% } %>
 						
-						<% if(socialDisplayName!=null){ %>
-							<%=socialDisplayName%>
-						<% } %>						
+						<div style="float: right; text-align: right;">
+							<% if(socialDisplayName!=null){ %>
+								<%=socialDisplayName%>
+							<% } %>
+							<br/>						
+							<a href="/j_spring_security_logout">Sign Out</a>
+						</div>
 
-						<a href="/j_spring_security_logout">Sign Out</a>
 					</sec:authorize> 
 				</div>
 				
@@ -79,7 +81,7 @@ String username = (String)request.getAttribute("username");
 									<th>Product</th>
 									<th>Shop</th>
 									<th>Price</th>
-									<th>Fav</th>
+									<th>Favourite</th>
 									<th>Details</th>
 								</tr>
 							</thead>
@@ -95,10 +97,7 @@ String username = (String)request.getAttribute("username");
 										{{item.priceInEuroCent/100 | currency:"&euro;"}}
 									</td>
 									<td>
-										<div ng-click="onFavouriteToggle(item)" ng-class="{favourited: item.favourite}">{{item.favourite}}</div>
-										<!--  
-										<ep-fav startAs="{{item.favourite}}"></ep-fav>
-										-->
+										<div ng-click="onFavouriteToggle(item)" class="heart" ng-class="{favourited: item.favourite, notfavourite: !item.favourite}"></div>
 									</td>									
 									<td>
 										<div ng-if="destinationLanguage!=null && item.languageIsoCode != destinationLanguage.iso" style="display: inline;">

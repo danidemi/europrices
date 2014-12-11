@@ -1,7 +1,11 @@
 @colorBase: #DDD;
 
-.favourited {
-	color: red;
+.heart.favourited:before {
+   content:url(/images/heart-icon-enabled.png);
+}
+
+.heart.notfavourite:before {
+   content:url(/images/heart-icon-disabled.png);
 }
 
 body {
