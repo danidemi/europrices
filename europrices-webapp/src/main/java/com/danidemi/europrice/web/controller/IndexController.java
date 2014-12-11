@@ -15,6 +15,7 @@ import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.security.SocialUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
@@ -67,6 +68,8 @@ public class IndexController {
     		
     		displayName = StringUtils.isEmpty(displayName) ? authenticationFromArgument.getName() : displayName;
     		
+    		SocialUser principal = (SocialUser) authenticationFromArgument.getPrincipal();
+			model.addAttribute("username", principal.getUsername());
     		model.addAttribute("socialDisplayName", displayName);
     	}
     	

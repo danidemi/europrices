@@ -103,7 +103,8 @@ europricesMod.factory('epUser', [function(){
 		var getLoggedUserId = function() {
 			var loggedUser = window.document.getElementById("loggedUserId");
 			if (typeof loggedUser !== 'undefined' && loggedUser!=null) {
-				return loggedUser.value;
+				var theValue = loggedUser.value 
+				return theValue == "null" ? null : theValue;
 			}else{
 				return null;
 			}

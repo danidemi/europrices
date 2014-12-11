@@ -12,6 +12,10 @@ import org.apache.commons.collections.ComparatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.cglib.core.Transformer;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +43,7 @@ public class Api_0_0_1 {
 	@Autowired SearchRepository searchRepository;
 	@Autowired FavouriteRepository favouriteRepository;
 	@Autowired SearchResultProductItemRepositoryImpl searchResultProductItemRepository;
+	@Autowired SocialUserDetailsService userDetailsRepository;
 	
 	private SearchTermSplitter splitter = new SearchTermSplitter();
 		
@@ -52,10 +57,19 @@ public class Api_0_0_1 {
 	@RequestMapping(value="/toggleFavourite", method=RequestMethod.POST)
 	@ResponseBody
 	public boolean toggleFavourite( @RequestParam String favouriteId, @RequestParam String userId ) {
+		
 				
 		boolean newStatus;
 		List<Favourite> findByFavouriteIdAndUserId = favouriteRepository.findByFavouriteIdAndUserId(favouriteId, userId);
 		if( org.apache.commons.collections4.CollectionUtils.isEmpty( findByFavouriteIdAndUserId )){
+			
+			try{
+				userDetailsRepository.loadUserByUserId(userId);				
+			}catch(UsernameNotFoundException unfe){
+				return false;
+			}
+			
+			
 			Favourite newFavourite = new Favourite(favouriteId, userId);
 			favouriteRepository.save( newFavourite );
 			newStatus = true;

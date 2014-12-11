@@ -2,6 +2,7 @@
 <% 
 String socialDisplayName = (String)request.getAttribute("socialDisplayName");
 String imageUrl = (String)request.getAttribute("imageUrl");
+String username = (String)request.getAttribute("username");
 %>
 <!doctype html >
 <html lang="en" ng-app="europricesMod">
@@ -127,7 +128,7 @@ String imageUrl = (String)request.getAttribute("imageUrl");
 			Brought to you by <a target="_blank" href="http://www.danidemi.com">Studio Danidemi</a>
 		</footer>
 		
-		<input type="hidden" id="loggedUserId" value="<%=socialDisplayName%>" />
+		<input type="hidden" id="loggedUserId" value="<%=username%>" />
 		
 	</body>
 </html>
