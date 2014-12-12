@@ -62,6 +62,7 @@ public class Api_0_0_1Test {
 
 
     @Test
+    @Transactional
     public void shouldSearchForTerm() throws Exception {
     	
         this.mockMvc.perform(get("/api/search?searchTerms=compact")
@@ -80,6 +81,7 @@ public class Api_0_0_1Test {
     }
     
     @Test
+    @Transactional
     public void shouldSearchForTermByUser() throws Exception {
     	
         this.mockMvc.perform(get("/api/search?searchTerms=enginola&user=u1")
@@ -95,6 +97,7 @@ public class Api_0_0_1Test {
     }    
     
     @Test
+    @Transactional
     public void shouldToggleFavourite() throws Exception{
     	    	
     	this.mockMvc

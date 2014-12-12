@@ -23,7 +23,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 public class SearchResultProductItemRepositoryImplTest {
 
 	@Autowired SearchResultProductItemRepositoryImpl tested;
-	
+		
 	@Test
 	public void shouldReturnEmptyListWhenNoResults() {
 		

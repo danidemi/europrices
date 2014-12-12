@@ -56,7 +56,7 @@ public class Api_0_0_1 {
 	@Transactional
 	@RequestMapping(value="/toggleFavourite", method=RequestMethod.POST)
 	@ResponseBody
-	public boolean toggleFavourite( @RequestParam String favouriteId, @RequestParam String userId ) {
+	public boolean toggleFavourite( @RequestParam("favouriteId") String favouriteId, @RequestParam("userId") String userId ) {
 		
 				
 		boolean newStatus;
@@ -83,14 +83,17 @@ public class Api_0_0_1 {
 	@Transactional
 	@RequestMapping(value="/search", method=RequestMethod.GET)
 	@ResponseBody
-	public List<ResourceProductItemWithRelevancy> search(@RequestParam("searchTerms")String searchTerms) {
+	public List<ResourceProductItemWithRelevancy> search(@RequestParam("searchTerms")String searchTerms, @RequestParam(required=false, value="userId") String userId) {
 				
 		List<String> terms = splitter.split(searchTerms);
-		
 		RelevancyScorer scorer = new RelevancyScorer(terms);
 		
-		//List<? extends IProductItem> findProductItemsByKeywords = productItemRep.findProductItemsByKeywords(terms);
-		List<? extends IProductItem> findProductItemsByKeywords = searchResultProductItemRepository.findProductItemsByKeywords(terms, null);
+		List<? extends IProductItem> findProductItemsByKeywords;
+		if(userId!=null){
+			findProductItemsByKeywords = searchResultProductItemRepository.findProductItemsByKeywords(terms, userId);
+		}else{
+			findProductItemsByKeywords = productItemRep.findProductItemsByKeywords(terms);
+		}
 		
 		
 		List<ResourceProductItemWithRelevancy> map = map(findProductItemsByKeywords, scorer);
@@ -117,6 +120,7 @@ public class Api_0_0_1 {
 		
 		Collections.sort(map, ComparatorUtils.chainedComparator(c2, c1));
 		
+		// save search 
 		Search search = Utils.firstIfExists( searchRepository.findBySearch(searchTerms) );
 		if(search == null) {
 			search = new Search(searchTerms);

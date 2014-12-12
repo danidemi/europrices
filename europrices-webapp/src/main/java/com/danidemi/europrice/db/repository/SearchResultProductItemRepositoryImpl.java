@@ -36,7 +36,7 @@ public class SearchResultProductItemRepositoryImpl implements SearchResultProduc
 			if(userId != null){
 				query = emf.createQuery(
 						"from SearchResultProductItem as p " + 
-						"where p.keywordsBundle like :keywords and (p.userId IS NULL or p.userId = :userId) ");
+						"where p.keywordsBundle like :keywords and (p.username IS NULL or p.username = :userId) ");
 				
 				
 				query.setParameter("keywords", "|%" + keyword + "%|");

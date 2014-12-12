@@ -80,6 +80,10 @@ europricesMod.factory('epApi', ['$http', function($http){
 			return $http.get('/app/api/search?searchTerms=' + searchText);
 		}
 		
+		$http.getProductsForUser = function(searchText, userId){
+			return $http.get('/app/api/search?searchTerms=' + searchText + "&userId=" + userId);
+		}		
+		
 		$http.toggleFavourite = function(favouriteId, userId){
 			return $http.post('/app/api/toggleFavourite?favouriteId=' + favouriteId + '&userId=' + userId);
 		}
@@ -175,9 +179,15 @@ europricesMod.controller('SearchController', [ '$scope','languages', 'epApi', 'e
 			$scope.searchPlaceholder = 'Searching...';
 			
 			$scope.foundProductItems.length = 0;
-			epApi
-				.getProducts($scope.searchTerms)
-				.success(function(data){
+			
+			var api = null; 
+			if(epUser.isUserLogged()){
+				api = epApi.getProductsForUser($scope.searchTerms, epUser.getLoggedUserId());
+			}else{
+				api = epApi.getProducts($scope.searchTerms);
+			}
+			
+				api.success(function(data){
 										
 					data.forEach(function(item){
 						$scope.foundProductItems.push(item);

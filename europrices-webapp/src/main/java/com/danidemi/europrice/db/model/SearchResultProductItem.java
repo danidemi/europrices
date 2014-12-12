@@ -1,5 +1,7 @@
 package com.danidemi.europrice.db.model;
 
+import static org.junit.Assert.fail;
+
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,6 +43,7 @@ public class SearchResultProductItem implements Serializable, IProductItem, Favo
 	private Long priceInCent;
 	private Language language;	
 	private boolean isFavourite;
+	private String username;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,7 +54,17 @@ public class SearchResultProductItem implements Serializable, IProductItem, Favo
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+		
+	@Basic(optional=false) 
+	@Column(name="USERNAME")
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String id) {
+		this.username = id;
+	}	
+	
 	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
 	public Shop getShop() {
 		return shop;
