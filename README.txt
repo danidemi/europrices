@@ -38,6 +38,10 @@ App
 	Or more in general
 
 	$ git push <remote> <local-branch>
+	
+* Deploy Through OpenShift Git
+
+	$ git push master openshift/master
 
 * Build
 
