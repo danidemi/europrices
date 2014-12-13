@@ -1,4 +1,4 @@
 #!/bin/bash
-#v001
+#v0001
 SECRETS=$OPENSHIFT_DATA_DIR/conf/secrets.xml
 nohup java -Dsecrets=file:$SECRETS -cp 'lib/*:conf' com.danidemi.europrice.EuroPricesWebApp prod &> /dev/null &
