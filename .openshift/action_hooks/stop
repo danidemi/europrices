@@ -1,7 +1,10 @@
-#!/bin/bash
+#!/bin/bash -xv
+touch $OPENSHIFT_LOG_DIR/startstop.log
+echo "$(TZ='Europe/Rome' date --rfc-3339=seconds) - stop" >> $OPENSHIFT_LOG_DIR/startstop.log
 PID=$(jps | grep EuroPricesWebApp | awk '{print $1}')
 if [ -n "$PID" ]
 then
+	echo "Killing $PID"
 	kill $PID
 else
 	echo "Already stopped" 

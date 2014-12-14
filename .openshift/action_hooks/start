@@ -1,4 +1,5 @@
-#!/bin/bash
-#v0001
-SECRETS=$OPENSHIFT_DATA_DIR/conf/secrets.xml
-nohup java -Dsecrets=file:$SECRETS -cp "$OPENSHIFT_DATA_DIR/lib/*:$OPENSHIFT_DATA_DIR/conf" com.danidemi.europrice.EuroPricesWebApp prod &> /dev/null &
+#!/bin/bash -xv
+touch $OPENSHIFT_LOG_DIR/startstop.log
+echo "$(TZ='Europe/Rome' date --rfc-3339=seconds) - start" >> $OPENSHIFT_LOG_DIR/startstop.log 
+SECRETS="file://$OPENSHIFT_DATA_DIR/conf/secrets.xml"
+nohup java -Dsecrets=$SECRETS -cp "$OPENSHIFT_DATA_DIR/europrices/lib/*:$OPENSHIFT_DATA_DIR/europrices/conf" com.danidemi.europrice.EuroPricesWebApp prod &> /dev/null &
