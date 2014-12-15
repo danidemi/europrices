@@ -1,28 +1,30 @@
 package com.danidemi.europrice.web.controller.api;
 
-import java.util.Arrays;
-import java.util.Collection;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.print.attribute.standard.MediaSize.Engineering;
+import java.util.Arrays;
+
 import javax.transaction.Transactional;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.social.security.SocialUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -34,10 +36,6 @@ import com.danidemi.europrice.db.repository.ProductItemRepository;
 import com.danidemi.europrice.db.repository.ShopRepository;
 import com.danidemi.europrice.utils.Utils.Language;
 import com.danidemi.jlubricant.org.springframework.social.security.SocialUserDetailsService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -45,7 +43,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class Api_0_0_1Test {
 
-    private static boolean fixtureDone = false;
+    private static final String USER_MOBILE_HATER_ID = "mobile-hater";
+	static final long MOBILE_MOTOR_ROLLA_ID = 120L;
+	static final long MOBILE_MOTOR_BIKE_ID = 200L;
+	static final String USER_MOTOR_FUN_ID = "motor-fun";
 	@Autowired WebApplicationContext wac;
     @Autowired ShopRepository shopRepository;
     @Autowired ProductItemRepository itemRepository;
@@ -56,7 +57,7 @@ public class Api_0_0_1Test {
     
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+    	if(mockMvc==null) this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
     
 
@@ -65,18 +66,25 @@ public class Api_0_0_1Test {
     @Transactional
     public void shouldSearchForTerm() throws Exception {
     	
-        this.mockMvc.perform(get("/api/search?searchTerms=compact")
-        	.accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+    	// when
+        ResultActions result = mockMvc.perform(
+        		get("/api/search?searchTerms=compact")
+        		.accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+        	);
+        	
+        // then
+        result        	
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
-            .andExpect(jsonPath("$.[0].priceInEuroCent").value(90_00))
+            
+            .andExpect(jsonPath("$.[0].name").value("zamzung submodel1 compact"))
+            .andExpect(jsonPath("$.[0].priceInEuroCent").value(100_00))
             .andExpect(jsonPath("$.[0].favourite").value(false))
-            .andExpect(jsonPath("$.[1].priceInEuroCent").value(91_00))
+            
+            .andExpect(jsonPath("$.[1].name").value("zamzung submodel3 compact"))
+            .andExpect(jsonPath("$.[1].priceInEuroCent").value(110_00))
             .andExpect(jsonPath("$.[1].favourite").value(false))
-            .andExpect(jsonPath("$.[2].priceInEuroCent").value(100_00))
-            .andExpect(jsonPath("$.[2].favourite").value(false))
-            .andExpect(jsonPath("$.[3].priceInEuroCent").value(110_00))
-            .andExpect(jsonPath("$.[3].favourite").value(false));
+            .andDo(print());
         
     }
     
@@ -84,15 +92,22 @@ public class Api_0_0_1Test {
     @Transactional
     public void shouldSearchForTermByUser() throws Exception {
     	
-        this.mockMvc.perform(get("/api/search?searchTerms=enginola&user=u1")
-        	.accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
-            .andExpect(status().isOk())
+        ResultHandler rh = null;
+		ResultActions result = this.mockMvc.perform(
+        		get("/api/search?searchTerms=motor&user=" + USER_MOTOR_FUN_ID)
+        		.accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+        	).andDo(print());
+        
+        System.out.println( result.toString() );
+        
+            result.andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").exists())
             .andExpect(jsonPath("$.[0].priceInEuroCent").value(77_00))
             .andExpect(jsonPath("$.[0].priceInEuroCent").value(77_00))
-            .andExpect(jsonPath("$.[0].favourite").value(true));
+            .andExpect(jsonPath("$.[0].favourite").value(false))
+            .andDo(print());
         
     }    
     
@@ -102,18 +117,16 @@ public class Api_0_0_1Test {
     	    	
     	this.mockMvc
     			.perform(
-    					post("/api/toggleFavourite")
+    					post("/api/toggleFavourite?favouriteId=" + MOBILE_MOTOR_ROLLA_ID + "&userId=" + USER_MOBILE_HATER_ID)
 						.accept(MediaType.APPLICATION_JSON_VALUE)
-						.content( "{productId:123}" )
 				)
     			.andExpect( status().isOk() )
     			.andExpect(jsonPath("$").value(true));
     	
     	this.mockMvc
 		.perform(
-				post("/api/toggleFavourite")
+				post("/api/toggleFavourite?favouriteId=" + MOBILE_MOTOR_ROLLA_ID + "&userId=" + USER_MOBILE_HATER_ID)
 				.accept(MediaType.APPLICATION_JSON_VALUE)
-				.content( "{productId:123}" )
 		)
 		.andExpect( status().isOk() )
 		.andExpect(jsonPath("$").value(false));    	
@@ -121,86 +134,99 @@ public class Api_0_0_1Test {
     }
     
     @Before
+    @Transactional
 	public void fixture() {
 //    	select distinct item.*, (fav.FAVOURITEID IS NOT NULL) as IS_FAVOURITE from PRODUCTITEM item left join FAVOURITE fav on item.ID = fav.FAVOURITEID left join USERS u on fav.USERID = u.USERNAME
 //    			where (u.USERNAME IS NULL) OR (u.USERNAME='facebook:10205411082539753')
 //    			order by item.ID
-    	if(fixtureDone) return;
+    	//if(fixtureDone) return;
     	
-    	fixtureDone  = true;
+    	//fixtureDone  = true;
     	
-    	ProductItem enginolaPreviux = null;
+    	ProductItem motorBike = null;
+    	ProductItem motorRolla = null;
 		
 		{
     	Shop shop = new Shop();
     	shop.setName("telefonini.it");
+    	shopRepository.save(shop);
     	
-    	ProductItem zamzungCompact = shop.newProductItem();
-    	zamzungCompact.withKeywordsIn("zamzung compact 2");
-    	zamzungCompact.setDetailsURL("http://url1");
-    	zamzungCompact.setPriceInCent(90_00L);
-    	zamzungCompact.setLanguage(Language.it);
+    	ProductItem zamzungS1 = shop.newProductItem();
+    	zamzungS1.withKeywordsIn("Zamzung SubModel1");
+    	zamzungS1.setDetailsURL("http://url1");
+    	zamzungS1.setPriceInCent(90_00L);
+    	zamzungS1.setLanguage(Language.it);
+    	zamzungS1.setId(10L);
     	
-    	ProductItem zamzungCompact3 = shop.newProductItem();
-    	zamzungCompact3.withKeywordsIn("zamzung compact 3");
-    	zamzungCompact3.setDetailsURL("http://url2");
-    	zamzungCompact3.setPriceInCent(91_00L);
-    	zamzungCompact3.setLanguage(Language.it);
+    	ProductItem zamzungS2 = shop.newProductItem();
+    	zamzungS2.withKeywordsIn("Zamzung SubModel2");
+    	zamzungS2.setDetailsURL("http://url2");
+    	zamzungS2.setPriceInCent(91_00L);
+    	zamzungS2.setLanguage(Language.it);
+    	zamzungS2.setId(20L);
     	
-    	ProductItem glPreviux = shop.newProductItem();
-    	glPreviux.withKeywordsIn("gl previux");
-    	glPreviux.setDetailsURL("http://url3");
-    	glPreviux.setPriceInCent(92_00L);
-    	glPreviux.setLanguage(Language.it);
+    	ProductItem glPrevioux = shop.newProductItem();
+    	glPrevioux.withKeywordsIn("GL Previoux");
+    	glPrevioux.setDetailsURL("http://url3");
+    	glPrevioux.setPriceInCent(92_00L);
+    	glPrevioux.setLanguage(Language.it);
+    	glPrevioux.setId(30L);
     	
-    	itemRepository.save( Arrays.asList( zamzungCompact, zamzungCompact3, glPreviux ) );
+    	itemRepository.save( Arrays.asList( zamzungS1, zamzungS2, glPrevioux ) );
     	}
     	
     	{
 	    	Shop shop = new Shop();
 	    	shop.setName("telefonini.fr");
+	    	shopRepository.save(shop);
 	    	
-	    	ProductItem zamzungCompact = shop.newProductItem();
-	    	zamzungCompact.withKeywordsIn("zamzung compact");
-	    	zamzungCompact.setDetailsURL("http://url4");
-	    	zamzungCompact.setPriceInCent(100_00L);
-	    	zamzungCompact.setLanguage(Language.it);
+	    	ProductItem zamzungS1 = shop.newProductItem();
+	    	zamzungS1.withKeywordsIn("Zamzung SubModel1 Compact");
+	    	zamzungS1.setDetailsURL("http://url4");
+	    	zamzungS1.setPriceInCent(100_00L);
+	    	zamzungS1.setLanguage(Language.it);
+	    	zamzungS1.setId(100L);
 	    	
-	    	ProductItem zamzungCompact3 = shop.newProductItem();
-	    	zamzungCompact3.withKeywordsIn("zamzung compact");
-	    	zamzungCompact3.setDetailsURL("http://url5");
-	    	zamzungCompact3.setPriceInCent(110_00L);
-	    	zamzungCompact3.setLanguage(Language.it);
+	    	ProductItem zamzungS3 = shop.newProductItem();
+	    	zamzungS3.withKeywordsIn("Zamzung SubModel3 Compact");
+	    	zamzungS3.setDetailsURL("http://url5");
+	    	zamzungS3.setPriceInCent(110_00L);
+	    	zamzungS3.setLanguage(Language.it);
+	    	zamzungS3.setId(110L);
 	    	
-	    	ProductItem glPreviux = shop.newProductItem();
-	    	glPreviux.withKeywordsIn("gl previux");
-	    	glPreviux.setDetailsURL("http://url6");
-	    	glPreviux.setPriceInCent(120_00L);
-	    	glPreviux.setLanguage(Language.it);
-			itemRepository.save(Arrays.asList(zamzungCompact, zamzungCompact3,
-					glPreviux));
+	    	motorRolla = shop.newProductItem();
+	    	motorRolla.withKeywordsIn("Motor Rolla");
+	    	motorRolla.setDetailsURL("http://url6");
+	    	motorRolla.setPriceInCent(120_00L);
+	    	motorRolla.setLanguage(Language.it);
+	    	motorRolla.setId(MOBILE_MOTOR_ROLLA_ID);
+			itemRepository.save(Arrays.asList(zamzungS1, zamzungS3,
+					motorRolla));
     	}
     	
     	{
 	    	Shop shop = new Shop();
 	    	shop.setName("moviles.es");
+	    	shopRepository.save(shop);
 	    		    	
-	    	enginolaPreviux = shop.newProductItem();
-	    	enginolaPreviux.withKeywordsIn("enginola previux");
-	    	enginolaPreviux.setDetailsURL("http://url7");
-	    	enginolaPreviux.setPriceInCent(77_00L);
-	    	enginolaPreviux.setLanguage(Language.it);
-	    	enginolaPreviux = itemRepository.save(enginolaPreviux);
+	    	motorBike = shop.newProductItem();
+	    	motorBike.withKeywordsIn("Motor Bike");
+	    	motorBike.setDetailsURL("http://url7");
+	    	motorBike.setPriceInCent(77_00L);
+	    	motorBike.setLanguage(Language.it);
+	    	motorBike.setId(MOBILE_MOTOR_BIKE_ID);
+	    	motorBike = itemRepository.save(motorBike);
     	}    
     	
     	{
-    		userRepository.createUser( new SocialUser("u1", "u1", Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))) );
-    		userRepository.createUser( new SocialUser("u2", "u2", Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))) );
+    		userRepository.createUser( new SocialUser(USER_MOTOR_FUN_ID, USER_MOTOR_FUN_ID, Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))) );
+    		userRepository.createUser( new SocialUser(USER_MOBILE_HATER_ID, USER_MOBILE_HATER_ID, Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))) );
     	}
     	
     	{
-    		favouriteRepository.save( new Favourite(enginolaPreviux.getId(), "u1") );
-    		favouriteRepository.save( new Favourite(enginolaPreviux.getId(), "u2") );
+    		favouriteRepository.save( new Favourite(motorBike.getId(), USER_MOTOR_FUN_ID) );
+    		favouriteRepository.save( new Favourite(motorRolla.getId(), USER_MOTOR_FUN_ID) );
+
     	}
 
 	}
