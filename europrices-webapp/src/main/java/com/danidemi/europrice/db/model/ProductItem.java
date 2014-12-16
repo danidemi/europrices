@@ -71,7 +71,7 @@ public class ProductItem implements Serializable, IProductItem {
 		try {
 			new URL(shopURLString);
 		} catch (MalformedURLException e) {
-			throw new IllegalArgumentException(e);
+			throw new IllegalArgumentException("The provided URL '" + shopURLString + "' is malformed. " + e.getMessage(), e);
 		}
 
 		this.detailsUrl = shopURLString;

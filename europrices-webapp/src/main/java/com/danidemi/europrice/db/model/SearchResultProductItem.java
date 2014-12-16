@@ -1,12 +1,8 @@
 package com.danidemi.europrice.db.model;
 
-import static org.junit.Assert.fail;
-
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import javassist.compiler.NoFieldException;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -20,17 +16,19 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.hibernate.annotations.Cascade;
 
 import com.danidemi.europrice.utils.Utils.Language;
-import com.google.common.annotations.VisibleForTesting;
 
-/** A product as a search result triggered by a user. */
+/** 
+ * A product as a search result triggered by a user.
+ * This entity is extracted from view "SEARCH_RESULT_PRODUCT_ITEM" where more details are available as for instance
+ * an attribute that tell if a specific user added the item in the list of favourites.
+ * This is to avoid the usual 1+N antipattern.
+ */
 @Entity
 @Table(name="SEARCH_RESULT_PRODUCT_ITEM")
 public class SearchResultProductItem implements Serializable, IProductItem, Favouritable {
