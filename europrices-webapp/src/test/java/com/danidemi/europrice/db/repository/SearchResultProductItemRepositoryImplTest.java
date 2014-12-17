@@ -47,7 +47,7 @@ public class SearchResultProductItemRepositoryImplTest {
 		
 		ProductItem newProductItem = shop.newProductItem();
 		newProductItem.setDetailsURL("http://detail.phone=12");
-		newProductItem.setKeywordsBundle("mitsumi okko");
+		newProductItem.setKeywordsBundle("|mitsumi|okko|");
 		newProductItem.setLanguage(Language.es);
 		newProductItem.setPriceInCent(134_00L);
 		
@@ -70,7 +70,7 @@ public class SearchResultProductItemRepositoryImplTest {
 		
 		ProductItem newProductItem = shop.newProductItem();
 		newProductItem.setDetailsURL("http://detail.phone=12");
-		newProductItem.setKeywordsBundle("mitsumi okko");
+		newProductItem.setKeywordsBundle("|mitsumi|okko|");
 		newProductItem.setLanguage(Language.es);
 		newProductItem.setPriceInCent(134_00L);
 		
