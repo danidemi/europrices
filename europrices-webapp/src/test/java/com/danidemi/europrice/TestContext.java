@@ -25,7 +25,7 @@ public class TestContext {
 	ConfigurableApplicationContext springCtx;
 
 	@Test
-	public void instantianteAllBeans() {
+	public void shouldInstantianteAllBeans() {
 
 		ConfigurableListableBeanFactory beanFactory = springCtx
 				.getBeanFactory();

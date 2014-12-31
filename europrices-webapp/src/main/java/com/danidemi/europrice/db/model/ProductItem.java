@@ -71,7 +71,7 @@ public class ProductItem implements Serializable, IProductItem {
 		try {
 			new URL(shopURLString);
 		} catch (MalformedURLException e) {
-			throw new IllegalArgumentException(e);
+			throw new IllegalArgumentException("The provided URL '" + shopURLString + "' is malformed. " + e.getMessage(), e);
 		}
 
 		this.detailsUrl = shopURLString;
@@ -98,6 +98,10 @@ public class ProductItem implements Serializable, IProductItem {
 		return keywordsBundle;
 	}
 
+	/**
+	 * Please take care that currently this parameter is a string formatted like that {@code |<keyword>|<keyword>|<keyword>|} 
+	 * so please, set it accordingly.
+	 */
 	public void setKeywordsBundle(String keywordsBundle) {
 
 		this.keywordsBundle = keywordsBundle;

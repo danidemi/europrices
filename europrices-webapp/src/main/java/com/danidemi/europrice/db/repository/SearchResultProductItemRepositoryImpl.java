@@ -69,10 +69,6 @@ public class SearchResultProductItemRepositoryImpl implements SearchResultProduc
 			}
 		}
 		
-		
-		
-		
-		
         return new ArrayList<SearchResultProductItem>(result);
 	}
 

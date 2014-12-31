@@ -1,12 +1,14 @@
 package com.danidemi.europrice.db.repository;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,27 +33,40 @@ public class RepositoryTest {
 
 	@Autowired
 	ShopRepository shopRepository;
-
+	
 	@Test
 	public void shouldCreateAShop() {
 
+		// given
 		Shop shop = new Shop();
 		shop.setName("the shop");
-		shopRepository.save(shop);
-
+		
+		// when
+		Long id = shopRepository.save(shop).getId();
+		
+		// then
+		Shop loadedShop = shopRepository.findOne(id);
+		assertThat( loadedShop, equalTo(shop) );
+		
 	}
 
 	@Test
 	public void shouldCreateAProductItem() {
+		
+		// given
 		Shop shop = new Shop();
 		shop.setName("the shop");
+		
+		// when
 		ProductItem pi = shop.newProductItem();
 		pi.setPriceInCent(1000L);
 		pi.withKeywords("good", "excellent");
 		pi.setDetailsURL("http://url");
 		pi.setLanguage(Language.ca);
+		Long id = repository.save(pi).getId();
 
-		repository.save(pi);
+		// then
+		assertThat(pi, equalTo(repository.findOne(id)));
 	}
 
 	@Test
