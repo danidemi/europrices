@@ -2,9 +2,6 @@ package com.danidemi.jlubricant.rest;
 
 import static java.lang.String.format;
 
-import org.apache.commons.codec.binary.Base64;
-
-import com.danidemi.jlubricant.org.springframework.security.crypto.encrypt.TinyAES;
 import com.danidemi.jlubricant.org.springframework.security.crypto.encrypt.TinyAESTextEncryptor;
 import com.danidemi.jlubricant.rest.at.horz.hash.XXHash;
 
@@ -48,16 +45,9 @@ public class FakeSessionKeyFactory implements SessionKeyFactory {
 	 * Verify whether the given session key is valid for the given api key.
 	 * @return true if ok.
 	 */
+	@Override
 	public boolean verify(ApiKey apiKeyObj, SessionKey sessionKeyObj) {
-		
-		//return apiKey.equals(new ApiKey("api-key")) && sessionKey.equals( new SessionKey("kkk") );
-		
-		//return apiKey.asString().equals(sessionKey.asString());
-		
-//		String key = apiKey.asString();
-//		int digestSmall = XXHash.digestSmall(key.getBytes(), key.hashCode(), true);
-//		return sessionKey.asString().equals( String.valueOf(digestSmall) );
-		
+				
 		try{
 			
 			String apiKey = apiKeyObj.asString();

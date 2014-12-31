@@ -116,5 +116,26 @@
 	    <property name="order" value="1" />
 	</bean>
 
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/api/*"/>
+			<bean class="com.danidemi.europrice.web.controller.api.MyMappedInterceptor">
+				<property name="sessionKeyFactory">
+					<bean class="com.danidemi.jlubricant.rest.FakeSessionKeyFactory">
+						<constructor-arg>
+							<bean class="com.danidemi.jlubricant.rest.ListApiKeyRepository">
+								<constructor-arg>
+									<list>
+										<value>weuhd923eu</value><!-- API Key for web site -->
+									</list>
+								</constructor-arg>
+							</bean>
+						</constructor-arg>
+					</bean>
+				</property>
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
 	
 </beans>
