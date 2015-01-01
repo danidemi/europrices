@@ -1,5 +1,6 @@
 package com.danidemi.europrice.web.controller.api;
 
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -7,10 +8,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +29,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,6 +43,11 @@ import com.danidemi.europrice.db.repository.ProductItemRepository;
 import com.danidemi.europrice.db.repository.ShopRepository;
 import com.danidemi.europrice.utils.Utils.Language;
 import com.danidemi.jlubricant.org.springframework.social.security.SocialUserDetailsService;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -60,15 +72,56 @@ public class Api_0_0_1Test {
     	if(mockMvc==null) this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
     
+    @Test
+    @Transactional
+    public void shouldGetA401WhenAskingForSessionKeyWithInvalidApiKey() throws Exception {
 
+    	// when
+        ResultActions result = mockMvc.perform(
+        		post("/api/getSessionKey")
+        		.param("apiKey", "XXXXXXX")
+        		.accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+        	);
+        
+		// then
+        result        	
+        	.andDo(print())
+            .andExpect(status().is(401));
+    	
+    }    
+    
+    @Test
+    @Transactional
+    public void shouldGetASessionKeyWhenApiKeyIsValid() throws Exception {
+
+    	// when
+        ResultActions result = mockMvc.perform(
+        		post("/api/getSessionKey")
+        		.param("apiKey", "weuhd923eu")
+        		.accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+        	);
+        
+		// then
+        result        	
+        	.andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"))
+            .andExpect(jsonPath("$.apiKey").value("weuhd923eu"))
+            .andExpect(jsonPath("$.sessionKey").value( notNullValue() ));
+    	
+    }
 
     @Test
     @Transactional
     public void shouldSearchForTerm() throws Exception {
     	
+        String sessionKey = getSessionKey("weuhd923eu");
+    	
     	// when
         ResultActions result = mockMvc.perform(
         		get("/api/search?searchTerms=compact")
+        		.header(MyMappedInterceptor.EUROPRICES_API_KEY, "weuhd923eu")
+        		.header(MyMappedInterceptor.EUROPRICES_SESSION_KEY, sessionKey)
         		.accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
         	);
         	
@@ -92,32 +145,41 @@ public class Api_0_0_1Test {
     @Transactional
     public void shouldSearchForTermByUser() throws Exception {
     	
+        String sessionKey = getSessionKey("weuhd923eu");
+    	
         ResultHandler rh = null;
 		ResultActions result = this.mockMvc.perform(
         		get("/api/search?searchTerms=motor&user=" + USER_MOTOR_FUN_ID)
+        		.header(MyMappedInterceptor.EUROPRICES_API_KEY, "weuhd923eu")
+        		.header(MyMappedInterceptor.EUROPRICES_SESSION_KEY, sessionKey)        		
         		.accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
         	).andDo(print());
         
         System.out.println( result.toString() );
         
-            result.andExpect(status().isOk())
+        result
+            .andDo(print())
+            .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").exists())
             .andExpect(jsonPath("$.[0].priceInEuroCent").value(77_00))
             .andExpect(jsonPath("$.[0].priceInEuroCent").value(77_00))
-            .andExpect(jsonPath("$.[0].favourite").value(false))
-            .andDo(print());
+            .andExpect(jsonPath("$.[0].favourite").value(false));
         
     }    
     
     @Test
     @Transactional
     public void shouldToggleFavourite() throws Exception{
+    	
+    	String sessionKey = getSessionKey("weuhd923eu");
     	    	
     	this.mockMvc
     			.perform(
     					post("/api/toggleFavourite?favouriteId=" + MOBILE_MOTOR_ROLLA_ID + "&userId=" + USER_MOBILE_HATER_ID)
+		        		.header(MyMappedInterceptor.EUROPRICES_API_KEY, "weuhd923eu")
+		        		.header(MyMappedInterceptor.EUROPRICES_SESSION_KEY, sessionKey)     					
 						.accept(MediaType.APPLICATION_JSON_VALUE)
 				)
     			.andExpect( status().isOk() )
@@ -126,6 +188,8 @@ public class Api_0_0_1Test {
     	this.mockMvc
 		.perform(
 				post("/api/toggleFavourite?favouriteId=" + MOBILE_MOTOR_ROLLA_ID + "&userId=" + USER_MOBILE_HATER_ID)
+        		.header(MyMappedInterceptor.EUROPRICES_API_KEY, "weuhd923eu")
+        		.header(MyMappedInterceptor.EUROPRICES_SESSION_KEY, sessionKey)				
 				.accept(MediaType.APPLICATION_JSON_VALUE)
 		)
 		.andExpect( status().isOk() )
@@ -230,5 +294,27 @@ public class Api_0_0_1Test {
     	}
 
 	}
+    
+    public Map<String, Object> jsonToMap(String json) throws Exception{
+    	JsonFactory factory = new JsonFactory();
+    	ObjectMapper mapper = new ObjectMapper(factory);
+    	TypeReference<HashMap<String,Object>> typeRef
+    	              = new TypeReference<HashMap<String,Object>>() {};
+    	HashMap<String,Object> o = mapper.readValue(json, typeRef);
+    	return o;
+    }
+    
+	private String getSessionKey(String apiKey) throws Exception,
+			UnsupportedEncodingException {
+		ResultActions _result = mockMvc.perform(post("/api/getSessionKey")
+				.param("apiKey", apiKey)
+				.accept(MediaType
+						.parseMediaType("application/json;charset=UTF-8")));
+		MvcResult andReturn = _result.andReturn();
+		Map<String, Object> _appi = jsonToMap(andReturn.getResponse()
+				.getContentAsString());
+		String sessionKey = (String) _appi.get("sessionKey");
+		return sessionKey;
+	}    
 	
 }

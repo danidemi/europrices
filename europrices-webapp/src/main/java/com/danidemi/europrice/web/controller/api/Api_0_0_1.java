@@ -12,6 +12,7 @@ import org.apache.commons.collections.ComparatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.cglib.core.Transformer;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.danidemi.europrice.db.model.Favourite;
 import com.danidemi.europrice.db.model.IProductItem;
@@ -33,6 +35,11 @@ import com.danidemi.europrice.db.repository.SearchRepository;
 import com.danidemi.europrice.db.repository.SearchResultProductItemRepositoryImpl;
 import com.danidemi.europrice.db.repository.ShopRepository;
 import com.danidemi.europrice.utils.Utils;
+import com.danidemi.jlubricant.rest.ApiKey;
+import com.danidemi.jlubricant.rest.AppKeyNotFoundException;
+import com.danidemi.jlubricant.rest.SessionKey;
+import com.danidemi.jlubricant.rest.SessionKeyFactory;
+import com.google.common.collect.ImmutableMap;
 
 @Controller
 @RequestMapping(value="/api/", produces="application/json")
@@ -44,8 +51,41 @@ public class Api_0_0_1 {
 	@Autowired FavouriteRepository favouriteRepository;
 	@Autowired SearchResultProductItemRepositoryImpl searchResultProductItemRepository;
 	@Autowired SocialUserDetailsService userDetailsRepository;
+	@Autowired SessionKeyFactory apiSessionKeyFactory;
 	
 	private SearchTermSplitter splitter = new SearchTermSplitter();
+	
+	@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason="ApiKey not found.")
+	public static class UnauthorizeApiException extends Exception {
+
+		private static final long serialVersionUID = -5509256896948759883L;
+
+		@Override
+		public synchronized Throwable fillInStackTrace() {
+			return null;
+		}
+	}
+	
+	@RequestMapping(value="/getSessionKey", method=RequestMethod.POST, produces="application/json")
+	@ResponseBody
+	public Object getSessionKey(@RequestParam("apiKey") String stringApiKey) throws UnauthorizeApiException {
+		
+		try {
+			
+			ApiKey apiKey = new ApiKey(stringApiKey);
+			SessionKey newSessionKey = apiSessionKeyFactory.newSessionKey( apiKey );
+			return new ImmutableMap.Builder<String, Object>()
+					.put("apiKey", apiKey.asString())
+					.put("sessionKey", newSessionKey.asString())
+					.build();
+			
+		} catch (AppKeyNotFoundException e) {
+			
+			throw new UnauthorizeApiException();
+			
+		}
+		
+	}
 		
 	@RequestMapping(value="/version", method=RequestMethod.GET, produces="application/json")
 	@ResponseBody

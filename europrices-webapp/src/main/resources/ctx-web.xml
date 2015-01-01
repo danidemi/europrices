@@ -118,24 +118,25 @@
 
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/api/*"/>
+			<mvc:mapping path="/api/*" />
+			<mvc:exclude-mapping path="/api/getSessionKey" />
 			<bean class="com.danidemi.europrice.web.controller.api.MyMappedInterceptor">
-				<property name="sessionKeyFactory">
-					<bean class="com.danidemi.jlubricant.rest.FakeSessionKeyFactory">
-						<constructor-arg>
-							<bean class="com.danidemi.jlubricant.rest.ListApiKeyRepository">
-								<constructor-arg>
-									<list>
-										<value>weuhd923eu</value><!-- API Key for web site -->
-									</list>
-								</constructor-arg>
-							</bean>
-						</constructor-arg>
-					</bean>
-				</property>
+				<property name="sessionKeyFactory" ref="apiSessionKeyFactory" />
 			</bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
+	
+	<bean id="apiSessionKeyFactory" class="com.danidemi.jlubricant.rest.FakeSessionKeyFactory">
+		<constructor-arg>
+			<bean class="com.danidemi.jlubricant.rest.ListApiKeyRepository">
+				<constructor-arg>
+					<list>
+						<value>weuhd923eu</value><!-- API Key for web site -->
+					</list>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>	
 
 	
 </beans>

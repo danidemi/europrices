@@ -13,6 +13,8 @@ import com.danidemi.jlubricant.rest.SessionKeyFactory;
 
 public class MyMappedInterceptor implements HandlerInterceptor {
 	
+	public static final String EUROPRICES_SESSION_KEY = "Europrices-Session-Key";
+	public static final String EUROPRICES_API_KEY = "Europrices-Api-Key";
 	private SessionKeyFactory skf;
 	
 	public void setSessionKeyFactory(SessionKeyFactory skf){
@@ -21,8 +23,8 @@ public class MyMappedInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String api = request.getHeader("Europrices-Api-Key");
-		String session = request.getHeader("Europrices-Session-Key");
+		String api = request.getHeader(EUROPRICES_API_KEY);
+		String session = request.getHeader(EUROPRICES_SESSION_KEY);
 		if(skf.verify( new ApiKey(api) , new SessionKey(session))){
 			return true;
 		}else{
