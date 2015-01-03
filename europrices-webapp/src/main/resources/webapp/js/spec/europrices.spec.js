@@ -5,18 +5,7 @@ describe("Europrices", function() {
 	var $scope, $httpBackend;
 	
 	beforeEach( module('europricesMod') );
-	
-//    beforeEach( inject( function(_$controller_, _$rootScope_){
-//    	$scope = _$rootScope_;
-//    	$controller = _$controller_;
-//    	$controller('SearchController', {'$rootScope' : _$rootScope_, '$scope': $scope});
-//    } ) );
-	
-//	beforeEach( inject(function($injector){
-//		$scope = $injector.get('$rootScope').$new((var isolate = false));
-//		//$scope = $injector.get('$controller')('SearchController', {});
-//	}) );
-	
+		
 	beforeEach( inject(function($injector){
 		$scope = $injector.get('$rootScope').$new();
 		$httpBackend = $injector.get('$httpBackend');
