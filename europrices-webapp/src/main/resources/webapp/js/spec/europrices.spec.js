@@ -16,48 +16,50 @@ describe("Europrices", function() {
 		$httpBackend.verifyNoOutstandingExpectation();
 		$httpBackend.verifyNoOutstandingRequest(); 
 	});
-    
-	it("contains spec with an expectation", function() {
-    		expect(true).toBe(true);
-  	});
-	
-  	it("and the opposite", function() {
-    		expect(true).not.toBe(false);
-  	});
-  	
+      	
   	it("should start with empty search", function(){
   		expect($scope.searchTerms).toBe("");
   	});
   	
   	it("should reset search term", function(){
+  		
+  		// given
   		$scope.searchTerms = "Nokia";
   		expect($scope.searchTerms).toBe("Nokia");
+  		
+  		// when
   		$scope.onClearSearch();
+  		
+  		// then
   		expect($scope.searchTerms).toBe("");
+  		
   	});
-  	
-  	it("should use inject", inject(function($rootScope){
-  		expect($rootScope).not.toBe(null);
-  	}));
-  	
+  	  	
   	it("should search", function(){
   		
+  		// given
   		$httpBackend
   			.when('GET', '/app/api/search?searchTerms=HTC')
   			.respond([{},{},{}]);
   		
+  		// when
   		$scope.searchTerms = "HTC";
   		$scope.onSearch();
-  		
   		$httpBackend.flush();
   		
+  		// then
   		expect($scope.searchPlaceholder).toBe('');
   		expect($scope.foundProductItems.length).toBe(3);
+  		
   	});
   	
   	it("should retrieve languages from service", function(){
   		expect($scope.languages.length).toBe(15); 
   	});
+  	
+  	it("should use inject", inject(function($rootScope){
+  		expect($rootScope).not.toBe(null);
+  	}));
   	
   	
 });

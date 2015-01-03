@@ -68,18 +68,18 @@ public class Api_0_0_1 {
 	
 	@RequestMapping(value="/getSessionKey", method=RequestMethod.POST, produces="application/json")
 	@ResponseBody
-	public Object getSessionKey(@RequestParam("apiKey") String stringApiKey) throws UnauthorizeApiException {
+	public Object getSessionKey(@RequestParam(value="Europrices-Api-Key", required=false) String apiKeyAsString) throws UnauthorizeApiException {
 		
 		try {
-			
-			ApiKey apiKey = new ApiKey(stringApiKey);
+						
+			ApiKey apiKey = new ApiKey(apiKeyAsString);
 			SessionKey newSessionKey = apiSessionKeyFactory.newSessionKey( apiKey );
 			return new ImmutableMap.Builder<String, Object>()
-					.put("apiKey", apiKey.asString())
-					.put("sessionKey", newSessionKey.asString())
+					.put(MyMappedInterceptor.EUROPRICES_API_KEY, apiKey.asString())
+					.put(MyMappedInterceptor.EUROPRICES_SESSION_KEY, newSessionKey.asString())
 					.build();
 			
-		} catch (AppKeyNotFoundException e) {
+		} catch (Exception e) {
 			
 			throw new UnauthorizeApiException();
 			

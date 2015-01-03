@@ -1,12 +1,18 @@
 package com.danidemi.jlubricant.rest;
 
+import static java.lang.String.format;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+
+
 
 public class ApiKey {
 
 	private String key;
 
 	public ApiKey(String string) {
+		if( StringUtils.isBlank(string) ) throw new IllegalArgumentException( format("Illegal api key value '%s'.", string) );
 		this.key = string;
 	}
 	

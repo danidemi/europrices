@@ -2,6 +2,7 @@ package com.danidemi.jlubricant.rest;
 
 import static java.lang.String.format;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 public class SessionKey {
@@ -9,6 +10,7 @@ public class SessionKey {
 	private String key;
 
 	public SessionKey(String string) {
+		if( StringUtils.isBlank(string) ) throw new IllegalArgumentException( format("Illegal session key value '%s'.", string) );
 		this.key = string;
 	}
 	

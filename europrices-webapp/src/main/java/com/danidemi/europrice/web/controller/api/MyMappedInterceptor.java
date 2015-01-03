@@ -8,6 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.danidemi.jlubricant.rest.ApiKey;
+import com.danidemi.jlubricant.rest.KeysMismatchException;
 import com.danidemi.jlubricant.rest.SessionKey;
 import com.danidemi.jlubricant.rest.SessionKeyFactory;
 
@@ -25,12 +26,15 @@ public class MyMappedInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String api = request.getHeader(EUROPRICES_API_KEY);
 		String session = request.getHeader(EUROPRICES_SESSION_KEY);
-		if(skf.verify( new ApiKey(api) , new SessionKey(session))){
+		
+		try{
+			skf.check( new ApiKey(api) , new SessionKey(session) );
 			return true;
-		}else{
+		}catch(Exception kme){
 			response.sendError(HttpStatus.SC_UNAUTHORIZED, "Header unauthorized");
-			throw new IllegalArgumentException("Invalid ");
+			throw new IllegalArgumentException(kme);
 		}
+		
 	}
 
 	@Override
