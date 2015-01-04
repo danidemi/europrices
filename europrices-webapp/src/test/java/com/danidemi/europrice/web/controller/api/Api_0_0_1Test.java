@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,7 +15,6 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,9 +42,7 @@ import com.danidemi.europrice.db.repository.ShopRepository;
 import com.danidemi.europrice.utils.Utils.Language;
 import com.danidemi.jlubricant.org.springframework.social.security.SocialUserDetailsService;
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -85,7 +81,7 @@ public class Api_0_0_1Test {
         
 		// then
         result        	
-        	.andDo(print())
+        	//.andDo(print())
             .andExpect(status().is(401));
     	
     }    
@@ -103,7 +99,7 @@ public class Api_0_0_1Test {
         
 		// then
         result        	
-        	.andDo(print())
+        	//.andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$.Europrices-Api-Key").value("weuhd923eu"))
@@ -127,6 +123,7 @@ public class Api_0_0_1Test {
         	
         // then
         result        	
+        	//.andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             
@@ -136,8 +133,7 @@ public class Api_0_0_1Test {
             
             .andExpect(jsonPath("$.[1].name").value("zamzung submodel3 compact"))
             .andExpect(jsonPath("$.[1].priceInEuroCent").value(110_00))
-            .andExpect(jsonPath("$.[1].favourite").value(false))
-            .andDo(print());
+            .andExpect(jsonPath("$.[1].favourite").value(false));
         
     }
     
@@ -153,12 +149,10 @@ public class Api_0_0_1Test {
         		.header(MyMappedInterceptor.EUROPRICES_API_KEY, "weuhd923eu")
         		.header(MyMappedInterceptor.EUROPRICES_SESSION_KEY, sessionKey)        		
         		.accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
-        	).andDo(print());
-        
-        System.out.println( result.toString() );
-        
+        	);
+          
         result
-            .andDo(print())
+            //.andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$").isArray())
@@ -200,12 +194,6 @@ public class Api_0_0_1Test {
     @Before
     @Transactional
 	public void fixture() {
-//    	select distinct item.*, (fav.FAVOURITEID IS NOT NULL) as IS_FAVOURITE from PRODUCTITEM item left join FAVOURITE fav on item.ID = fav.FAVOURITEID left join USERS u on fav.USERID = u.USERNAME
-//    			where (u.USERNAME IS NULL) OR (u.USERNAME='facebook:10205411082539753')
-//    			order by item.ID
-    	//if(fixtureDone) return;
-    	
-    	//fixtureDone  = true;
     	
     	ProductItem motorBike = null;
     	ProductItem motorRolla = null;
