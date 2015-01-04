@@ -117,6 +117,36 @@ europricesMod.factory('epApi', ['$http', 'transformRequestAsFormPost', function(
 	return(function($http){
 		
 		var headers = null;
+		
+		var ensureHeaders = function(factoryFn){
+			
+			if(headers == null){
+				
+				return $http(
+						{
+							method:'POST',
+							url:'/app/api/getSessionKey',
+							data: {'Europrices-Api-Key':'weuhd923eu'},
+							transformRequest: transformRequestAsFormPost	
+						}
+				).then(
+						function(result){
+							console.log("keys obtained");
+							headers = result.data;
+							//return $http.get('/app/api/search?searchTerms=' + searchText, {headers:getHeaders()});
+							return factoryFn();
+						},
+						function(error){
+							console.log("error obtaining keys");
+						}
+				);
+				
+			}else{
+				//return $http.get('/app/api/search?searchTerms=' + searchText, {headers:getHeaders()});
+				return factoryFn();
+			}
+			
+		}
 
 		var getHeaders = function(){
 			
@@ -140,11 +170,18 @@ europricesMod.factory('epApi', ['$http', 'transformRequestAsFormPost', function(
 		}
 		
 		$http.getProducts = function(searchText){
-			return $http.get('/app/api/search?searchTerms=' + searchText, {headers:getHeaders()});
-		}
-		
+												
+			return ensureHeaders( function() {
+				return $http.get('/app/api/search?searchTerms=' + searchText, {headers:getHeaders()});
+			} );
+			
+		}		
+				
 		$http.getProductsForUser = function(searchText, userId){
+			
 			return $http.get('/app/api/search?searchTerms=' + searchText + "&userId=" + userId, {headers:getHeaders()});
+			
+			
 		}		
 		
 		$http.toggleFavourite = function(favouriteId, userId){
@@ -250,24 +287,44 @@ europricesMod.controller('SearchController', [ '$scope','languages', 'epApi', 'e
 				api = epApi.getProducts($scope.searchTerms);
 			}
 			
-				api.success(function(data){
-										
-					data.forEach(function(item){
-						$scope.foundProductItems.push(item);
-					});
-					if($scope.foundProductItems.length > 0) {
-						$scope.showSearchResult = true;
-						$scope.showSearchPlaceholder = false;
-						$scope.searchPlaceholder = '';
-					}else{
-						$scope.showSearchResult = false;
-						$scope.showSearchPlaceholder = true;
-						$scope.searchPlaceholder = 'No products have been found for "' + $scope.searchTerms + '".';
-					}
-				})
-				.error(function(data, status){
-					$scope.searchPlaceholder = 'Sorry, an error occurred.';
-				});
+//				api.success(function(data){
+//										
+//					data.forEach(function(item){
+//						$scope.foundProductItems.push(item);
+//					});
+//					if($scope.foundProductItems.length > 0) {
+//						$scope.showSearchResult = true;
+//						$scope.showSearchPlaceholder = false;
+//						$scope.searchPlaceholder = '';
+//					}else{
+//						$scope.showSearchResult = false;
+//						$scope.showSearchPlaceholder = true;
+//						$scope.searchPlaceholder = 'No products have been found for "' + $scope.searchTerms + '".';
+//					}
+//				})
+//				.error(function(data, status){
+//					$scope.searchPlaceholder = 'Sorry, an error occurred.';
+//				});
+			
+				api.then(
+						function(okResult){
+							okResult.data.forEach(function(item){
+								$scope.foundProductItems.push(item);
+							});
+							if($scope.foundProductItems.length > 0) {
+								$scope.showSearchResult = true;
+								$scope.showSearchPlaceholder = false;
+								$scope.searchPlaceholder = '';
+							}else{
+								$scope.showSearchResult = false;
+								$scope.showSearchPlaceholder = true;
+								$scope.searchPlaceholder = 'No products have been found for "' + $scope.searchTerms + '".';
+							}							
+						},
+						function(koResult){
+							$scope.searchPlaceholder = 'Sorry, an error occurred.';
+						}
+				);
 			
 			
 		}
