@@ -118,7 +118,11 @@ europricesMod.factory('epApi', ['$http', 'transformRequestAsFormPost', function(
 		
 		var headers = null;
 		
-		var ensureHeaders = function(factoryFn){
+		/** 
+		 * Wraps a Promise in order to automatically obtain a session key if needed.
+		 * The promise should be provided through a factory function. 
+		 */
+		var ensureHeaders = function(promiseFactoryFn){
 			
 			if(headers == null){
 				
@@ -133,7 +137,6 @@ europricesMod.factory('epApi', ['$http', 'transformRequestAsFormPost', function(
 						function(result){
 							console.log("keys obtained");
 							headers = result.data;
-							//return $http.get('/app/api/search?searchTerms=' + searchText, {headers:getHeaders()});
 							return factoryFn();
 						},
 						function(error){
@@ -142,7 +145,6 @@ europricesMod.factory('epApi', ['$http', 'transformRequestAsFormPost', function(
 				);
 				
 			}else{
-				//return $http.get('/app/api/search?searchTerms=' + searchText, {headers:getHeaders()});
 				return factoryFn();
 			}
 			
