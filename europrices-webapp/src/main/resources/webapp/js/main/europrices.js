@@ -179,13 +179,18 @@ europricesMod.factory('epApi', ['$http', 'transformRequestAsFormPost', function(
 				
 		$http.getProductsForUser = function(searchText, userId){
 			
-			return $http.get('/app/api/search?searchTerms=' + searchText + "&userId=" + userId, {headers:getHeaders()});
-			
+			return ensureHeaders( function() {
+				return $http.get('/app/api/search?searchTerms=' + searchText + "&userId=" + userId, {headers:getHeaders()});
+			} );			
 			
 		}		
 		
 		$http.toggleFavourite = function(favouriteId, userId){
-			return $http.post('/app/api/toggleFavourite?favouriteId=' + favouriteId + '&userId=' + userId, {headers:getHeaders()});
+			
+			return ensureHeaders( function() {
+				return $http.post('/app/api/toggleFavourite?favouriteId=' + favouriteId + '&userId=' + userId, {headers:getHeaders()});
+			} );			
+			
 		}
 				
 		return $http;
