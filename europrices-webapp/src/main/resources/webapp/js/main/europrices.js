@@ -137,7 +137,7 @@ europricesMod.factory('epApi', ['$http', 'transformRequestAsFormPost', function(
 						function(result){
 							console.log("keys obtained");
 							headers = result.data;
-							return factoryFn();
+							return promiseFactoryFn();
 						},
 						function(error){
 							console.log("error obtaining keys");

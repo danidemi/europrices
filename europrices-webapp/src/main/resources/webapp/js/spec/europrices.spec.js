@@ -42,6 +42,10 @@ describe("Europrices", function() {
   			.when('GET', '/app/api/search?searchTerms=HTC')
   			.respond([{},{},{}]);
   		
+  		$httpBackend
+			.when('POST', '/app/api/getSessionKey')
+			.respond({'Europrices-Session-Key':'sesskey', 'Europrices-Api-Key':'apiKey'});  		
+  		
   		// when
   		$scope.searchTerms = "HTC";
   		$scope.onSearch();
