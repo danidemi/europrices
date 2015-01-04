@@ -97,7 +97,7 @@ public class Api_0_0_1Test {
     	// when
         ResultActions result = mockMvc.perform(
         		post("/api/getSessionKey")
-        		.param("apiKey", "weuhd923eu")
+        		.param(MyMappedInterceptor.EUROPRICES_API_KEY, "weuhd923eu")
         		.accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
         	);
         
@@ -106,8 +106,8 @@ public class Api_0_0_1Test {
         	.andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json;charset=UTF-8"))
-            .andExpect(jsonPath("$.apiKey").value("weuhd923eu"))
-            .andExpect(jsonPath("$.sessionKey").value( notNullValue() ));
+            .andExpect(jsonPath("$.Europrices-Api-Key").value("weuhd923eu"))
+            .andExpect(jsonPath("$.Europrices-Session-Key").value( notNullValue() ));
     	
     }
 
@@ -307,13 +307,13 @@ public class Api_0_0_1Test {
 	private String getSessionKey(String apiKey) throws Exception,
 			UnsupportedEncodingException {
 		ResultActions _result = mockMvc.perform(post("/api/getSessionKey")
-				.param("apiKey", apiKey)
+				.param(MyMappedInterceptor.EUROPRICES_API_KEY, apiKey)
 				.accept(MediaType
 						.parseMediaType("application/json;charset=UTF-8")));
 		MvcResult andReturn = _result.andReturn();
 		Map<String, Object> _appi = jsonToMap(andReturn.getResponse()
 				.getContentAsString());
-		String sessionKey = (String) _appi.get("sessionKey");
+		String sessionKey = (String) _appi.get(MyMappedInterceptor.EUROPRICES_SESSION_KEY);
 		return sessionKey;
 	}    
 	

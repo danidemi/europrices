@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.danidemi.europrice.EuroPricesWebApp;
 import com.danidemi.europrice.db.model.Favourite;
 import com.danidemi.europrice.db.model.IProductItem;
 import com.danidemi.europrice.db.model.ProductItem;
@@ -68,7 +69,7 @@ public class Api_0_0_1 {
 	
 	@RequestMapping(value="/getSessionKey", method=RequestMethod.POST, produces="application/json")
 	@ResponseBody
-	public Object getSessionKey(@RequestParam(value="Europrices-Api-Key", required=false) String apiKeyAsString) throws UnauthorizeApiException {
+	public Object getSessionKey(@RequestParam(value=MyMappedInterceptor.EUROPRICES_API_KEY, required=false) String apiKeyAsString) throws UnauthorizeApiException {
 		
 		try {
 						
